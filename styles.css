@@ -2,3 +2,38 @@
     font-family: 'Roboto', sans-serif;
 }
 
+.wrapper {
+	width: 1500px;
+	height: 1000px;
+}
+
+/* Header */
+
+.header-wrapper {
+	width: 1500px;
+	height: 100px;
+}
+
+#header {
+	height: 50px;
+}
+
+h1 {
+	text-align: center;
+}
+
+#description {
+	height: 70px;
+}
+
+.summary-text {
+	text-align: center;
+}
+
+/* Game Detail */
+
+#game-detail {
+	width: 1500px;
+	height: 1000px;
+	display: none;
+}
