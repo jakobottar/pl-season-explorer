@@ -20,6 +20,6 @@ loadData("data/seasonData.csv").then(data => {
 });
 
 async function loadData(filename) {
-    let data = {}; // Load the data (this is just a placeholder so there are no syntax errors prior to implementation)
+    let data = await d3.csv(filename);
     return data;
 }
