@@ -1,6 +1,9 @@
-loadData("data/seasonData.csv").then(data => {
+Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).then(data => {
 
     console.log(data);
+
+    let seasonData = data[0];
+    window.teamData = data[1]; // Contains data such as team names, abbreviations, colors, and logos. Useful across entire project, so using global variable
 
     function updateGame(gamefile) {
     	loadData(gamefile).then(gameData => {
@@ -13,9 +16,9 @@ loadData("data/seasonData.csv").then(data => {
     	// This will update the team selected (e.g. if we want to highlight the line from a specific team on both the bump chart and the final season chart at the same time)
     }
 
-    let bumpChart = new BumpChart(data, updateGame, updateTeam);
-    let finalSesaonChart = new SeasonTable(data, updateTeam);
-    let gameTable = new GameTable(data, updateGame, updateTeam);
+    let bumpChart = new BumpChart(seasonData, updateGame, updateTeam);
+    let finalSesaonChart = new SeasonTable(seasonData, updateTeam);
+    let gameTable = new GameTable(seasonData, updateGame, updateTeam);
     let gameDetail = new GameDetail(updateGame);
 });
 

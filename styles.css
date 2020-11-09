@@ -2,38 +2,71 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.wrapper {
-	width: 1500px;
-	height: 1000px;
-}
-
-/* Header */
+/* Layout */
 
 .header-wrapper {
 	width: 1500px;
-	height: 100px;
+	height: 120px;
 }
 
 #header {
 	height: 50px;
 }
 
-h1 {
-	text-align: center;
-}
-
 #description {
 	height: 70px;
+}
+
+.wrapper {
+	width: 1500px;
+	height: 1100px;
+}
+
+#controls {
+	position: relative;
+	width: 1500px;
+	height: 100px;
+}
+
+#bump-chart {
+	position: relative;
+	width: 1000px;
+	float: left;
+	height: 500px;
+	display: inline-block;
+}
+
+#game-table {
+	position: relative;
+	width: 1000px;
+	height: 500px;
+	float: left;
+	display: inline-block;
+}
+
+#season-chart {
+	position: relative;
+	width: 500px;
+	height: 1000px;
+	display: inline-block;
+}
+
+#game-detail {
+	position: absolute;
+	width: 1500px;
+	height: 1100px;
+	display: none;
+	left: 0px;
+	top: 120px;
+}
+
+/* Header */
+
+h1 {
+	text-align: center;
 }
 
 .summary-text {
 	text-align: center;
 }
 
-/* Game Detail */
-
-#game-detail {
-	width: 1500px;
-	height: 1000px;
-	display: none;
-}
