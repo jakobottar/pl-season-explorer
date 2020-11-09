@@ -70,3 +70,26 @@ h1 {
 	text-align: center;
 }
 
+/* Axis labels */
+.axis-label {
+	font-size: 10pt;
+	text-align: middle;
+}
+
+/* Season summary chart */
+
+#season-chart-svg {
+	width: 480px;
+	height: 980px;
+	padding: 10px;
+}
+
+.season-summary-rect {
+	stroke-width: 1px;
+	rx: 2px;
+}
+
+.season-summary-label {
+	font-size: 8pt;
+	text-align: left;
+}
