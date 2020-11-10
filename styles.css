@@ -73,7 +73,7 @@ h1 {
 /* Axis labels */
 .axis-label {
 	font-size: 10pt;
-	text-align: middle;
+	text-align: center;
 }
 
 /* Season summary chart */
@@ -92,4 +92,27 @@ h1 {
 .season-summary-label {
 	font-size: 8pt;
 	text-align: left;
+}
+
+/* Game summary chart */
+
+#game-table-svg {
+	width: 980px;
+	height: 480px;
+	padding: 10px;
+}
+
+.game-rect {
+	stroke-width: 1px;
+	stroke: lightgray;
+}
+
+.game-text {
+	font-size: 8pt;
+	text-align: center;
+}
+
+.game-header-text {
+	font-size: 10pt;
+	text-align: center;
 }
