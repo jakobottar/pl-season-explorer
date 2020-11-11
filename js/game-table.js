@@ -35,8 +35,14 @@ class GameTable {
         texts.text(d => d.home_team_goal_count + "\u2013" + d.away_team_goal_count);
 
         for (let i = 0; i < teams.length; i++) {
-            svgGroup.append("text").attr("x", this.width * i / teams.length + this.margin.left + this.width / teams.length / 5).attr("y", 20).text(teams[i]).classed("game-header-text", true);
-            svgGroup.append("text").attr("x", 10).attr("y", this.height * i / teams.length + this.margin.top + this.height / teams.length / 1.5).text(teams[i]).classed("game-header-text", true);
+            let xHeaderGroup = svgGroup.append("g").attr("transform", "translate(" + (this.width * i / teams.length + this.margin.left) + ", 0)");
+            let yHeaderGroup = svgGroup.append("g").attr("transform", "translate(0, " + (this.height * i / teams.length + this.margin.top) + ")");
+            let xRect = xHeaderGroup.append("rect").attr("x", this.width / teams.length / 10).attr("y", 5).attr("width", this.width / teams.length / 1.2345).attr("height", this.margin.top - 10);
+            xRect.classed("game-header-rect", true).style("fill", window.teamData.find(e => e.name_abbr === teams[i]).color1).style("stroke", window.teamData.find(e => e.name_abbr === teams[i]).color2);
+            xHeaderGroup.append("text").attr("x", this.width / teams.length / 3.5).attr("y", 20).text(teams[i]).classed("game-header-text", true);
+            let yRect = yHeaderGroup.append("rect").attr("x", 5).attr("y", this.height / teams.length / 10).attr("width", this.margin.left - 15).attr("height", this.height / teams.length / 1.2345);
+            yRect.classed("game-header-rect", true).style("fill", window.teamData.find(e => e.name_abbr === teams[i]).color1).style("stroke", window.teamData.find(e => e.name_abbr === teams[i]).color2);
+            yHeaderGroup.append("text").attr("x", 10).attr("y", this.height / teams.length / 1.5).text(teams[i]).classed("game-header-text", true);
         }
 
     }
