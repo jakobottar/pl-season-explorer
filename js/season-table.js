@@ -25,7 +25,7 @@ class SeasonTable {
 
         let rects = barGroups.append("rect").attr("transform", d => "translate(" + this.margin.left + ", 0)");
         rects.attr("x", 0).attr("y", 0).attr("width", d => xScale(d.points)).attr("height", 5);
-        rects.classed("season-summary-rect",true).style("fill", d => window.teamData.find(e => e.name_abbr === d.team).color1).style("stroke", d => window.teamData.find(e => e.name_abbr === d.team).color2);
+        rects.attr("class", d => "season-summary-rect " + d.team.toLowerCase());
 
         svgGroup.append("text").text("End-of-season points").attr("x", 190).attr("y", this.margin.top - 40).classed("axis-label",true);
     	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 30) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
