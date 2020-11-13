@@ -39,8 +39,18 @@ Premier league website https://premierleague.com. This will be useful for any da
 
 ## Exploratory Data Analysis
 
+Thus far, the season data downloaded from FootyStats has worked well for implementing the bump chart, season summary chart, and game table. The only data we needed to add to the csv file to make this work was game week, which was almost trivial to implement. There was also no column for cumulative points on the season, but it was easy to implement a function in JavaScript to calculate this number of points for the season summary chart. The function will later be extended to allow for only games during certain game weeks to count towards the total, and based on the function design this should be trivial as well once we reach that point. Similarly, there was no column for margin of victory (used for saturation/hue in the game table), but this was easy to calculate from the home team and away team goals.
+
+One wrinkle we came across midway through the project is that the footystats data does not include anything about individual players (e.g. who cards, subs, goals broken down by player). Thus, we were forced to manually grab player data from the Premier League website game by game. As a result, we will limit our individual game detail view to only include game-changing events (goals and red cards), as any more than this (in particular full lineups and substitutions) would require an inordinate amount of work to input the data.
+
 ## Design Evolution
 
+So far, we are sticking mostly to our original designs, apart from the game detail view for the reasons mentioned above. The season summary chart is still a bar chart, and the game table is still an adjacency matrix with a diverging color scale for margin of victory.  The final aesthetics have yet to be finalized, but the major components and content is there in thee two views.
+
+The bump chart is also progressing along well, and should be finished soon. After this is done, we will work on interactivity between the three charts and a draft of the game detail view (both hopefully done in a draft form by next Friday).
+
 ## Implementation
+
+Thus far, JavaScript and D3 has suited our needs well. We have not run into any major road blocks, and our season summary chart and game summary table are (aside from interactivty and aesthetics) complete. The bump chart is well on its way as well, with the game detail view set to come next week.
 
 ## Evaluation
