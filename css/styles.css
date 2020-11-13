@@ -41,9 +41,9 @@
 	height: 100%;
 }
 
-/* circle.dot {
-
-} */
+#bump-chart line {
+	stroke-width: 2;
+}
 
 #game-table {
 	position: relative;

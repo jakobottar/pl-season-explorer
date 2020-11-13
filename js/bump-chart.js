@@ -86,12 +86,14 @@ class BumpChart {
                     home.points += getPoints(e.home_team_goal_count, e.away_team_goal_count);
                     home.gd += e.home_team_goal_count - e.away_team_goal_count;
                     home.gs += +e.home_team_goal_count;
+                    home.prevPlace = home.place;
                     col.push(home);
 
                     let away = Object.assign({}, table[i-1].find(d => d.team_name == e.away_team_name));
                     away.points += getPoints(e.away_team_goal_count, e.home_team_goal_count);
                     away.gd += e.away_team_goal_count - e.home_team_goal_count;
                     away.gs += +e.away_team_goal_count;
+                    away.prevPlace = away.place;
                     col.push(away);
                 });
                 
@@ -105,7 +107,34 @@ class BumpChart {
     }
 
     drawLines(table){
-        //TODO:
+        let padding = 20
+
+        let xScale = d3.scaleLinear()
+            .domain([1, 38])
+            .range([padding, this.size.width - padding])
+
+        let yScale = d3.scaleLinear()
+            .domain([1, 20])
+            .range([padding, this.size.height - padding])
+
+        let lines = this.svg
+            .append('g')
+            .attr('id', 'bump-lines')
+            .selectAll('line')
+            
+        for(let gw = 1; gw < 38; gw++){
+                let games = table[gw]
+                
+                lines.data(games)
+                    .enter()
+                    .append('line')
+                    .attr("x1", xScale(gw))
+                    .attr("x2", xScale(gw+1))
+                    .attr("y1", d => yScale(d.prevPlace))
+                    .attr("y2", d => yScale(d.place))
+                    .attr("class", d => d.team_abbr.toLowerCase())
+        }
+
     }
 
     drawDots(table){
@@ -122,12 +151,12 @@ class BumpChart {
         let dots = this.svg
             .append('g')
             .attr('id', 'bump-dots')
+            .selectAll("circle")
 
         for(let gw = 0; gw < 38; gw++){
             let games = table[gw]
             
-            dots.selectAll("circles")
-                .data(games)
+            dots.data(games)
                 .enter()
                 .append("circle")
                 .attr("cx", xScale(gw + 1))
