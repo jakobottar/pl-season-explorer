@@ -51,4 +51,6 @@ The bump chart is also progressing along well, and should be finished soon. Afte
 
 ## Implementation
 
+Thus far, JavaScript and D3 has suited our needs well. We have not run into any major road blocks, and our season summary chart and game summary table are (aside from interactivty and aesthetics) complete. The bump chart is well on its way as well, with the game detail view set to come next week.
+
 ## Evaluation
