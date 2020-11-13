@@ -9,12 +9,22 @@ class BumpChart {
         this.xAxis = "week";
         this.yAxis = "position";
 
+        this.svg;
+        this.size;
+
         this.drawChart(this.xAxis, this.yAxis)
     }
 
     drawChart() {
-        this.makeTable();
-        // Draw the chart, with appropriate axes
+        let table = this.makeTable();
+        console.log(table)
+
+        this.size = d3.select('#bump-chart').node().getBoundingClientRect()
+        this.svg = d3.select('#bump-chart')
+            .append("svg")
+
+        this.drawLines(table)
+        this.drawDots(table)
     }
     
     makeTable(){
@@ -48,16 +58,17 @@ class BumpChart {
             let gw = this.data.filter(d => +d.gameweek == i+1);
             let col = []
             if(i == 0){
-                console.log(gw);
                 gw.forEach(e => {
                     col.push({
                         "team_name": e.home_team_name,
+                        "team_abbr": window.teamData.find(d => d.name_long === e.home_team_name).name_abbr,
                         "points": getPoints(e.home_team_goal_count, e.away_team_goal_count),
                         "gd": e.home_team_goal_count - e.away_team_goal_count,
                         "gs": +e.home_team_goal_count
                     });
                     col.push({
                         "team_name": e.away_team_name,
+                        "team_abbr": window.teamData.find(d => d.name_long === e.away_team_name).name_abbr,
                         "points": getPoints(e.away_team_goal_count, e.home_team_goal_count),
                         "gd": e.away_team_goal_count - e.home_team_goal_count,
                         "gs": +e.away_team_goal_count
@@ -90,7 +101,41 @@ class BumpChart {
 
             table.push(col);
         }
-        console.log(table)
         return table;
     }
+
+    drawLines(table){
+        //TODO:
+    }
+
+    drawDots(table){
+        let padding = 20
+
+        let xScale = d3.scaleLinear()
+            .domain([1, 38])
+            .range([padding, this.size.width - padding])
+
+        let yScale = d3.scaleLinear()
+            .domain([1, 20])
+            .range([padding, this.size.height - padding])
+
+        let dots = this.svg
+            .append('g')
+            .attr('id', 'bump-dots')
+
+        for(let gw = 0; gw < 38; gw++){
+            let games = table[gw]
+            
+            dots.selectAll("circles")
+                .data(games)
+                .enter()
+                .append("circle")
+                .attr("cx", xScale(gw + 1))
+                .attr("cy", d => yScale(d.place))
+                .attr("r", 7)
+                .attr("class", d => d.team_abbr.toLowerCase())
+                .append("svg:title")
+                .text(d => d.team_name);
+        }
+    }   
 }
