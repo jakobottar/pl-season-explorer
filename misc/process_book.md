@@ -45,6 +45,10 @@ One wrinkle we came across midway through the project is that the footystats dat
 
 ## Design Evolution
 
+So far, we are sticking mostly to our original designs, apart from the game detail view for the reasons mentioned above. The season summary chart is still a bar chart, and the game table is still an adjacency matrix with a diverging color scale for margin of victory.  The final aesthetics have yet to be finalized, but the major components and content is there in thee two views.
+
+The bump chart is also progressing along well, and should be finished soon. After this is done, we will work on interactivity between the three charts and a draft of the game detail view (both hopefully done in a draft form by next Friday).
+
 ## Implementation
 
 ## Evaluation
