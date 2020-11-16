@@ -1,6 +1,5 @@
 Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).then(data => {
 
-    console.log(data);
     // No team selected by default
     this.activeTeam = null;
 
@@ -24,13 +23,14 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
         that.activeTeam = teamID;
         if (teamID === null) {
             finalSeasonChart.clearHighlight();
-            // bumpChart.clearHighlight();
+            gameTable.clearHighlight();
+            bumpChart.clearHighlight();
             that.activeTeam = null;
         } else {
             that.activeTeam = teamID;
             finalSeasonChart.updateHighlightClick(teamID);
             gameTable.updateHighlightClick(teamID);
-            // bumpChart.updateHighlightClick(teamID);
+            bumpChart.updateHighlightClick(teamID);
         }
        
     }

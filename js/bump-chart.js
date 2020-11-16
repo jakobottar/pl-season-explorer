@@ -166,5 +166,23 @@ class BumpChart {
                 .append("svg:title")
                 .text(d => d.team_name);
         }
-    }   
+    }
+    updateHighlightClick(activeTeam) {
+		this.clearHighlight();
+		// highlight rects
+        // let bumpTeams = d3.select('#bump-chart').selectAll('rect')
+		// 	.filter(b => b.team === activeTeam)
+		// 	.classed('selected-team', true);
+        // let hiddenBumpTeams = d3.select('#bump-chart').selectAll('rect')
+        //     .filter(b => b.team !== activeTeam)
+        //     .classed('hidden', true)
+
+	}
+
+	clearHighlight() {
+ 		// d3.select('#bump-chart').selectAll('.selected-team')
+		// 		.classed('selected-team', false);
+		// d3.select('#bump-chart').selectAll('.hidden')
+        //     .classed('hidden', false);
+	}
 }

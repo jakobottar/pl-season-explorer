@@ -66,4 +66,22 @@ class GameTable {
     	return [xPos, yPos];
     }
 
+    updateHighlightClick(activeTeam) {
+		this.clearHighlight();
+		// highlight rects
+        // let seasonTeamRects = d3.select('#game-table').selectAll('rect')
+		// 	.filter(b => b.team === activeTeam)
+		// 	.classed('selected-team', true);
+        // let hiddenRects = d3.select('#game-table').selectAll('rect')
+        //     .filter(b => b.team !== activeTeam)
+        //     .classed('hidden', true)
+
+	}
+
+	clearHighlight() {
+ 		// d3.select('#game-table').selectAll('.selected-team')
+		// 		.classed('selected-team', false);
+		// d3.select('#game-table').selectAll('.hidden')
+        //     .classed('hidden', false);
+	}
 }
