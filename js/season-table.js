@@ -12,19 +12,39 @@ class SeasonTable {
         this.drawChart();
     }
 
-    drawChart() {
+	drawChart() {
     	let svgGroup = d3.select("#season-chart").append("svg").attr("id","season-chart-svg");
 
     	let totalPoints = this.calcTotalPoints();
 
     	let xScale = d3.scaleLinear().domain([0,d3.max(totalPoints, d => d.points)]).range([0, this.width]);
 
-        let barGroups = svgGroup.selectAll("g").data(totalPoints).join("g");
+		let barGroups = svgGroup.selectAll("g").enter().data(totalPoints).join("g");
+		
         barGroups.attr("transform", (d, i) => "translate(0, " + (this.height * i / (totalPoints.length + 1) + this.margin.top) + ")");
         let teamLabels = barGroups.append("text").text(d => d.team).classed("season-summary-label",true).attr("transform", "translate(0, " + 6 + ")")
 
-        let rects = barGroups.append("rect").attr("transform", d => "translate(" + this.margin.left + ", 0)");
-        rects.attr("x", 0).attr("y", 0).attr("width", d => xScale(d.points)).attr("height", 5);
+		let rects = barGroups.append("rect").attr("transform", d => "translate(" + this.margin.left + ", 0)")
+			.attr("x", 0)
+			.attr("y", 0)
+			.attr("width", d => xScale(d.points))
+			.attr("height", 12)
+			.on("mouseover", (event, d, i) => {
+				d3.select("#tooltip")
+					.transition()
+					.duration(200)
+					.style("opacity", 0.9);
+				d3.select("#tooltip")
+					.html(tooltipRender(d) + "<br/>")
+					.style("left", event.pageX + 5 + "px")
+					.style("top", event.pageY - 28 + "px");
+			})
+			.on("mouseout", function (event, d, i) {
+				d3.select("#tooltip")
+					.transition()
+					.duration(500)
+					.style("opacity", 0);
+			});
         rects.attr("class", d => "season-summary-rect " + d.team.toLowerCase());
 
         svgGroup.append("text").text("End-of-season points").attr("x", 190).attr("y", this.margin.top - 60).classed("axis-label",true);
@@ -56,5 +76,4 @@ class SeasonTable {
 
     	return pointTotals;
     }
-
 }

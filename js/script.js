@@ -1,6 +1,7 @@
 Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).then(data => {
 
     console.log(data);
+    
 
     let seasonData = data[0];
     window.teamData = data[1]; // Contains data such as team names, abbreviations, colors, and logos. Useful across entire project, so using global variable
@@ -16,6 +17,14 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
     	// This will update the team selected (e.g. if we want to highlight the line from a specific team on both the bump chart and the final season chart at the same time)
     }
 
+    let wrapperDiv = d3
+    .select(".wrapper");
+
+    wrapperDiv
+        .append("div")
+        .attr("id", "tooltip")
+        .style("opacity", 0);
+
     let bumpChart = new BumpChart(seasonData, updateGame, updateTeam);
     let finalSesaonChart = new SeasonTable(seasonData, updateTeam);
     let gameTable = new GameTable(seasonData, updateGame, updateTeam);
@@ -26,3 +35,14 @@ async function loadData(filename) {
     let data = await d3.csv(filename);
     return data;
 }
+
+/**
+ * Returns html that can be used to render the tooltip.
+ * @param data
+ * @returns {string}
+ */
+function tooltipRender(data) {
+		let text = "<span class='tooltiptext'>Team: " + data.team + "<br>Points: " + data.points + "</span>";
+		return text;
+	}
+

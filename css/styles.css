@@ -1,133 +1,145 @@
 * {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* Layout */
 
 .header-wrapper {
-	width: 1500px;
-	height: 120px;
+  width: 1500px;
+  height: 120px;
 }
 
 #header {
-	height: 50px;
+  height: 50px;
 }
 
 #description {
-	height: 70px;
+  height: 70px;
 }
 
 .wrapper {
-	width: 1500px;
-	height: 1100px;
+  width: 1500px;
+  height: 1100px;
 }
 
 #controls {
-	position: relative;
-	width: 1500px;
-	height: 100px;
+  position: relative;
+  width: 1500px;
+  height: 100px;
 }
 
 #bump-chart {
-	position: relative;
-	width: 1000px;
-	float: left;
-	height: 500px;
-	display: inline-block;
+  position: relative;
+  width: 1000px;
+  float: left;
+  height: 500px;
+  display: inline-block;
 }
 
 #bump-chart svg {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #bump-chart line {
-	stroke-width: 2;
+  stroke-width: 2;
 }
 
 #game-table {
-	position: relative;
-	width: 1000px;
-	height: 500px;
-	float: left;
-	display: inline-block;
+  position: relative;
+  width: 1000px;
+  height: 500px;
+  float: left;
 }
 
 #season-chart {
-	position: relative;
-	width: 500px;
-	height: 1000px;
-	display: inline-block;
+  position: relative;
+  width: 500px;
+  height: 1000px;
+  display: inline-block;
 }
 
 #game-detail {
-	position: absolute;
-	width: 1500px;
-	height: 1100px;
-	display: none;
-	left: 0px;
-	top: 120px;
+  position: absolute;
+  width: 1500px;
+  height: 1100px;
+  display: none;
+  left: 0px;
+  top: 120px;
 }
 
 /* Header */
 
 h1 {
-	text-align: center;
+  text-align: center;
 }
 
 .summary-text {
-	text-align: center;
+  text-align: center;
 }
 
 /* Axis labels */
 .axis-label {
-	font-size: 10pt;
-	text-align: center;
+  font-size: 10pt;
+  text-align: center;
 }
 
 /* Season summary chart */
 
 #season-chart-svg {
-	width: 480px;
-	height: 980px;
-	padding: 10px;
+  width: 480px;
+  height: 980px;
+  padding: 10px;
 }
 
 .season-summary-rect {
-	stroke-width: 1px;
-	rx: 2px;
+  stroke-width: 1px;
+  rx: 2px;
 }
 
 .season-summary-label {
-	font-size: 8pt;
-	text-align: left;
+  font-size: 8pt;
+  text-align: left;
 }
 
 /* Game summary chart */
 
 #game-table-svg {
-	width: 980px;
-	height: 480px;
-	padding: 10px;
+  width: 980px;
+  height: 480px;
+  padding: 10px;
 }
 
 .game-rect {
-	stroke-width: 1px;
-	stroke: lightgray;
+  stroke-width: 1px;
+  stroke: lightgray;
 }
 
 .game-text {
-	font-size: 8pt;
-	text-align: center;
+  font-size: 8pt;
+  text-align: center;
 }
 
 .game-header-text {
-	font-size: 8pt;
-	text-align: center;
+  font-size: 8pt;
+  text-align: center;
 }
 
 .game-header-rect {
-	stroke-width: 2px;
-	opacity: 70%;
-	rx: 4px;
+  stroke-width: 2px;
+  opacity: 70%;
+  rx: 4px;
+}
+
+#tooltip {
+  position: absolute;
+  text-align: left;
+  min-width: 70px;
+  min-height: 30px;
+  font: 12px sans-serif;
+  padding: 3px;
+  background: white;
+  stroke: gray;
+  border-radius: 3px;
+  pointer-events: none;
 }
