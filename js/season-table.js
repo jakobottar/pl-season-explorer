@@ -13,6 +13,8 @@ class SeasonTable {
     }
 
 	drawChart() {
+		let that = this;
+
     	let svgGroup = d3.select("#season-chart").append("svg").attr("id","season-chart-svg");
 
     	let totalPoints = this.calcTotalPoints();
@@ -28,7 +30,10 @@ class SeasonTable {
 			.attr("x", 0)
 			.attr("y", 0)
 			.attr("width", d => xScale(d.points))
-			.attr("height", 12)
+			.attr("height", 12);
+
+		// Mouseover for rects
+		rects
 			.on("mouseover", (event, d, i) => {
 				d3.select("#tooltip")
 					.transition()
@@ -38,18 +43,36 @@ class SeasonTable {
 					.html(tooltipRender(d) + "<br/>")
 					.style("left", event.pageX + 5 + "px")
 					.style("top", event.pageY - 28 + "px");
-			})
+			});
+		
+		// Mouseout for rects
+		rects
 			.on("mouseout", function (event, d, i) {
 				d3.select("#tooltip")
 					.transition()
 					.duration(500)
 					.style("opacity", 0);
 			});
+		
+		// Click function for rect selection
+        rects.on('click', (event, d) => {
+			console.log("event: ", event);
+			console.log("d: ", d);
+
+			let teamID = d.team;
+            that.clearHighlight();
+			that.updateTeam(teamID);
+
+			if (this.activeTeam) {
+            	that.updateHighlightClick(activeTeam);
+        	}
+        });
         rects.attr("class", d => "season-summary-rect " + d.team.toLowerCase());
 
         svgGroup.append("text").text("End-of-season points").attr("x", 190).attr("y", this.margin.top - 60).classed("axis-label",true);
     	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 50) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
-    }
+	}
+	
 
     calcTotalPoints() {
 
@@ -75,5 +98,24 @@ class SeasonTable {
     	}
 
     	return pointTotals;
-    }
+	}
+
+	updateHighlightClick(activeTeam) {
+		this.clearHighlight();
+		// highlight rects
+        let rectTeam = d3.select('#season-chart').selectAll('rect')
+			.filter(b => b.team === activeTeam)
+			.classed('selected-team', true);
+        let hiddenRects = d3.select('#season-chart').selectAll('rect')
+            .filter(b => b.team !== activeTeam)
+            .classed('hidden', true)
+
+	}
+
+	clearHighlight() {
+ 		d3.select('#season-chart').selectAll('.selected-team')
+				.classed('selected-team', false);
+		d3.select('#season-chart').selectAll('.hidden')
+            .classed('hidden', false);
+	}
 }
