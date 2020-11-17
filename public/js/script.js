@@ -5,17 +5,10 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
 
     let that = this;
     let seasonData = data[0];
-    window.teamData = data[1]; // Contains data such as team names, abbreviations, colors, and logos. Useful across entire project, so using global variable
+    window.teamData = data[1]; // Contains data such as team names, abbreviations, and logos. Useful across entire project, so using global variable
 
-    function updateGame(gamefile) {
-    	loadData(gamefile).then(gameData => {
-            // Call any methods that need to be done using the data for the specific game (e.g. updating the game data shown in the game detail panel)
-            // bumpChart.updateHighlightClick();
-            // finalSeasonChart.updateHighlightClick();
-            // gameTable.updateHighlightClick();
-            // gameDetail.updateHighlightClick();
-    	});
-    	// This function will update which game is selected fordetailed viewing on the charts. Also loads the data for the selected game into memory. Call methods in other classes here.
+    function updateGame(gameID) {
+        gameDetail.showGame(gameID);
     }
 
     function updateTeam(teamID) {
@@ -48,7 +41,7 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
     let bumpChart = new BumpChart(seasonData, updateGame, updateTeam);
     let finalSeasonChart = new SeasonTable(seasonData, updateTeam);
     let gameTable = new GameTable(seasonData, updateGame, updateTeam);
-    let gameDetail = new GameDetail(updateGame);
+    let gameDetail = new GameDetail(seasonData, updateGame);
 
     // Clears a finalSeasonChart selection by listening for a click
     var seasonChartElement = document.getElementById('season-chart');
