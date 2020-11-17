@@ -45,6 +45,8 @@ class GameTable {
             yHeaderGroup.append("text").attr("x", 10).attr("y", this.height / teams.length / 1.5).text(teams[i]).classed("game-header-text", true);
         }
 
+        cellGroups.on("click", (event, d, i) => that.updateGame(d.game_id));
+
     }
 
     determineTeams() {

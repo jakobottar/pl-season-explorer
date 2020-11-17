@@ -55,17 +55,17 @@
 #season-chart {
   position: relative;
   width: 500px;
-  height: 1000px;
+  height: 600px;
   display: inline-block;
 }
 
 #game-detail {
-  position: absolute;
-  width: 1500px;
-  height: 1100px;
-  display: none;
-  left: 0px;
-  top: 120px;
+  position: relative;
+  width: 500px;
+  height: 400px;
+  top: -405px;
+  display: inline-block;
+  float: right;
 }
 
 /* Header */
@@ -152,4 +152,48 @@ rect.selected-team {
 
 rect.hidden {
   opacity: 0.2;
+}
+
+/* Game detail */
+
+.game-header {
+	text-align: center;
+	font-size: 14pt;
+  height: 20px;
+}
+
+.game-stats {
+  text-align: center;
+  font-size: 10pt;
+  height: 15px;
+}
+
+.event-text {
+  text-align: center;
+  font-size: 10pt;
+  height: 15px;
+}
+
+.detail-svg {
+  position: relative;
+  padding: 10px;
+  width: 480px;
+  height: 220px;
+}
+
+.half-line {
+  stroke: black;
+  stroke-width: 2px;
+}
+
+.home {
+  stroke: black;
+  stroke-width: 1px;
+  fill: royalblue;
+}
+
+.away {
+  stroke: black;
+  stroke-width: 1px;
+  fill: lightsalmon;
 }
