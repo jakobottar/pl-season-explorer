@@ -131,6 +131,19 @@ h1 {
   rx: 4px;
 }
 
+.self-match-rect {
+  fill: gray;
+}
+
+.selected-game {
+  stroke-width: 3px;
+  stroke: black;
+}
+
+.game-table-axis-label {
+  font-size: 16px;
+}
+
 #tooltip {
   position: absolute;
   text-align: left;
@@ -186,14 +199,10 @@ rect.hidden {
   stroke-width: 2px;
 }
 
-.home {
-  stroke: black;
-  stroke-width: 1px;
-  fill: royalblue;
+.goal {
+  stroke-width: 2px;
 }
 
-.away {
-  stroke: black;
-  stroke-width: 1px;
-  fill: lightsalmon;
+.card {
+  stroke-width: 2px;
 }
