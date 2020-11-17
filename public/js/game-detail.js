@@ -1,16 +1,91 @@
 /** Class implementing the game detail view. */
 class GameDetail {
 
-    constructor(updateGame) {
+    constructor(data, updateGame) {
+        this.data = data;
         this.updateGame = updateGame;
-        // We need to figure out the best way to load in data for individual games when necessary.
-        // Should it be done here, or in the main script.js file? Currently I've included a skeletal code for it in the main file.
-        // How are we going to get that data to here? Do we want to create a new GameDetail each time we load new data in,
-        // or do we want to just change the in a single GameDetail object?
+        this.drawDiv();
     }
 
     drawDiv() {
-        // Draw the div that will superimpose on the screen with the game data (the div will be present in the main page HTML, but hidden)
+
+        let firstHalfScale = d3.scaleLinear().domain([0, 45]).range([10, 470]);
+        let secondHalfScale = d3.scaleLinear().domain([45, 90]).range([10, 470]);
+
+        d3.select("#game-detail").append("p").classed("game-header", true);
+        d3.select("#game-detail").append("p").classed("game-stats", true);
+        let svgGroup = d3.select("#game-detail").append("svg").classed("detail-svg",true);//.style("display", "none");
+        svgGroup.append("g").attr("id", "firstHalfAxis").attr("transform", "translate(0, 50)").classed("axis", true).call(d3.axisBottom().scale(firstHalfScale));
+        svgGroup.append("g").attr("id", "secondHalfAxis").attr("transform", "translate(0, 150)").classed("axis", true).call(d3.axisBottom().scale(secondHalfScale));
+    }
+
+    showGame(gameID) {
+        let matchData = this.data.find(d => d.game_id === gameID);
+        let svgGroup = d3.select(".detail-svg")
+        let firstHalfScale = d3.scaleLinear().domain([0, 45]).range([10, 470]);
+        let secondHalfScale = d3.scaleLinear().domain([45, 90]).range([10, 470]);
+
+        let [goals, reds] = this.getGameEvents(matchData);
+        console.log(gameID);
+        console.log(goals);
+        console.log(reds);
+
+        d3.select(".game-header").text(matchData.home_team_name + " " + matchData.home_team_goal_count + "\u2013" + matchData.away_team_goal_count + " " + matchData.away_team_name);
+        d3.select(".game-stats").text("Week " + matchData.gameweek + " \u2014 " + "Attendance: " + matchData.attendance);
+
+        let circles = svgGroup.selectAll("circle").data(goals).join("circle").attr("class", d => d.team).attr("r", 7);
+        circles.attr("cx", d => d.half === 1 ? firstHalfScale(d.minute.substring(0, 2)) : secondHalfScale(d.minute.substring(0, 2))).attr("cy", d => d.half === 1 ? 35 : 135);
+        circles.on("mouseover", (event, d) => d3.select("#game-detail").append("p").classed("event-text", true).text(d.team.substring(0,1).toUpperCase() + d.team.substring(1) + " goal! " + d.minute + (d.minute.substring(2,3) === "'" ? " " : "' ") + d.player));
+        circles.on("mouseout", (event, d) => d3.selectAll(".event-text").remove());
+
+        let rects = svgGroup.selectAll("rect").data(reds).join("rect").attr("class", d => d.team).attr("width", 10).attr("height", 14);
+        rects.attr("x", d => d.half === 1 ? firstHalfScale(d.minute.substring(0, 2)) : secondHalfScale(d.minute.substring(0, 2))).attr("y", d => d.half === 1 ? 28 : 128);
+        rects.on("mouseover", (event, d) => d3.select("#game-detail").append("p").classed("event-text", true).text(d.team.substring(0,1).toUpperCase() + d.team.substring(1) + " red card! " + d.minute + (d.minute.substring(2,3) === "'" ? " " : "' ") + d.player));
+        rects.on("mouseout", (event, d) => d3.selectAll(".event-text").remove());
+
+    }
+
+    clearGame() {
+        d3.selectAll(".home").remove();
+        d3.selectAll(".away").remove();
+        d3.select(".game-header").text("");
+        d3.select(".game-stats").text("");
+        d3.select("#game-detail").style("display", "none");
+    }
+
+    getGameEvents(matchData) {
+
+        let goals = [];
+        let reds = [];
+
+        let calcHalf = function(minute) {
+            let half = 0;
+            minute.substring(0, 2) < 46 ? half = 1 : half = 2;
+            return half;
+        }
+
+        for (let i = 0; i < matchData.home_team_goal_timings.split(",").length; i++) {
+            if (matchData.home_team_goal_timings !== "") {
+                goals.push({team: "home", half: calcHalf(matchData.home_team_goal_timings.split(",")[i]), minute: matchData.home_team_goal_timings.split(",")[i], player: matchData.home_goal_scorers.split(",")[i]});
+            }
+        }
+        for (let i = 0; i < matchData.away_team_goal_timings.split(",").length; i++) {
+            if (matchData.away_team_goal_timings !== "") {
+                goals.push({team: "away", half: calcHalf(matchData.away_team_goal_timings.split(",")[i]), minute: matchData.away_team_goal_timings.split(",")[i], player: matchData.away_goal_scorers.split(",")[i]});
+            }
+        }
+        for (let i = 0; i < matchData.home_red_card_minutes.split(",").length; i++) {
+            if (matchData.home_red_card_minutes !== "") {
+                reds.push({team: "home", half: calcHalf(matchData.home_red_card_minutes.split(",")[i]), minute: matchData.home_red_card_minutes.split(",")[i], player: matchData.home_red_cards.split(",")[i]});
+            }
+        }
+        for (let i = 0; i < matchData.away_red_card_minutes.split(",").length; i++) {
+            if (matchData.away_red_card_minutes !== "") {
+                reds.push({team: "away", half: calcHalf(matchData.away_red_card_minutes.split(",")[i]), minute: matchData.away_red_card_minutes.split(",")[i], player: matchData.away_red_cards.split(",")[i]});
+            }
+        }
+
+        return [goals, reds];
     }
 
 }
