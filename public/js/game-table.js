@@ -59,8 +59,7 @@ class GameTable {
         svgGroup.append("text").attr("x", 485).attr("y", 20).text("Away team").classed("game-table-axis-label", true);
         svgGroup.append("text").attr("x", 0).attr("y", 200).attr("transform", "rotate(270,60,240)").text("Home team").classed("game-table-axis-label", true);
 
-        cellGroups.on("click", (event, d, i) => that.updateGame(d.game_id));
-
+        cellGroups.on("click", (event, d) => that.updateGame(d.game_id));
     }
 
     determineTeams() {
@@ -91,22 +90,11 @@ class GameTable {
         }
     }
 
-    updateHighlightClick(activeTeam) {
-		this.clearHighlight();
-		// highlight rects
-        // let seasonTeamRects = d3.select('#game-table').selectAll('rect')
-		// 	.filter(b => b.team === activeTeam)
-		// 	.classed('selected-team', true);
-        // let hiddenRects = d3.select('#game-table').selectAll('rect')
-        //     .filter(b => b.team !== activeTeam)
-        //     .classed('hidden', true)
+    selectTeam(teamID) {
+        // Add code here that will deselect all teams if teamID is null, or select a team if teamID is not null
+    }
 
-	}
-
-	clearHighlight() {
- 		// d3.select('#game-table').selectAll('.selected-team')
-		// 		.classed('selected-team', false);
-		// d3.select('#game-table').selectAll('.hidden')
-        //     .classed('hidden', false);
-	}
+    clearTeam(teamID) {
+        // Deselect all teams
+    }
 }
