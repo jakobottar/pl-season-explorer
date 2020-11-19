@@ -167,22 +167,13 @@ class BumpChart {
                 .text(d => d.team_name);
         }
     }
-    updateHighlightClick(activeTeam) {
-		this.clearHighlight();
-		// highlight rects
-        // let bumpTeams = d3.select('#bump-chart').selectAll('rect')
-		// 	.filter(b => b.team === activeTeam)
-		// 	.classed('selected-team', true);
-        // let hiddenBumpTeams = d3.select('#bump-chart').selectAll('rect')
-        //     .filter(b => b.team !== activeTeam)
-        //     .classed('hidden', true)
+    selectTeam(teamID) {
+		this.clearTeam();
+        // Select a team to highlight it
 
 	}
 
-	clearHighlight() {
- 		// d3.select('#bump-chart').selectAll('.selected-team')
-		// 		.classed('selected-team', false);
-		// d3.select('#bump-chart').selectAll('.hidden')
-        //     .classed('hidden', false);
+	clearTeam() {
+        // Clear all highlights
 	}
 }
