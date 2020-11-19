@@ -68,6 +68,19 @@
   float: right;
 }
 
+.tooltip {
+  position: absolute;
+  text-align: left;
+  min-width: 70px;
+  min-height: 30px;
+  font: 12px sans-serif;
+  padding: 3px;
+  background: white;
+  stroke: gray;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
 /* Header */
 
 h1 {
@@ -144,29 +157,6 @@ h1 {
   font-size: 16px;
 }
 
-#tooltip {
-  position: absolute;
-  text-align: left;
-  min-width: 70px;
-  min-height: 30px;
-  font: 12px sans-serif;
-  padding: 3px;
-  background: white;
-  stroke: gray;
-  border-radius: 3px;
-  pointer-events: none;
-}
-
-rect.selected-team {
-  stroke-width: 3px;
-  stroke: #000000;
-  opacity: 1;
-}
-
-rect.hidden {
-  opacity: 0.2;
-}
-
 /* Game detail */
 
 .game-header {
@@ -199,10 +189,26 @@ rect.hidden {
   stroke-width: 2px;
 }
 
+.half-text {
+  font-size: 8pt;
+}
+
 .goal {
   stroke-width: 2px;
 }
 
 .card {
   stroke-width: 2px;
+}
+
+/* Things common to all views */
+
+.grayed {
+  opacity: 0.2;
+}
+
+.selected-team {
+  stroke-width: 3px;
+  stroke: #000000;
+  opacity: 1;
 }
