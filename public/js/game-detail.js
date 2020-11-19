@@ -16,7 +16,9 @@ class GameDetail {
         d3.select("#game-detail").append("p").classed("game-stats", true);
         let svgGroup = d3.select("#game-detail").append("svg").classed("detail-svg",true).style("display", "none");
         svgGroup.append("g").attr("id", "firstHalfAxis").attr("transform", "translate(0, 50)").classed("axis", true).call(d3.axisBottom().scale(firstHalfScale));
+        svgGroup.append("text").attr("transform", "translate(220, 90)").text("First half").classed("half-text", true);
         svgGroup.append("g").attr("id", "secondHalfAxis").attr("transform", "translate(0, 150)").classed("axis", true).call(d3.axisBottom().scale(secondHalfScale));
+        svgGroup.append("text").attr("transform", "translate(213, 190)").text("Second half").classed("half-text", true);
     }
 
     showGame(gameID) {
