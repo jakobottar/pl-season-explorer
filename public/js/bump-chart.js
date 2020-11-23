@@ -25,9 +25,10 @@ class BumpChart {
         this.drawLines(table);
         this.drawDots(table);
 
-
+        let that = this;
         let circles = d3.select("#bump-dots").selectAll("circle");
         circles.on("mouseover", (event, d) => {
+            // TODO: highlight team
             tooltip.text("");
             tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
             tooltip.style("left", (event.pageX + 5 - 10) + "px").style("top", (event.pageY - 28 - 200) + "px");
@@ -38,8 +39,10 @@ class BumpChart {
             tooltip.append("span").classed("tooltip-text", true).text("Place: " + d.place);
         });
         circles.on("mouseout", () => {
+            // TODO: clear team
             tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
         });
+        circles.on("click", (event, d) => that.updateGame(d.game_id))
     }
     
     makeTable(){
@@ -79,14 +82,16 @@ class BumpChart {
                         "team_abbr": window.teamData.find(d => d.name_long === e.home_team_name).name_abbr,
                         "points": getPoints(e.home_team_goal_count, e.away_team_goal_count),
                         "gd": e.home_team_goal_count - e.away_team_goal_count,
-                        "gs": +e.home_team_goal_count
+                        "gs": +e.home_team_goal_count,
+                        "game_id": e.game_id
                     });
                     col.push({
                         "team_name": e.away_team_name,
                         "team_abbr": window.teamData.find(d => d.name_long === e.away_team_name).name_abbr,
                         "points": getPoints(e.away_team_goal_count, e.home_team_goal_count),
                         "gd": e.away_team_goal_count - e.home_team_goal_count,
-                        "gs": +e.away_team_goal_count
+                        "gs": +e.away_team_goal_count,
+                        "game_id": e.game_id
                     });
                 });
 
@@ -101,6 +106,7 @@ class BumpChart {
                     home.points += getPoints(e.home_team_goal_count, e.away_team_goal_count);
                     home.gd += e.home_team_goal_count - e.away_team_goal_count;
                     home.gs += +e.home_team_goal_count;
+                    home.game_id = e.game_id;
                     home.prevPlace = home.place;
                     col.push(home);
 
@@ -108,6 +114,7 @@ class BumpChart {
                     away.points += getPoints(e.away_team_goal_count, e.home_team_goal_count);
                     away.gd += e.away_team_goal_count - e.home_team_goal_count;
                     away.gs += +e.away_team_goal_count;
+                    away.game_id = e.game_id;
                     away.prevPlace = away.place;
                     col.push(away);
                 });
@@ -140,7 +147,6 @@ class BumpChart {
                     .attr("x2", xScale(gw+1))
                     .attr("y1", d => yScale(d.prevPlace))
                     .attr("y2", d => yScale(d.place))
-                    .attr("class", d => d.team_abbr.toLowerCase())
         }
 
     }
@@ -163,6 +169,19 @@ class BumpChart {
                 .attr("r", 7)
                 .attr("class", d => d.team_abbr.toLowerCase());
         }
+    }
+
+    selectGame(gameID){
+        this.clearGames();
+
+        d3.selectAll('#bump-dots circle')
+            .filter((d) => gameID === d.game_id)
+            .classed('selected-game', true);
+    }
+
+    clearGames(){
+        d3.selectAll('#bump-dots circle')
+            .classed('selected-game', false);
     }
 
     selectTeam(teamIDs) {

@@ -11,10 +11,12 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
     function updateGame(gameID) {
         if (this.activeGame === gameID) {
             this.activeGame = null;
+            bumpChart.clearGames();
             gameDetail.clearGame();
             gameTable.selectGame(null);
         } else {
             this.activeGame = gameID;
+            bumpChart.selectGame(gameID);
             gameDetail.showGame(gameID);
             gameTable.selectGame(gameID);
         }

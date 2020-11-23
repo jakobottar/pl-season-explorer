@@ -43,6 +43,7 @@
 
 #bump-chart line {
   stroke-width: 2;
+  stroke: rgb(168, 168, 168);
 }
 
 #game-table {
