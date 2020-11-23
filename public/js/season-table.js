@@ -41,7 +41,7 @@ class SeasonTable {
 		});
 		
 		// Mouseout for rects
-		rects.on("mouseout", function () {
+		rects.on("mouseout", () => {
 			tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
 		});
 		
@@ -83,13 +83,13 @@ class SeasonTable {
     	return pointTotals;
 	}
 
-	selectTeam(teamID) {
-		this.clearTeam();
-        d3.select('#season-chart').selectAll('rect').filter(b => b.team === teamID).classed('selected-team', true);
-        d3.select('#season-chart').selectAll('rect').filter(b => b.team !== teamID).classed('grayed', true);
+	selectTeam(teamIDs) {
+		this.clearTeams();
+        d3.select('#season-chart').selectAll('rect').filter(b => teamIDs.includes(b.team)).classed('selected-team', true);
+        d3.select('#season-chart').selectAll('rect').filter(b => !teamIDs.includes(b.team)).classed('grayed', true);
 	}
 
-	clearTeam() {
+	clearTeams() {
  		d3.select('#season-chart').selectAll('.selected-team').classed('selected-team', false);
 		d3.select('#season-chart').selectAll('.grayed').classed('grayed', false);
 	}

@@ -101,11 +101,13 @@ class GameTable {
         }
     }
 
-    selectTeam(teamID) {
-        // Add code here that will deselect all teams if teamID is null, or select a team if teamID is not null
+    selectTeam(teamIDs) {
+        this.clearTeams();
+        // Add code here that will select the teams present in the array teamIDs
+        // Called when at a team is selected, and when a team is deselected and there are still other selected teams
     }
 
-    clearTeam(teamID) {
-        // Deselect all teams
+    clearTeams() {
+        // Deselect all teams. Called when all teams are deselected, and from selectTeam
     }
 }
