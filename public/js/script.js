@@ -1,7 +1,7 @@
 Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).then(data => {
 
-    // No team/game selected by default
-    this.activeTeam = null;
+    // No teams/game selected by default
+    this.activeTeams = [];
     this.activeGame = null;
 
     let that = this;
@@ -21,16 +21,22 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
     }
 
     function updateTeam(teamID) {
-        if (this.activeTeam === teamID) {
-            this.activeTeam = null;
-            finalSeasonChart.clearTeam();
-            gameTable.clearTeam();
-            bumpChart.clearTeam();
+        if (that.activeTeams.includes(teamID)) {
+            that.activeTeams.splice(that.activeTeams.indexOf(teamID), 1);
+            if (that.activeTeams.length === 0) {
+                finalSeasonChart.clearTeams();
+                gameTable.clearTeams();
+                bumpChart.clearTeams();
+            } else {
+                finalSeasonChart.selectTeam(that.activeTeams);
+                gameTable.selectTeam(that.activeTeams);
+                bumpChart.selectTeam(that.activeTeams);
+            }
         } else {
-            this.activeTeam = teamID;
-            finalSeasonChart.selectTeam(teamID);
-            gameTable.selectTeam(teamID);
-            bumpChart.selectTeam(teamID);
+            that.activeTeams.push(teamID);
+            finalSeasonChart.selectTeam(that.activeTeams);
+            gameTable.selectTeam(that.activeTeams);
+            bumpChart.selectTeam(that.activeTeams);
         }
     }
 
