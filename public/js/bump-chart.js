@@ -12,19 +12,34 @@ class BumpChart {
         this.svg;
         this.size;
 
-        this.drawChart(this.xAxis, this.yAxis)
+        this.drawChart(this.xAxis, this.yAxis);
     }
 
     drawChart() {
         let table = this.makeTable();
-        console.log(table)
+        let tooltip = d3.select("#bump-chart").append("div").attr("class", "tooltip").style("display", "none").style("opacity", 0);
 
-        this.size = d3.select('#bump-chart').node().getBoundingClientRect()
-        this.svg = d3.select('#bump-chart')
-            .append("svg")
+        this.size = d3.select('#bump-chart').node().getBoundingClientRect();
+        this.svg = d3.select('#bump-chart').append("svg");
 
-        this.drawLines(table)
-        this.drawDots(table)
+        this.drawLines(table);
+        this.drawDots(table);
+
+
+        let circles = d3.select("#bump-dots").selectAll("circle");
+        circles.on("mouseover", (event, d) => {
+            tooltip.text("");
+            tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
+            tooltip.style("left", (event.pageX + 5 - 10) + "px").style("top", (event.pageY - 28 - 200) + "px");
+            tooltip.append("span").classed("tooltip-text", true).text(d.team_name);
+            tooltip.append("br");
+            tooltip.append("span").classed("tooltip-text", true).text("Points: " + d.points);
+            tooltip.append("br");
+            tooltip.append("span").classed("tooltip-text", true).text("Place: " + d.place);
+        });
+        circles.on("mouseout", () => {
+            tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
+        });
     }
     
     makeTable(){
@@ -107,20 +122,13 @@ class BumpChart {
     }
 
     drawLines(table){
-        let padding = 20
+        let padding = 20;
 
-        let xScale = d3.scaleLinear()
-            .domain([1, 38])
-            .range([padding, this.size.width - padding])
+        let xScale = d3.scaleLinear().domain([1, 38]).range([padding, this.size.width - padding]);
 
-        let yScale = d3.scaleLinear()
-            .domain([1, 20])
-            .range([padding, this.size.height - padding])
+        let yScale = d3.scaleLinear().domain([1, 20]).range([padding, this.size.height - padding]);
 
-        let lines = this.svg
-            .append('g')
-            .attr('id', 'bump-lines')
-            .selectAll('line')
+        let lines = this.svg.append('g').attr('id', 'bump-lines').selectAll('line');
             
         for(let gw = 1; gw < 38; gw++){
                 let games = table[gw]
@@ -138,35 +146,25 @@ class BumpChart {
     }
 
     drawDots(table){
-        let padding = 20
+        let padding = 20;
 
-        let xScale = d3.scaleLinear()
-            .domain([1, 38])
-            .range([padding, this.size.width - padding])
+        let xScale = d3.scaleLinear().domain([1, 38]).range([padding, this.size.width - padding])
 
-        let yScale = d3.scaleLinear()
-            .domain([1, 20])
-            .range([padding, this.size.height - padding])
+        let yScale = d3.scaleLinear().domain([1, 20]).range([padding, this.size.height - padding])
 
-        let dots = this.svg
-            .append('g')
-            .attr('id', 'bump-dots')
-            .selectAll("circle")
+        let dots = this.svg.append('g').attr('id', 'bump-dots').selectAll("circle");
 
         for(let gw = 0; gw < 38; gw++){
-            let games = table[gw]
+            let games = table[gw];
             
-            dots.data(games)
-                .enter()
-                .append("circle")
+            dots.data(games).enter().append("circle")
                 .attr("cx", xScale(gw + 1))
                 .attr("cy", d => yScale(d.place))
                 .attr("r", 7)
-                .attr("class", d => d.team_abbr.toLowerCase())
-                .append("svg:title")
-                .text(d => d.team_name);
+                .attr("class", d => d.team_abbr.toLowerCase());
         }
     }
+
     selectTeam(teamID) {
 		this.clearTeam();
         // Select a team to highlight it

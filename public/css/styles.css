@@ -72,10 +72,10 @@
   position: absolute;
   text-align: left;
   min-width: 70px;
-  min-height: 30px;
+  min-height: 10px;
   font: 12px sans-serif;
   padding: 3px;
-  background: white;
+  background: #EEEEEE;
   stroke: gray;
   border-radius: 3px;
   pointer-events: none;
