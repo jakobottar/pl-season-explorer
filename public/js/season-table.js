@@ -17,6 +17,7 @@ class SeasonTable {
 
     	let svgGroup = d3.select("#season-chart").append("svg").attr("id","season-chart-svg");
     	let tooltip = d3.select("#season-chart").append("div").attr("class", "tooltip").style("display", "none").style("opacity", 0);
+        let backgroundRect = svgGroup.append("rect").classed("season-chart-bgrect", true);
 
     	let totalPoints = this.calcTotalPoints();
 
@@ -29,6 +30,7 @@ class SeasonTable {
 
 		let rects = barGroups.append("rect").attr("transform", d => "translate(" + this.margin.left + ", 0)");
 		rects.attr("x", 0).attr("y", 0).attr("width", d => xScale(d.points)).attr("height", 12);
+        rects.attr("class", d => "season-summary-rect " + d.team.toLowerCase());
 
 		// Mouseover for rects
 		rects.on("mouseover", (event, d) => {
@@ -45,12 +47,9 @@ class SeasonTable {
 			tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
 		});
 		
-		// Click function for rect selection
-        rects.on("click", (event, d) => {
-			that.updateTeam(d.team);
-        });
-
-        rects.attr("class", d => "season-summary-rect " + d.team.toLowerCase());
+		// Click function for team selection
+        rects.on("click", (event, d) => that.updateTeam(d.team));
+        backgroundRect.on("click", () => that.updateTeam("none"));
 
         svgGroup.append("text").text("End-of-season points").attr("x", 190).attr("y", this.margin.top - 60).classed("axis-label",true);
     	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 50) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
@@ -85,12 +84,11 @@ class SeasonTable {
 
 	selectTeam(teamIDs) {
 		this.clearTeams();
-        d3.select('#season-chart').selectAll('rect').filter(b => teamIDs.includes(b.team)).classed('selected-team', true);
-        d3.select('#season-chart').selectAll('rect').filter(b => !teamIDs.includes(b.team)).classed('grayed', true);
+        d3.selectAll('.season-summary-rect').filter(b => teamIDs.includes(b.team)).classed('selected-team', true);
+        d3.selectAll('.season-summary-rect').filter(b => !teamIDs.includes(b.team)).classed('grayed', true);
 	}
 
 	clearTeams() {
- 		d3.select('#season-chart').selectAll('.selected-team').classed('selected-team', false);
-		d3.select('#season-chart').selectAll('.grayed').classed('grayed', false);
+ 		d3.selectAll('.season-summary-rect').classed('selected-team', false).classed('grayed', false);
 	}
 }
