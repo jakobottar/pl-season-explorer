@@ -103,11 +103,10 @@ class GameTable {
 
     selectTeam(teamIDs) {
         this.clearTeams();
-        // Add code here that will select the teams present in the array teamIDs
-        // Called when at a team is selected, and when a team is deselected and there are still other selected teams
+        d3.selectAll('.game-group').filter(d => !teamIDs.includes(window.teamData.find(e => e.name_long === d.home_team_name).name_abbr) && !teamIDs.includes(window.teamData.find(e => e.name_long === d.away_team_name).name_abbr)).classed('grayed', true);
     }
 
     clearTeams() {
-        // Deselect all teams. Called when all teams are deselected, and from selectTeam
+        d3.select('#game-table').selectAll('.grayed').classed('grayed', false);
     }
 }
