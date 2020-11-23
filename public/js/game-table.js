@@ -18,6 +18,8 @@ class GameTable {
     	let svgGroup = d3.select("#game-table").append("svg").attr("id","game-table-svg");
     	let that = this;
     	let teams = this.determineTeams();
+        let tooltip = d3.select("#game-table").append("div").attr("class", "tooltip").style("display", "none").style("opacity", 0);
+
 
     	let [maxMarginHomeWin, maxMarginAwayWin] = d3.extent(this.data, d => d.home_team_goal_count - d.away_team_goal_count);
     	let homeWinColorScale = d3.scaleLinear().domain([1, maxMarginHomeWin]).range(["white", "royalblue"]);
@@ -60,6 +62,15 @@ class GameTable {
         svgGroup.append("text").attr("x", 0).attr("y", 200).attr("transform", "rotate(270,60,240)").text("Home team").classed("game-table-axis-label", true);
 
         cellGroups.on("click", (event, d) => that.updateGame(d.game_id));
+        cellGroups.on("mouseover", (event, d) => {
+            tooltip.text("");
+            tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
+            tooltip.style("left", (event.pageX + 5 - 10) + "px").style("top", (event.pageY - 28 - 700) + "px");
+            tooltip.append("span").classed("tooltip-text", true).text(d.home_team_name + " " + d.home_team_goal_count + "\u2013" + d.away_team_goal_count + " " + d.away_team_name);
+        });
+        cellGroups.on("mouseout", () => {
+            tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
+        });
     }
 
     determineTeams() {
