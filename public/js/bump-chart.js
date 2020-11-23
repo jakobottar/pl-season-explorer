@@ -165,13 +165,13 @@ class BumpChart {
         }
     }
 
-    selectTeam(teamID) {
-		this.clearTeam();
-        // Select a team to highlight it
-
+    selectTeam(teamIDs) {
+		this.clearTeams();
+        // Add code here that will select the teams present in the array teamIDs
+        // Called when at a team is selected, and when a team is deselected and there are still other selected teams
 	}
 
-	clearTeam() {
-        // Clear all highlights
+	clearTeams() {
+        // Deselect all teams. Called when all teams are deselected, and from selectTeam
 	}
 }
