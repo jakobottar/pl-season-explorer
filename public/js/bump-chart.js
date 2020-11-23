@@ -42,7 +42,10 @@ class BumpChart {
             // TODO: clear team
             tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
         });
-        circles.on("click", (event, d) => that.updateGame(d.game_id))
+        circles.on("click", (event, d) => {
+            console.log(d);
+            that.updateGame(d.game_id);
+        })
     }
     
     makeTable(){
@@ -83,6 +86,7 @@ class BumpChart {
                         "points": getPoints(e.home_team_goal_count, e.away_team_goal_count),
                         "gd": e.home_team_goal_count - e.away_team_goal_count,
                         "gs": +e.home_team_goal_count,
+                        "p_of_max_points": getPoints(e.home_team_goal_count, e.away_team_goal_count) / 3,
                         "game_id": e.game_id
                     });
                     col.push({
@@ -91,6 +95,7 @@ class BumpChart {
                         "points": getPoints(e.away_team_goal_count, e.home_team_goal_count),
                         "gd": e.away_team_goal_count - e.home_team_goal_count,
                         "gs": +e.away_team_goal_count,
+                        "p_of_max_points": getPoints(e.away_team_goal_count, e.home_team_goal_count) / 3,
                         "game_id": e.game_id
                     });
                 });
@@ -106,6 +111,7 @@ class BumpChart {
                     home.points += getPoints(e.home_team_goal_count, e.away_team_goal_count);
                     home.gd += e.home_team_goal_count - e.away_team_goal_count;
                     home.gs += +e.home_team_goal_count;
+                    home.p_of_max_points = home.points / ((i+1)*3);
                     home.game_id = e.game_id;
                     home.prevPlace = home.place;
                     col.push(home);
@@ -114,6 +120,7 @@ class BumpChart {
                     away.points += getPoints(e.away_team_goal_count, e.home_team_goal_count);
                     away.gd += e.away_team_goal_count - e.home_team_goal_count;
                     away.gs += +e.away_team_goal_count;
+                    away.p_of_max_points = away.points / ((i+1)*3);
                     away.game_id = e.game_id;
                     away.prevPlace = away.place;
                     col.push(away);
