@@ -63,7 +63,6 @@
   position: relative;
   width: 500px;
   height: 400px;
-  top: -405px;
   display: inline-block;
   float: right;
 }
@@ -101,8 +100,14 @@ h1 {
 
 #season-chart-svg {
   width: 480px;
-  height: 980px;
+  height: 580px;
   padding: 10px;
+}
+
+.season-chart-bgrect {
+  width: 480px;
+  height: 580px;
+  opacity: 0;
 }
 
 .season-summary-rect {

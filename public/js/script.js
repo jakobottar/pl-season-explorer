@@ -21,23 +21,30 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
     }
 
     function updateTeam(teamID) {
-        if (that.activeTeams.includes(teamID)) {
-            that.activeTeams.splice(that.activeTeams.indexOf(teamID), 1);
-            if (that.activeTeams.length === 0) {
-                finalSeasonChart.clearTeams();
-                gameTable.clearTeams();
-                bumpChart.clearTeams();
-            } else {
-                finalSeasonChart.selectTeam(that.activeTeams);
-                gameTable.selectTeam(that.activeTeams);
-                bumpChart.selectTeam(that.activeTeams);
-            }
-        } else {
-            that.activeTeams.push(teamID);
-            finalSeasonChart.selectTeam(that.activeTeams);
-            gameTable.selectTeam(that.activeTeams);
-            bumpChart.selectTeam(that.activeTeams);
-        }
+    	if (teamID === "none") {
+    		that.activeTeams = [];
+        	finalSeasonChart.clearTeams();
+        	gameTable.clearTeams();
+        	bumpChart.clearTeams();
+    	} else {
+        	if (that.activeTeams.includes(teamID)) {
+        	    that.activeTeams.splice(that.activeTeams.indexOf(teamID), 1);
+        	    if (that.activeTeams.length === 0) {
+        	        finalSeasonChart.clearTeams();
+        	        gameTable.clearTeams();
+        	        bumpChart.clearTeams();
+        	    } else {
+        	        finalSeasonChart.selectTeam(that.activeTeams);
+        	        gameTable.selectTeam(that.activeTeams);
+        	        bumpChart.selectTeam(that.activeTeams);
+        	    }
+        	} else {
+        	    that.activeTeams.push(teamID);
+        	    finalSeasonChart.selectTeam(that.activeTeams);
+        	    gameTable.selectTeam(that.activeTeams);
+        	    bumpChart.selectTeam(that.activeTeams);
+        	}
+    	}
     }
 
     let bumpChart = new BumpChart(seasonData, updateGame, updateTeam);
