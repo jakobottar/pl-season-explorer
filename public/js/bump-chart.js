@@ -163,6 +163,15 @@ class BumpChart {
                 .attr("cy", d => yScale(d.place))
                 .attr("r", 7)
                 .attr("class", d => d.team_abbr.toLowerCase())
+                .style("stroke-width", 1)
+                .on("mouseover", (event, d) => {
+                    d3.selectAll("circle." + d.team_abbr.toLowerCase()).attr("r", 10).style("stroke-width", 3);
+                    d3.selectAll("line." + d.team_abbr.toLowerCase()).style("stroke-width", 5);
+                })
+                .on("mouseout", (event, d) => {
+                    d3.selectAll("circle." + d.team_abbr.toLowerCase()).attr("r", 7).style("stroke-width", 1);
+                    d3.selectAll("line." + d.team_abbr.toLowerCase()).style("stroke-width", 1);
+                })
                 .append("svg:title")
                 .text(d => d.team_name);
         }
