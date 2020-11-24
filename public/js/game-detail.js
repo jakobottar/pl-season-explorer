@@ -2,10 +2,11 @@
 class GameDetail {
 
     constructor(data, updateGame) {
-        this.data = data;
+        this.data;
         this.updateGame = updateGame;
-        this.drawDiv();
     }
+
+    setData(data){ this.data = data; }
 
     drawDiv() {
 
