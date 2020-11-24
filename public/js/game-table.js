@@ -1,17 +1,17 @@
 /** Class implementing the game summary table. */
 class GameTable {
 
-    constructor(data, updateGame, updateTeam) {
-        this.data = data;
+    constructor(updateGame, updateTeam) {
+        this.data;
         this.updateGame = updateGame;
         this.updateTeam = updateTeam;
 
         this.margin = { top: 60, right: 10, bottom: 10, left: 80 }
         this.width = 980 - this.margin.left - this.margin.right;
         this.height = 480 - this.margin.top - this.margin.bottom;
-
-        this.drawChart();
     }
+
+    setData(data){ this.data = data; }
 
     drawChart() {
 

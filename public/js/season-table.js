@@ -1,16 +1,16 @@
 /** Class implementing the season summary table view. */
 class SeasonTable {
 
-    constructor(data, updateTeam) {
-        this.data = data;
+    constructor(updateTeam) {
+		this.data;
         this.updateTeam = updateTeam;
 
         this.margin = { top: 70, right: 10, bottom: 10, left: 30 }
         this.width = 480 - this.margin.left - this.margin.right;
         this.height = 580 - this.margin.top - this.margin.bottom;
-
-        this.drawChart();
-    }
+	}
+	
+	setData(data) { this.data = data; }
 
 	drawChart() {
 		let that = this;

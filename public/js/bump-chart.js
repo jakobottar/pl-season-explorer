@@ -1,19 +1,16 @@
 /** Class implementing the bump chart. */
 class BumpChart {
 
-    constructor(data, updateGame, updateTeam) {
-        this.data = data;
+    constructor(updateGame, updateTeam) {
+        this.data;
         this.updateGame = updateGame;
         this.updateTeam = updateTeam;
 
-        this.xAxis = "week";
-        this.yAxis = "position";
-
         this.svg;
         this.size;
-
-        this.drawChart(this.xAxis, this.yAxis);
     }
+
+    setData(data) { this.data = data; }
 
     drawChart() {
         let table = this.makeTable();
@@ -137,6 +134,8 @@ class BumpChart {
 
     drawLines(table){
         let padding = 20;
+
+        console.log(document.getElementById('y-axis-select').value)
 
         let xScale = d3.scaleLinear().domain([1, 38]).range([padding, this.size.width - padding]);
 
