@@ -42,7 +42,7 @@ function updateTeam(teamID) {
         bumpChart.clearTeams();
     } else {
         if (activeTeams.includes(teamID)) {
-            activeTeams.splice(that.activeTeams.indexOf(teamID), 1);
+            activeTeams.splice(activeTeams.indexOf(teamID), 1);
             if (activeTeams.length === 0) {
                 finalSeasonChart.clearTeams();
                 gameTable.clearTeams();
@@ -53,7 +53,7 @@ function updateTeam(teamID) {
                 bumpChart.selectTeam(activeTeams);
             }
         } else {
-            that.activeTeams.push(teamID);
+            activeTeams.push(teamID);
             finalSeasonChart.selectTeam(activeTeams);
             gameTable.selectTeam(activeTeams);
             bumpChart.selectTeam(activeTeams);
