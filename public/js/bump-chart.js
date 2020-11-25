@@ -8,19 +8,24 @@ class BumpChart {
 
         this.svg;
         this.size;
+
+        this.table;
     }
 
     setData(data) { this.data = data; }
 
     drawChart() {
-        let table = this.makeTable();
+        this.table = this.makeTable();
         let tooltip = d3.select("#bump-chart").append("div").attr("class", "tooltip").style("display", "none").style("opacity", 0);
 
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
         this.svg = d3.select('#bump-chart').append("svg");
 
-        this.drawLines(table);
-        this.drawDots(table);
+        this.svg.append('g').attr('id', 'bump-lines')
+        this.svg.append('g').attr('id', 'bump-dots')
+
+        this.drawLines(this.table);
+        this.drawDots(this.table);
 
         let that = this;
         let circles = d3.select("#bump-dots").selectAll("circle");
@@ -84,7 +89,8 @@ class BumpChart {
                         "gd": e.home_team_goal_count - e.away_team_goal_count,
                         "gs": +e.home_team_goal_count,
                         "p_of_max_points": getPoints(e.home_team_goal_count, e.away_team_goal_count) / 3,
-                        "game_id": e.game_id
+                        "game_id": e.game_id,
+                        "gw": i+1
                     });
                     col.push({
                         "team_name": e.away_team_name,
@@ -93,7 +99,8 @@ class BumpChart {
                         "gd": e.away_team_goal_count - e.home_team_goal_count,
                         "gs": +e.away_team_goal_count,
                         "p_of_max_points": getPoints(e.away_team_goal_count, e.home_team_goal_count) / 3,
-                        "game_id": e.game_id
+                        "game_id": e.game_id,
+                        "gw": i+1
                     });
                 });
 
@@ -108,18 +115,22 @@ class BumpChart {
                     home.points += getPoints(e.home_team_goal_count, e.away_team_goal_count);
                     home.gd += e.home_team_goal_count - e.away_team_goal_count;
                     home.gs += +e.home_team_goal_count;
+                    home.prev_p_of_max_points = home.p_of_max_points;
                     home.p_of_max_points = home.points / ((i+1)*3);
                     home.game_id = e.game_id;
-                    home.prevPlace = home.place;
+                    home.prev_place = home.place;
+                    home.gw = i+1;
                     col.push(home);
 
                     let away = Object.assign({}, table[i-1].find(d => d.team_name == e.away_team_name));
                     away.points += getPoints(e.away_team_goal_count, e.home_team_goal_count);
                     away.gd += e.away_team_goal_count - e.home_team_goal_count;
                     away.gs += +e.away_team_goal_count;
+                    away.prev_p_of_max_points = away.p_of_max_points;
                     away.p_of_max_points = away.points / ((i+1)*3);
                     away.game_id = e.game_id;
-                    away.prevPlace = away.place;
+                    away.prev_place = away.place;
+                    away.gw = i+1;
                     col.push(away);
                 });
                 
@@ -132,49 +143,62 @@ class BumpChart {
         return table;
     }
 
-    drawLines(table){
+    updateChart(){
+        let key = document.getElementById('y-axis-select').value;
+        this.updatePosition(d3.select("#bump-lines").selectAll("line"), key)
+        this.updatePosition(d3.select("#bump-dots").selectAll("circle"), key)
+    }
+
+    updatePosition(elements, key){
         let padding = 20;
-
-        console.log(document.getElementById('y-axis-select').value)
-
         let xScale = d3.scaleLinear().domain([1, 38]).range([padding, this.size.width - padding]);
+        let yScale = d3.scaleLinear().domain((key == "place") ? [1, 20] : [1, 0]).range([padding, this.size.height - padding]);
 
-        let yScale = d3.scaleLinear().domain([1, 20]).range([padding, this.size.height - padding]);
+        if(elements._groups[0][0].nodeName == "line"){
+            elements
+                .transition()
+                .duration(200)
+                .attr("x1", d => xScale(d.gw-1))
+                .attr("x2", d => xScale(d.gw))
+                .attr("y1", d => yScale(d["prev_" + key]))
+                .attr("y2", d => yScale(d[key]))
+        }
+        else{
+            elements
+                .transition()
+                .duration(200)
+                .attr("cx", d => xScale(d.gw))
+                .attr("cy", d => yScale(d[key]))
+        }
+    }
 
-        let lines = this.svg.append('g').attr('id', 'bump-lines').selectAll('line');
-            
+    drawLines(table){
+        let lines = d3.select('#bump-lines').selectAll('line');
         for(let gw = 1; gw < 38; gw++){
                 let games = table[gw]
                 
                 lines.data(games)
                     .enter()
                     .append('line')
-                    .attr("x1", xScale(gw))
-                    .attr("x2", xScale(gw+1))
-                    .attr("y1", d => yScale(d.prevPlace))
-                    .attr("y2", d => yScale(d.place))
         }
 
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), "place")
     }
 
     drawDots(table){
-        let padding = 20;
-
-        let xScale = d3.scaleLinear().domain([1, 38]).range([padding, this.size.width - padding])
-
-        let yScale = d3.scaleLinear().domain([1, 20]).range([padding, this.size.height - padding])
-
-        let dots = this.svg.append('g').attr('id', 'bump-dots').selectAll("circle");
+        let dots = d3.select('#bump-dots').selectAll("circle");
 
         for(let gw = 0; gw < 38; gw++){
             let games = table[gw];
             
-            dots.data(games).enter().append("circle")
-                .attr("cx", xScale(gw + 1))
-                .attr("cy", d => yScale(d.place))
+            dots.data(games)
+                .enter()
+                .append("circle")
                 .attr("r", 7)
                 .attr("class", d => d.team_abbr.toLowerCase());
         }
+
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), "place")
     }
 
     selectGame(gameID){
