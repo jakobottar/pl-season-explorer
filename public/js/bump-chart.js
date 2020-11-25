@@ -19,7 +19,7 @@ class BumpChart {
         let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
 
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
-        this.size.padding = {"top": 20, "bottom": 55, "left": 20, "right": 20};
+        this.size.padding = {"top": 20, "bottom": 55, "left": 60, "right": 20};
         this.svg = d3.select('#bump-chart').append('svg');
 
         this.svg.append('g').attr('id', 'bump-lines')
@@ -29,7 +29,16 @@ class BumpChart {
 
         this.drawLines(this.table);
         this.drawDots(this.table);
+
+        this.svg.append('text')
+            .attr('id', 'y-axis-text')
+            .attr('x', -((this.size.height - this.size.padding.bottom - this.size.padding.top)/2 + 10))
+            .attr('y', 15)
+            .attr('transform', 'rotate(-90)')
+            .classed('axis-text', true)
+
         this.drawAxes('place');
+
 
         let that = this;
         let circles = d3.select('#bump-dots').selectAll('circle');
@@ -150,6 +159,7 @@ class BumpChart {
     updateChart(){
         let key = document.getElementById('y-axis-select').value;
 
+        this.drawAxes(key)
         this.updatePosition(d3.select('#bump-lines').selectAll('line'), key);
         this.updatePosition(d3.select('#bump-dots').selectAll('circle'), key);
     }
@@ -207,18 +217,27 @@ class BumpChart {
 
     drawAxes(key){
         let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-        let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
-
+        
         let vShift = this.size.height - this.size.padding.bottom + 15
         let xAxis = d3.select('#bump-x-axis')
         xAxis.attr('transform', `translate(0,${vShift})`)
         xAxis.call(d3.axisBottom(xScale))
         this.svg.append('text')
             .text('Gameweek')
-            .attr('x', this.size.width/2)
+            .attr('x', (this.size.width - this.size.padding.left - this.size.padding.right)/2 + this.size.padding.left)
             .attr('y', 35 + vShift)
             .classed('axis-text', true)
+
+        let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
         
+        let yAxis = d3.select('#bump-y-axis')
+        yAxis.attr('transform', `translate(${this.size.padding.left - 15},0)`)
+        yAxis
+            .transition()
+            .duration(200)
+            .call(d3.axisLeft(yScale))
+        d3.select('#y-axis-text')
+            .text( (key == "place") ? "Place" : "Percent of Max Possible Points" )
         
     }
 

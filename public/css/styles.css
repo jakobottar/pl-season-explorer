@@ -48,7 +48,7 @@
 
 .axis-text {
   font-size: 16px;
-  text-align: center;
+  text-anchor: middle;
 }
 
 #game-table {
