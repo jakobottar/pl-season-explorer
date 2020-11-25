@@ -46,6 +46,11 @@
   stroke: rgb(168, 168, 168);
 }
 
+.axis-text {
+  font-size: 16px;
+  text-align: center;
+}
+
 #game-table {
   position: relative;
   width: 1000px;

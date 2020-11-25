@@ -16,35 +16,39 @@ class BumpChart {
 
     drawChart() {
         this.table = this.makeTable();
-        let tooltip = d3.select("#bump-chart").append("div").attr("class", "tooltip").style("display", "none").style("opacity", 0);
+        let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
 
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
-        this.svg = d3.select('#bump-chart').append("svg");
+        this.size.padding = {"top": 20, "bottom": 55, "left": 20, "right": 20};
+        this.svg = d3.select('#bump-chart').append('svg');
 
         this.svg.append('g').attr('id', 'bump-lines')
         this.svg.append('g').attr('id', 'bump-dots')
+        this.svg.append('g').attr('id', 'bump-x-axis')
+        this.svg.append('g').attr('id', 'bump-y-axis')
 
         this.drawLines(this.table);
         this.drawDots(this.table);
+        this.drawAxes('place');
 
         let that = this;
-        let circles = d3.select("#bump-dots").selectAll("circle");
-        circles.on("mouseover", (event, d) => {
+        let circles = d3.select('#bump-dots').selectAll('circle');
+        circles.on('mouseover', (event, d) => {
             // TODO: highlight team
-            tooltip.text("");
-            tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
-            tooltip.style("left", (event.pageX + 5 - 10) + "px").style("top", (event.pageY - 28 - 200) + "px");
-            tooltip.append("span").classed("tooltip-text", true).text(d.team_name);
-            tooltip.append("br");
-            tooltip.append("span").classed("tooltip-text", true).text("Points: " + d.points);
-            tooltip.append("br");
-            tooltip.append("span").classed("tooltip-text", true).text("Place: " + d.place);
+            tooltip.text('');
+            tooltip.style('display', 'block').transition().duration(200).style('opacity', 0.9);
+            tooltip.style('left', (event.pageX + 5 - 10) + 'px').style('top', (event.pageY - 28 - 200) + 'px');
+            tooltip.append('span').classed('tooltip-text', true).text(d.team_name);
+            tooltip.append('br');
+            tooltip.append('span').classed('tooltip-text', true).text('Points: ' + d.points);
+            tooltip.append('br');
+            tooltip.append('span').classed('tooltip-text', true).text('Place: ' + d.place);
         });
-        circles.on("mouseout", () => {
+        circles.on('mouseout', () => {
             // TODO: clear team
-            tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
+            tooltip.transition().duration(500).on('end', () => tooltip.style('display', 'none')).style('opacity', 0);
         });
-        circles.on("click", (event, d) => {
+        circles.on('click', (event, d) => {
             console.log(d);
             that.updateGame(d.game_id);
         })
@@ -83,24 +87,24 @@ class BumpChart {
             if(i == 0){
                 gw.forEach(e => {
                     col.push({
-                        "team_name": e.home_team_name,
-                        "team_abbr": window.teamData.find(d => d.name_long === e.home_team_name).name_abbr,
-                        "points": getPoints(e.home_team_goal_count, e.away_team_goal_count),
-                        "gd": e.home_team_goal_count - e.away_team_goal_count,
-                        "gs": +e.home_team_goal_count,
-                        "p_of_max_points": getPoints(e.home_team_goal_count, e.away_team_goal_count) / 3,
-                        "game_id": e.game_id,
-                        "gw": i+1
+                        'team_name': e.home_team_name,
+                        'team_abbr': window.teamData.find(d => d.name_long === e.home_team_name).name_abbr,
+                        'points': getPoints(e.home_team_goal_count, e.away_team_goal_count),
+                        'gd': e.home_team_goal_count - e.away_team_goal_count,
+                        'gs': +e.home_team_goal_count,
+                        'p_of_max_points': getPoints(e.home_team_goal_count, e.away_team_goal_count) / 3,
+                        'game_id': e.game_id,
+                        'gw': i+1
                     });
                     col.push({
-                        "team_name": e.away_team_name,
-                        "team_abbr": window.teamData.find(d => d.name_long === e.away_team_name).name_abbr,
-                        "points": getPoints(e.away_team_goal_count, e.home_team_goal_count),
-                        "gd": e.away_team_goal_count - e.home_team_goal_count,
-                        "gs": +e.away_team_goal_count,
-                        "p_of_max_points": getPoints(e.away_team_goal_count, e.home_team_goal_count) / 3,
-                        "game_id": e.game_id,
-                        "gw": i+1
+                        'team_name': e.away_team_name,
+                        'team_abbr': window.teamData.find(d => d.name_long === e.away_team_name).name_abbr,
+                        'points': getPoints(e.away_team_goal_count, e.home_team_goal_count),
+                        'gd': e.away_team_goal_count - e.home_team_goal_count,
+                        'gs': +e.away_team_goal_count,
+                        'p_of_max_points': getPoints(e.away_team_goal_count, e.home_team_goal_count) / 3,
+                        'game_id': e.game_id,
+                        'gw': i+1
                     });
                 });
 
@@ -145,30 +149,30 @@ class BumpChart {
 
     updateChart(){
         let key = document.getElementById('y-axis-select').value;
-        this.updatePosition(d3.select("#bump-lines").selectAll("line"), key)
-        this.updatePosition(d3.select("#bump-dots").selectAll("circle"), key)
+
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), key);
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), key);
     }
 
     updatePosition(elements, key){
-        let padding = 20;
-        let xScale = d3.scaleLinear().domain([1, 38]).range([padding, this.size.width - padding]);
-        let yScale = d3.scaleLinear().domain((key == "place") ? [1, 20] : [1, 0]).range([padding, this.size.height - padding]);
+        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
 
-        if(elements._groups[0][0].nodeName == "line"){
+        if(elements._groups[0][0].nodeName == 'line'){
             elements
                 .transition()
                 .duration(200)
-                .attr("x1", d => xScale(d.gw-1))
-                .attr("x2", d => xScale(d.gw))
-                .attr("y1", d => yScale(d["prev_" + key]))
-                .attr("y2", d => yScale(d[key]))
+                .attr('x1', d => xScale(d.gw-1))
+                .attr('x2', d => xScale(d.gw))
+                .attr('y1', d => yScale(d['prev_' + key]))
+                .attr('y2', d => yScale(d[key]));
         }
         else{
             elements
                 .transition()
                 .duration(200)
-                .attr("cx", d => xScale(d.gw))
-                .attr("cy", d => yScale(d[key]))
+                .attr('cx', d => xScale(d.gw))
+                .attr('cy', d => yScale(d[key]));
         }
     }
 
@@ -182,23 +186,40 @@ class BumpChart {
                     .append('line')
         }
 
-        this.updatePosition(d3.select('#bump-lines').selectAll('line'), "place")
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), 'place')
     }
 
     drawDots(table){
-        let dots = d3.select('#bump-dots').selectAll("circle");
+        let dots = d3.select('#bump-dots').selectAll('circle');
 
         for(let gw = 0; gw < 38; gw++){
             let games = table[gw];
             
             dots.data(games)
                 .enter()
-                .append("circle")
-                .attr("r", 7)
-                .attr("class", d => d.team_abbr.toLowerCase());
+                .append('circle')
+                .attr('r', 7)
+                .attr('class', d => d.team_abbr.toLowerCase());
         }
 
-        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), "place")
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), 'place')
+    }
+
+    drawAxes(key){
+        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
+
+        let vShift = this.size.height - this.size.padding.bottom + 15
+        let xAxis = d3.select('#bump-x-axis')
+        xAxis.attr('transform', `translate(0,${vShift})`)
+        xAxis.call(d3.axisBottom(xScale))
+        this.svg.append('text')
+            .text('Gameweek')
+            .attr('x', this.size.width/2)
+            .attr('y', 35 + vShift)
+            .classed('axis-text', true)
+        
+        
     }
 
     selectGame(gameID){
