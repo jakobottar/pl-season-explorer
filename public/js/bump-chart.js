@@ -23,11 +23,10 @@ class BumpChart {
         this.svg = d3.select('#bump-chart').append('svg');
 
         this.svg.append('g').attr('id', 'bump-lines')
+        this.svg.append('g').attr('id', 'brush-wrapper')
         this.svg.append('g').attr('id', 'bump-dots')
         this.svg.append('g').attr('id', 'bump-x-axis')
         this.svg.append('g').attr('id', 'bump-y-axis')
-
-        this.svg.append('g').attr('id', 'brush-wrapper')
 
         this.drawLines(this.table);
         this.drawDots(this.table);
