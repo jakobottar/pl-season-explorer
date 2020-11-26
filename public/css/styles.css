@@ -34,6 +34,7 @@
   float: left;
   height: 500px;
   display: inline-block;
+  cursor: crosshair;
 }
 
 #bump-chart svg {
