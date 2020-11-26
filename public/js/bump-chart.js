@@ -27,6 +27,9 @@ class BumpChart {
         this.svg.append('g').attr('id', 'bump-x-axis')
         this.svg.append('g').attr('id', 'bump-y-axis')
 
+        this.svg.append('g').attr('id', 'brush-wrapper')
+        this.makeBrush()
+
         this.drawLines(this.table);
         this.drawDots(this.table);
 
@@ -239,6 +242,20 @@ class BumpChart {
         d3.select('#y-axis-text')
             .text( (key == "place") ? "Place" : "Percent of Max Possible Points" )
         
+    }
+
+    makeBrush(){
+        let rad = 9;
+        let xBrush = d3.brushX()
+            .extent([[this.size.padding.left - rad, this.size.padding.top - rad], [this.size.width - this.size.padding.right + rad, this.size.height - this.size.padding.bottom + rad]])
+            .on('brush', d => console.log('Apapapiya Apapapa'))
+
+        d3.select('#brush-wrapper')
+            .append('g')
+            .attr('id', 'brush')
+            .call(xBrush)
+
+
     }
 
     selectGame(gameID){
