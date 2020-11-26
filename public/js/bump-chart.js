@@ -28,10 +28,11 @@ class BumpChart {
         this.svg.append('g').attr('id', 'bump-y-axis')
 
         this.svg.append('g').attr('id', 'brush-wrapper')
-        this.makeBrush()
 
         this.drawLines(this.table);
         this.drawDots(this.table);
+
+        this.makeBrush()
 
         this.svg.append('text')
             .attr('id', 'y-axis-text')
@@ -245,17 +246,24 @@ class BumpChart {
     }
 
     makeBrush(){
-        let rad = 9;
+        let that = this;
+
+        let rad = 7+2;
         let xBrush = d3.brushX()
             .extent([[this.size.padding.left - rad, this.size.padding.top - rad], [this.size.width - this.size.padding.right + rad, this.size.height - this.size.padding.bottom + rad]])
-            .on('brush', d => console.log('Apapapiya Apapapa'))
+            .on('brush', d => { 
+                that.clearTeams()
+                let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+                let gwFilter = d.selection.map(x => xScale.invert(x))
+                console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
+                
+                d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                d3.selectAll('#bump-lines line').filter(d => d.gw-1 < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+            })
+            .on('end', d => { if(d.selection == null){ that.clearTeams(); } } )
 
         d3.select('#brush-wrapper')
-            .append('g')
-            .attr('id', 'brush')
             .call(xBrush)
-
-
     }
 
     selectGame(gameID){
