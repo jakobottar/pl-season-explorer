@@ -86,7 +86,7 @@
   min-height: 10px;
   font: 12px sans-serif;
   padding: 3px;
-  background: #EEEEEE;
+  background: #eeeeee;
   stroke: gray;
   border-radius: 3px;
   pointer-events: none;
@@ -177,8 +177,8 @@ h1 {
 /* Game detail */
 
 .game-header {
-	text-align: center;
-	font-size: 14pt;
+  text-align: center;
+  font-size: 14pt;
   height: 20px;
 }
 
@@ -228,4 +228,10 @@ h1 {
   stroke-width: 3px;
   stroke: #000000;
   opacity: 1;
+}
+
+#storytelling {
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  color: grey;
 }
