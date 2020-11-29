@@ -46,6 +46,10 @@
   stroke: rgb(168, 168, 168);
 }
 
+#bump-chart circle{
+  cursor: pointer;
+}
+
 #brush-wrapper {
   height: auto;
   width: auto;
@@ -135,6 +139,7 @@ h1 {
 .season-summary-rect {
   stroke-width: 1px;
   rx: 2px;
+  cursor: pointer;
 }
 
 .season-summary-label {

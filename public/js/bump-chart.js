@@ -11,6 +11,7 @@ class BumpChart {
 
         this.table;
         this.brush;
+        this.xScale;
     }
 
     setData(data) { this.data = data; }
@@ -22,6 +23,8 @@ class BumpChart {
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
         this.size.padding = {"top": 20, "bottom": 100, "left": 60, "right": 20};
         this.svg = d3.select('#bump-chart').append('svg');
+
+        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
 
         this.svg.append('g').attr('id', 'bump-lines')
         this.svg.append('g').attr('id', 'bump-dots')
@@ -43,8 +46,6 @@ class BumpChart {
 
         this.drawAxes('place');
 
-
-        let that = this;
         let circles = d3.select('#bump-dots').selectAll('circle');
         circles.on('mouseover', (event, d) => {
             // TODO: highlight team
@@ -63,7 +64,7 @@ class BumpChart {
         });
         circles.on('click', (event, d) => {
             console.log(d);
-            that.updateGame(d.game_id);
+            this.updateGame(d.game_id);
         })
 
         // document.getElementById("bump-chart").addEventListener("click", _ => { 
@@ -71,7 +72,6 @@ class BumpChart {
         //     this.clearZoom();
         // }); 
 
-        
     }
     
     makeTable(){
@@ -170,21 +170,20 @@ class BumpChart {
     updateChart(){
         let key = document.getElementById('y-axis-select').value;
 
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
         this.drawAxes(key)
-        this.updatePosition(d3.select('#bump-lines').selectAll('line'), key, xScale);
-        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), key, xScale);
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), key, this.xScale);
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), key, this.xScale);
     }
 
-    updatePosition(elements, key, xScale){
+    updatePosition(elements, key){
         let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
 
         if(elements._groups[0][0].nodeName == 'line'){
             elements
                 .transition()
                 .duration(500)
-                .attr('x1', d => xScale(d.gw-1))
-                .attr('x2', d => xScale(d.gw))
+                .attr('x1', d => this.xScale(d.gw-1))
+                .attr('x2', d => this.xScale(d.gw))
                 .attr('y1', d => yScale(d['prev_' + key]))
                 .attr('y2', d => yScale(d[key]));
         }
@@ -192,7 +191,7 @@ class BumpChart {
             elements
                 .transition()
                 .duration(500)
-                .attr('cx', d => xScale(d.gw))
+                .attr('cx', d => this.xScale(d.gw))
                 .attr('cy', d => yScale(d[key]));
         }
     }
@@ -206,8 +205,7 @@ class BumpChart {
                     .enter()
                     .append('line')
         }
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-        this.updatePosition(d3.select('#bump-lines').selectAll('line'), 'place', xScale)
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), 'place')
     }
 
     drawDots(table){
@@ -222,13 +220,10 @@ class BumpChart {
                 .attr('r', 6)
                 .attr('class', d => d.team_abbr.toLowerCase());
         }
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), 'place', xScale)
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), 'place')
     }
 
-    drawAxes(key){
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-        
+    drawAxes(key){ 
         let vShift = this.size.height - this.size.padding.bottom + 15
         let lines = new Array(38)
         for(let i = 1; i <= 38; i++){lines[i-1] = i}
@@ -238,8 +233,8 @@ class BumpChart {
         xAxis.selectAll('line')
             .data(lines)
             .join('line')
-            .attr('x1', d => xScale(d))
-            .attr('x2', d => xScale(d))
+            .attr('x1', d => this.xScale(d))
+            .attr('x2', d => this.xScale(d))
             .attr('y1', 40)
             .attr('y2', 65)
             .classed('axis-line', true)
@@ -247,14 +242,14 @@ class BumpChart {
         xAxis.selectAll('text')
             .data(lines)
             .join('text')
-            .attr('x', d => xScale(d))
+            .attr('x', d => this.xScale(d))
             .attr('y', 80)
             .text(d => d)
             .classed('small-axis', true)
 
         xAxis
             .append('text')
-            .attr('x', xScale(1))
+            .attr('x', this.xScale(1))
             .attr('y', 20)
             .text("Select a region by brushing the bars below")
             .attr('fill', "grey")
@@ -281,7 +276,7 @@ class BumpChart {
     }
 
     zoomAxes(selection){
-        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        let masterScale = this.xScale
         let vShift = this.size.height - this.size.padding.bottom + 15
         let lines = new Array()
         for(let i = Math.ceil(selection[0]); i <= Math.floor(selection[1]); i++){lines.push(i)}
@@ -303,9 +298,9 @@ class BumpChart {
             .attr('y', 80)
             .text(d => d)
             .classed('zoom-axis', true)
-            // .classed('small-axis', true)
-
+        
         let newScale = d3.scaleLinear().domain([Math.ceil(selection[0]), Math.floor(selection[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        this.xScale = newScale
 
         xAxis.selectAll('line.zoom-axis')
             .transition()
@@ -331,9 +326,9 @@ class BumpChart {
     clearZoom() {
         d3.selectAll('.zoom-axis').remove();
         this.clearTeams()
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-        this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value, xScale);
-        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value, xScale);
+        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value, this.xScale);
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value, this.xScale);
 
         d3.select('#instr-text')
             .transition()
@@ -342,8 +337,6 @@ class BumpChart {
     }
 
     makeBrush(){
-        let that = this;
-
         let vShift = this.size.height - this.size.padding.bottom + 15 + 40
 
         let rad = 2.5;
@@ -351,9 +344,8 @@ class BumpChart {
             .extent([[this.size.padding.left - 5, vShift - rad], [this.size.width - this.size.padding.right + 5, vShift + 25 + rad]])
             .on('brush', d => { 
                 if(d.selection){
-                    that.clearTeams()
-                    let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-                    let gwFilter = d.selection.map(x => xScale.invert(x))
+                    this.clearTeams()
+                    let gwFilter = d.selection.map(x => this.xScale.invert(x))
                     console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
                     
                     d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
@@ -364,17 +356,16 @@ class BumpChart {
             })
             .on('end', d => { 
                 if(d.selection){ 
-                    let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-                    let gwFilter = d.selection.map(x => xScale.invert(x))
-                    that.zoomAxes(gwFilter)
+                    let gwFilter = d.selection.map(x => this.xScale.invert(x))
+                    this.zoomAxes(gwFilter)
 
                     //TODO: Update Places based on selection
 
-                    let newScale = d3.scaleLinear().domain([Math.ceil(gwFilter[0]), Math.floor(gwFilter[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-                    this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value, newScale);
-                    this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value, newScale); 
+                    // this.xScale = d3.scaleLinear().domain([Math.ceil(gwFilter[0]), Math.floor(gwFilter[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+                    this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value);
+                    this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value); 
                 } else {
-                    that.clearZoom();
+                    this.clearZoom();
                 }     
             } )
 
