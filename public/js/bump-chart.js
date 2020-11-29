@@ -10,6 +10,7 @@ class BumpChart {
         this.size;
 
         this.table;
+        this.brush;
     }
 
     setData(data) { this.data = data; }
@@ -64,6 +65,13 @@ class BumpChart {
             console.log(d);
             that.updateGame(d.game_id);
         })
+
+        // document.getElementById("bump-chart").addEventListener("click", _ => { 
+        //     d3.select('#brush-wrapper').call(this.brush.move, null);
+        //     this.clearZoom();
+        // }); 
+
+        
     }
     
     makeTable(){
@@ -232,15 +240,15 @@ class BumpChart {
             .join('line')
             .attr('x1', d => xScale(d))
             .attr('x2', d => xScale(d))
-            .attr('y1', 30)
-            .attr('y2', 55)
+            .attr('y1', 40)
+            .attr('y2', 65)
             .classed('axis-line', true)
         
         xAxis.selectAll('text')
             .data(lines)
             .join('text')
             .attr('x', d => xScale(d))
-            .attr('y', 70)
+            .attr('y', 80)
             .text(d => d)
             .classed('small-axis', true)
 
@@ -284,9 +292,18 @@ class BumpChart {
             .join('line')
             .attr('x1', d => masterScale(d))
             .attr('x2', d => masterScale(d))
-            .attr('y1', 30)
-            .attr('y2', 55)
+            .attr('y1', 40)
+            .attr('y2', 65)
             .classed('zoom-axis', true)
+
+        xAxis.selectAll('text.zoom-axis')
+            .data(lines)
+            .join('text')
+            .attr('x', d => masterScale(d))
+            .attr('y', 80)
+            .text(d => d)
+            .classed('zoom-axis', true)
+            // .classed('small-axis', true)
 
         let newScale = d3.scaleLinear().domain([Math.ceil(selection[0]), Math.floor(selection[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
 
@@ -298,6 +315,13 @@ class BumpChart {
             .attr('x1', d => newScale(d))
             .attr('x2', d => newScale(d))
 
+        xAxis.selectAll('text.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('x', d => newScale(d))
+            .attr('y', 35)
+            .text(d => d)
+
         d3.select('#instr-text')
             .transition()
             .duration(500)
@@ -305,7 +329,7 @@ class BumpChart {
     }
 
     clearZoom() {
-        d3.selectAll('line.zoom-axis').remove();
+        d3.selectAll('.zoom-axis').remove();
         this.clearTeams()
         let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
         this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value, xScale);
@@ -320,25 +344,31 @@ class BumpChart {
     makeBrush(){
         let that = this;
 
-        let vShift = this.size.height - this.size.padding.bottom + 15 + 30
+        let vShift = this.size.height - this.size.padding.bottom + 15 + 40
 
         let rad = 2.5;
-        let xBrush = d3.brushX()
-            .extent([[this.size.padding.left - rad, vShift - rad], [this.size.width - this.size.padding.right + rad, vShift + 25 + rad]])
+        this.brush = d3.brushX()
+            .extent([[this.size.padding.left - 5, vShift - rad], [this.size.width - this.size.padding.right + 5, vShift + 25 + rad]])
             .on('brush', d => { 
-                that.clearTeams()
-                let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-                let gwFilter = d.selection.map(x => xScale.invert(x))
-                console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
-                
-                d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
-                d3.selectAll('#bump-lines line').filter(d => d.gw-1 < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                if(d.selection){
+                    that.clearTeams()
+                    let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+                    let gwFilter = d.selection.map(x => xScale.invert(x))
+                    console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
+                    
+                    d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                    d3.selectAll('#bump-lines line').filter(d => d.gw-1 < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                    d3.selectAll('.axis-line').filter(d => d < gwFilter[0] | d > gwFilter[1]).classed('grayed', true);
+                    d3.selectAll('.small-axis').filter(d => d < gwFilter[0] | d > gwFilter[1]).classed('grayed', true);
+                }
             })
             .on('end', d => { 
                 if(d.selection){ 
                     let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
                     let gwFilter = d.selection.map(x => xScale.invert(x))
                     that.zoomAxes(gwFilter)
+
+                    //TODO: Update Places based on selection
 
                     let newScale = d3.scaleLinear().domain([Math.ceil(gwFilter[0]), Math.floor(gwFilter[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
                     this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value, newScale);
@@ -349,7 +379,7 @@ class BumpChart {
             } )
 
         d3.select('#brush-wrapper')
-            .call(xBrush)
+            .call(this.brush)
     }
 
     selectGame(gameID){
@@ -376,7 +406,6 @@ class BumpChart {
 
 	clearTeams() {
         // Deselect all teams. Called when all teams are deselected, and from selectTeam
-        d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false);
-        // this.clearZoom()
+        d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false); 
 	}
 }

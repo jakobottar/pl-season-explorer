@@ -62,7 +62,9 @@
 }
 
 .zoom-axis {
-  stroke: #000000;
+  /* stroke: #000000; */
+  font-size: 12px;
+  text-anchor: middle;
 }
 
 #game-table {
