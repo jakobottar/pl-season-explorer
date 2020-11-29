@@ -12,6 +12,8 @@ class BumpChart {
         this.table;
         this.brush;
         this.xScale;
+
+        this.isZoomed = false;
     }
 
     setData(data) { this.data = data; }
@@ -21,7 +23,7 @@ class BumpChart {
         let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
 
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
-        this.size.padding = {"top": 20, "bottom": 100, "left": 60, "right": 20};
+        this.size.padding = {'top': 20, 'bottom': 100, 'left': 60, 'right': 20};
         this.svg = d3.select('#bump-chart').append('svg');
 
         this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
@@ -68,7 +70,7 @@ class BumpChart {
             this.updateGame(d.game_id);
         })
 
-        // document.getElementById("bump-chart").addEventListener("click", _ => { 
+        // document.getElementById('bump-chart').addEventListener('click', _ => { 
         //     d3.select('#brush-wrapper').call(this.brush.move, null);
         //     this.clearZoom();
         // }); 
@@ -253,8 +255,8 @@ class BumpChart {
             .append('text')
             .attr('x', masterScale(1))
             .attr('y', 20)
-            .text("Select a region by brushing the bars below")
-            .attr('fill', "grey")
+            .text('Select a region by brushing the bars below')
+            .attr('fill', 'grey')
             .attr('id', 'instr-text')
         
         this.svg.append('text')
@@ -275,35 +277,48 @@ class BumpChart {
             .duration(500)
             .call(d3.axisLeft(yScale))
         d3.select('#y-axis-text')
-            .text( (key == "place") ? "Place" : "Percent of Max Possible Points" )
+            .text( (key == 'place') ? 'Place' : 'Percent of Max Possible Points' )
     }
 
     zoomAxes(selection){
+        function inRange(x, range){
+            range.sort((a,b) => a-b);
+            return(x > range[0] & x < range[range.length - 1]);
+        }
+        
         let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
         let vShift = this.size.height - this.size.padding.bottom + 15
         let lines = new Array()
-        for(let i = Math.ceil(selection[0]); i <= Math.floor(selection[1]); i++){lines.push(i)}
+        for(let i = 1; i <= 38; i++){lines.push(i)}
         let xAxis = d3.select('#bump-x-axis')
 
-        xAxis.selectAll('line.zoom-axis')
-            .data(lines)
-            .join('line')
-            .attr('x1', d => masterScale(d))
-            .attr('x2', d => masterScale(d))
-            .attr('y1', 40)
-            .attr('y2', 65)
-            .classed('zoom-axis', true)
-
-        xAxis.selectAll('text.zoom-axis')
-            .data(lines)
-            .join('text')
-            .attr('x', d => masterScale(d))
-            .attr('y', 80)
-            .text(d => d)
-            .classed('zoom-axis', true)
+        let newScale = d3.scaleLinear().domain([selection[0], selection[1]]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
         
-        let newScale = d3.scaleLinear().domain([Math.ceil(selection[0]), Math.floor(selection[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        d3.selectAll('.zoom-axis').style('opacity', 1)
+
+        if(!this.isZoomed){
+            xAxis.selectAll('line.zoom-axis')
+                .data(lines)
+                .join('line')
+                .attr('x1', d => masterScale(d))
+                .attr('x2', d => masterScale(d))
+                .attr('y1', 40)
+                .attr('y2', 65)
+                .classed('zoom-axis', true)
+
+            xAxis.selectAll('text.zoom-axis')
+                .data(lines)
+                .join('text')
+                .attr('x', d => masterScale(d))
+                .attr('y', 80)
+                .text(d => d)
+                .classed('zoom-axis', true)
+
+            d3.selectAll('.zoom-axis').filter(d => !inRange(d, selection)).style('opacity', 0)
+        } 
+        
         this.xScale = newScale
+        this.isZoomed = true;
 
         xAxis.selectAll('line.zoom-axis')
             .transition()
@@ -324,16 +339,44 @@ class BumpChart {
             .transition()
             .duration(500)
             .style('opacity', 0)
+
+        d3.selectAll('.zoom-axis')
+            .filter(d => !inRange(d, [selection[0] - 1, selection[1] + 1]))
+            .transition()
+            .delay(500)
+            .style('opacity', 0)
     }
 
     clearZoom() {
-        d3.selectAll('.zoom-axis').remove();
+        this.isZoomed = false;
         d3.selectAll('.axis-line').classed('grayed', false)
         d3.selectAll('.small-axis-text').classed('grayed', false)
 
         this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
         this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value);
         this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value);
+
+        let xAxis = d3.select('#bump-x-axis')
+
+        xAxis.selectAll('line.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('x1', d => this.xScale(d))
+            .attr('x2', d => this.xScale(d))
+            .attr('y1', 40)
+            .attr('y2', 65)
+
+        xAxis.selectAll('text.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('x', d => this.xScale(d))
+            .attr('y', 80)
+            .text(d => d)
+
+        d3.selectAll('.zoom-axis')
+            .transition()
+            .delay(500)
+            .remove()
 
         d3.select('#instr-text')
             .transition()
@@ -409,7 +452,8 @@ class BumpChart {
 	clearTeams() {
         // Deselect all teams. Called when all teams are deselected, and from selectTeam
         d3.select('#bump-chart').selectAll('.filtered').classed('filtered', false); 
-        this.clearGray()
+        d3.selectAll('#bump-dots circle').classed('grayed', false);
+        d3.selectAll('#bump-lines line').classed('grayed', false);
     }
     
     clearGray() {

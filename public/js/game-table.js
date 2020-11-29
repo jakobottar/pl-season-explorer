@@ -103,7 +103,7 @@ class GameTable {
 
     selectTeam(teamIDs) {
         this.clearTeams();
-        d3.selectAll('.game-group').filter(d => teamIDs.includes(window.teamData.find(e => e.name_long === d.home_team_name).name_abbr) && teamIDs.includes(window.teamData.find(e => e.name_long === d.away_team_name).name_abbr)).classed('grayed', true);
+        d3.selectAll('.game-group').filter(d => !teamIDs.includes(window.teamData.find(e => e.name_long === d.home_team_name).name_abbr) && !teamIDs.includes(window.teamData.find(e => e.name_long === d.away_team_name).name_abbr)).classed('grayed', true);
     }
 
     clearTeams() {

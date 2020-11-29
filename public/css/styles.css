@@ -158,11 +158,13 @@ h1 {
 .game-rect {
   stroke-width: 1px;
   stroke: lightgray;
+  cursor: pointer;
 }
 
 .game-text {
   font-size: 8pt;
   text-align: center;
+  pointer-events: none;
 }
 
 .game-header-text {
@@ -242,4 +244,8 @@ h1 {
   stroke-width: 3px;
   stroke: #000000;
   opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
 }
