@@ -60,7 +60,7 @@
   text-anchor: middle;
 }
 
-.small-axis {
+.small-axis-text {
   font-size: 12px;
   text-anchor: middle;
 }
@@ -232,6 +232,10 @@ h1 {
 
 .grayed {
   opacity: 0.2;
+}
+
+.filtered{
+  opacity: 1;
 }
 
 .selected {
