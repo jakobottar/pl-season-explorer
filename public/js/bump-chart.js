@@ -276,7 +276,7 @@ class BumpChart {
     }
 
     zoomAxes(selection){
-        let masterScale = this.xScale
+        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
         let vShift = this.size.height - this.size.padding.bottom + 15
         let lines = new Array()
         for(let i = Math.ceil(selection[0]); i <= Math.floor(selection[1]); i++){lines.push(i)}
@@ -338,6 +338,7 @@ class BumpChart {
 
     makeBrush(){
         let vShift = this.size.height - this.size.padding.bottom + 15 + 40
+        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
 
         let rad = 2.5;
         this.brush = d3.brushX()
@@ -345,7 +346,7 @@ class BumpChart {
             .on('brush', d => { 
                 if(d.selection){
                     this.clearTeams()
-                    let gwFilter = d.selection.map(x => this.xScale.invert(x))
+                    let gwFilter = d.selection.map(x => masterScale.invert(x))
                     console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
                     
                     d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
@@ -356,7 +357,7 @@ class BumpChart {
             })
             .on('end', d => { 
                 if(d.selection){ 
-                    let gwFilter = d.selection.map(x => this.xScale.invert(x))
+                    let gwFilter = d.selection.map(x => masterScale.invert(x))
                     this.zoomAxes(gwFilter)
 
                     //TODO: Update Places based on selection
