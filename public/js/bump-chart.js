@@ -60,6 +60,8 @@ class BumpChart {
             tooltip.append('span').classed('tooltip-text', true).text('Points: ' + d.points);
             tooltip.append('br');
             tooltip.append('span').classed('tooltip-text', true).text('Place: ' + d.place);
+            tooltip.append('br');
+            tooltip.append('span').classed('tooltip-text', true).text('GD: ' + d.gd);
         });
         circles.on('mouseout', () => {
             // TODO: clear team
@@ -133,7 +135,9 @@ class BumpChart {
                 gw.forEach(e => {
                     //TODO: is there a better way to do this?
                     let home = Object.assign({}, table[i-1].find(d => d.team_name == e.home_team_name));
+                    home.prev_points = home.points;
                     home.points += getPoints(e.home_team_goal_count, e.away_team_goal_count);
+                    home.prev_gd = home.gd;
                     home.gd += e.home_team_goal_count - e.away_team_goal_count;
                     home.gs += +e.home_team_goal_count;
                     home.prev_p_of_max_points = home.p_of_max_points;
@@ -144,7 +148,9 @@ class BumpChart {
                     col.push(home);
 
                     let away = Object.assign({}, table[i-1].find(d => d.team_name == e.away_team_name));
+                    away.prev_points = away.points;
                     away.points += getPoints(e.away_team_goal_count, e.home_team_goal_count);
+                    away.prev_gd = away.gd;
                     away.gd += e.away_team_goal_count - e.home_team_goal_count;
                     away.gs += +e.away_team_goal_count;
                     away.prev_p_of_max_points = away.p_of_max_points;
@@ -173,7 +179,25 @@ class BumpChart {
     }
 
     updatePosition(elements, key){
-        let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
+        function myRange(table, key){
+            let max = table[0][0][key];
+            let min = table[0][0][key];
+            for(let i = 0; i < table.length; i++){
+                for(let j = 0; j < table[i].length; j++){
+                    if(max < table[i][j][key]){ max = table[i][j][key]; }
+                    if(min > table[i][j][key]){ min = table[i][j][key]; }
+                }
+            }
+
+            if(key == 'place') {return [min, max];}
+            return [max, min];
+        }
+
+        let range = myRange(this.table, key)
+
+        let yScale = d3.scaleLinear()
+            .domain(range)
+            .range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
 
         if(elements._groups[0][0].nodeName == 'line'){
             elements
@@ -279,7 +303,22 @@ class BumpChart {
     }
 
     drawYAxis(key){
-        let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
+        function myRange(table, key){
+            let max = table[0][0][key];
+            let min = table[0][0][key];
+            for(let i = 0; i < table.length; i++){
+                for(let j = 0; j < table[i].length; j++){
+                    if(max < table[i][j][key]){ max = table[i][j][key]; }
+                    if(min > table[i][j][key]){ min = table[i][j][key]; }
+                }
+            }
+
+            if(key == 'place') {return [min, max];}
+            return [max, min];
+        }
+
+        let range = myRange(this.table, key)
+        let yScale = d3.scaleLinear().domain(range).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
         
         let yAxis = d3.select('#bump-y-axis')
         yAxis.attr('transform', `translate(${this.size.padding.left - 15},0)`)
@@ -288,7 +327,10 @@ class BumpChart {
             .duration(500)
             .call(d3.axisLeft(yScale))
         d3.select('#y-axis-text')
-            .text( (key == 'place') ? 'Place' : 'Percent of Max Possible Points' )
+            .text( _ => {
+               let e = document.getElementById('y-axis-select')
+               return e.options[e.selectedIndex].text 
+            });
     }
 
     zoomAxes(selection){
