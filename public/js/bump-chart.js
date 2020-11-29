@@ -10,6 +10,10 @@ class BumpChart {
         this.size;
 
         this.table;
+        this.brush;
+        this.xScale;
+
+        this.isZoomed = false;
     }
 
     setData(data) { this.data = data; }
@@ -19,14 +23,16 @@ class BumpChart {
         let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
 
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
-        this.size.padding = {"top": 20, "bottom": 55, "left": 60, "right": 20};
+        this.size.padding = {'top': 20, 'bottom': 100, 'left': 60, 'right': 20};
         this.svg = d3.select('#bump-chart').append('svg');
 
+        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+
         this.svg.append('g').attr('id', 'bump-lines')
-        this.svg.append('g').attr('id', 'brush-wrapper')
         this.svg.append('g').attr('id', 'bump-dots')
         this.svg.append('g').attr('id', 'bump-x-axis')
         this.svg.append('g').attr('id', 'bump-y-axis')
+        this.svg.append('g').attr('id', 'brush-wrapper')
 
         this.drawLines(this.table);
         this.drawDots(this.table);
@@ -40,10 +46,9 @@ class BumpChart {
             .attr('transform', 'rotate(-90)')
             .classed('axis-text', true)
 
-        this.drawAxes('place');
+            this.drawXAxis();
+            this.drawYAxis('place')
 
-
-        let that = this;
         let circles = d3.select('#bump-dots').selectAll('circle');
         circles.on('mouseover', (event, d) => {
             // TODO: highlight team
@@ -62,7 +67,7 @@ class BumpChart {
         });
         circles.on('click', (event, d) => {
             console.log(d);
-            that.updateGame(d.game_id);
+            this.updateGame(d.game_id);
         })
     }
     
@@ -162,29 +167,28 @@ class BumpChart {
     updateChart(){
         let key = document.getElementById('y-axis-select').value;
 
-        this.drawAxes(key)
+        this.drawYAxis(key)
         this.updatePosition(d3.select('#bump-lines').selectAll('line'), key);
         this.updatePosition(d3.select('#bump-dots').selectAll('circle'), key);
     }
 
     updatePosition(elements, key){
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
         let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
 
         if(elements._groups[0][0].nodeName == 'line'){
             elements
                 .transition()
-                .duration(200)
-                .attr('x1', d => xScale(d.gw-1))
-                .attr('x2', d => xScale(d.gw))
+                .duration(500)
+                .attr('x1', d => this.xScale(d.gw-1))
+                .attr('x2', d => this.xScale(d.gw))
                 .attr('y1', d => yScale(d['prev_' + key]))
                 .attr('y2', d => yScale(d[key]));
         }
         else{
             elements
                 .transition()
-                .duration(200)
-                .attr('cx', d => xScale(d.gw))
+                .duration(500)
+                .attr('cx', d => this.xScale(d.gw))
                 .attr('cy', d => yScale(d[key]));
         }
     }
@@ -198,7 +202,6 @@ class BumpChart {
                     .enter()
                     .append('line')
         }
-
         this.updatePosition(d3.select('#bump-lines').selectAll('line'), 'place')
     }
 
@@ -211,58 +214,226 @@ class BumpChart {
             dots.data(games)
                 .enter()
                 .append('circle')
-                .attr('r', 7)
+                .attr('r', 6)
                 .attr('class', d => d.team_abbr.toLowerCase());
         }
-
         this.updatePosition(d3.select('#bump-dots').selectAll('circle'), 'place')
     }
 
-    drawAxes(key){
-        let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-        
+    drawXAxis() {
         let vShift = this.size.height - this.size.padding.bottom + 15
+        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        let lines = new Array(38)
+        for(let i = 1; i <= 38; i++){lines[i-1] = i}
         let xAxis = d3.select('#bump-x-axis')
         xAxis.attr('transform', `translate(0,${vShift})`)
-        xAxis.call(d3.axisBottom(xScale))
+
+        xAxis.selectAll('line')
+            .data(lines)
+            .join('line')
+            .attr('x1', d => masterScale(d))
+            .attr('x2', d => masterScale(d))
+            .attr('y1', 40)
+            .attr('y2', 65)
+            .classed('axis-line', true)
+        
+        xAxis.selectAll('text')
+            .data(lines)
+            .join('text')
+            .attr('x', d => masterScale(d))
+            .attr('y', 80)
+            .text(d => d)
+            .classed('small-axis-text', true)
+        
+        xAxis
+            .append('circle')
+            .attr('cx', masterScale(29.5))
+            .attr('cy', 52.5)
+            .attr('r', 4)
+            .style('fill', 'red')
+            .style('stroke', 'darkred')
+
+        xAxis
+            .append('text')
+            .attr('x', masterScale(29.5))
+            .attr('y', 32.5)
+            .attr('class', 'instr-text')
+            .text('Lockdown')
+            .classed('small-axis-text', true)
+            .style('fill', 'red')
+
+        xAxis
+            .append('text')
+            .attr('x', masterScale(1))
+            .attr('y', 20)
+            .text('Select a region by brushing the bars below')
+            .style('fill', 'grey')
+            .attr('class', 'instr-text')
+        
         this.svg.append('text')
             .text('Gameweek')
-            .attr('x', (this.size.width - this.size.padding.left - this.size.padding.right)/2 + this.size.padding.left)
-            .attr('y', 35 + vShift)
+            .attr('x', - vShift - 45)
+            .attr('y', 20)
+            .attr('transform', 'rotate(-90)')
             .classed('axis-text', true)
+    }
 
+    drawYAxis(key){
         let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
         
         let yAxis = d3.select('#bump-y-axis')
         yAxis.attr('transform', `translate(${this.size.padding.left - 15},0)`)
         yAxis
             .transition()
-            .duration(200)
+            .duration(500)
             .call(d3.axisLeft(yScale))
         d3.select('#y-axis-text')
-            .text( (key == "place") ? "Place" : "Percent of Max Possible Points" )
+            .text( (key == 'place') ? 'Place' : 'Percent of Max Possible Points' )
+    }
+
+    zoomAxes(selection){
+        function inRange(x, range){
+            range.sort((a,b) => a-b);
+            return(x > range[0] & x < range[range.length - 1]);
+        }
         
+        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
+        let vShift = this.size.height - this.size.padding.bottom + 15
+        let lines = new Array()
+        for(let i = 1; i <= 38; i++){lines.push(i)}
+        let xAxis = d3.select('#bump-x-axis')
+
+        let newScale = d3.scaleLinear().domain([selection[0], selection[1]]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        
+        d3.selectAll('.zoom-axis').style('opacity', 1)
+
+        if(!this.isZoomed){
+            xAxis.selectAll('line.zoom-axis')
+                .data(lines)
+                .join('line')
+                .attr('x1', d => masterScale(d))
+                .attr('x2', d => masterScale(d))
+                .attr('y1', 40)
+                .attr('y2', 65)
+                .classed('zoom-axis', true)
+
+            xAxis.selectAll('text.zoom-axis')
+                .data(lines)
+                .join('text')
+                .attr('x', d => masterScale(d))
+                .attr('y', 80)
+                .text(d => d)
+                .classed('zoom-axis', true)
+
+            d3.selectAll('.zoom-axis').filter(d => !inRange(d, selection)).style('opacity', 0)
+        } 
+        
+        this.xScale = newScale
+        this.isZoomed = true;
+
+        xAxis.selectAll('line.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('y1', 0)
+            .attr('y2', 25)
+            .attr('x1', d => newScale(d))
+            .attr('x2', d => newScale(d))
+
+        xAxis.selectAll('text.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('x', d => newScale(d))
+            .attr('y', 35)
+            .text(d => d)
+
+        d3.selectAll('.instr-text')
+            .transition()
+            .duration(500)
+            .style('opacity', 0)
+
+        d3.selectAll('.zoom-axis')
+            .filter(d => !inRange(d, [selection[0] - 1, selection[1] + 1]))
+            .transition()
+            .delay(500)
+            .style('opacity', 0)
+    }
+
+    clearZoom() {
+        this.isZoomed = false;
+        d3.selectAll('.axis-line').classed('grayed', false)
+        d3.selectAll('.small-axis-text').classed('grayed', false)
+
+        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value);
+        this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value);
+
+        let xAxis = d3.select('#bump-x-axis')
+
+        xAxis.selectAll('line.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('x1', d => this.xScale(d))
+            .attr('x2', d => this.xScale(d))
+            .attr('y1', 40)
+            .attr('y2', 65)
+
+        xAxis.selectAll('text.zoom-axis')
+            .transition()
+            .duration(500)
+            .attr('x', d => this.xScale(d))
+            .attr('y', 80)
+            .text(d => d)
+
+        d3.selectAll('.zoom-axis')
+            .transition()
+            .delay(500)
+            .remove()
+
+        d3.selectAll('.instr-text')
+            .transition()
+            .duration(500)
+            .style('opacity', 1)
     }
 
     makeBrush(){
-        let that = this;
+        let vShift = this.size.height - this.size.padding.bottom + 15 + 40
+        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
 
-        let rad = 7+2;
-        let xBrush = d3.brushX()
-            .extent([[this.size.padding.left - rad, this.size.padding.top - rad], [this.size.width - this.size.padding.right + rad, this.size.height - this.size.padding.bottom + rad]])
+        function inRange(x, range){
+            range.sort((a,b) => a-b);
+            return(x > range[0] & x < range[range.length - 1]);
+        }
+
+        let rad = 2.5;
+        this.brush = d3.brushX()
+            .extent([[this.size.padding.left - 5, vShift - rad], [this.size.width - this.size.padding.right + 5, vShift + 25 + rad]])
             .on('brush', d => { 
-                that.clearTeams()
-                let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-                let gwFilter = d.selection.map(x => xScale.invert(x))
-                console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
-                
-                d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
-                d3.selectAll('#bump-lines line').filter(d => d.gw-1 < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                if(d.selection){
+                    d3.selectAll('.axis-line').classed('grayed', false)
+                    d3.selectAll('.small-axis-text').classed('grayed', false)
+                    let gwFilter = d.selection.map(x => masterScale.invert(x))
+                    inRange(1, gwFilter)
+                    d3.selectAll('.axis-line').filter(d => !inRange(d, gwFilter)).classed('grayed', true);
+                    d3.selectAll('.small-axis-text').filter(d => !inRange(d, gwFilter)).classed('grayed', true);
+                }
             })
-            .on('end', d => { if(d.selection == null){ that.clearTeams(); } } )
+            .on('end', d => { 
+                if(d.selection){ 
+                    let gwFilter = d.selection.map(x => masterScale.invert(x))
+                    this.zoomAxes(gwFilter)
+
+                    //TODO: Update Places based on selection
+
+                    // this.xScale = d3.scaleLinear().domain([Math.ceil(gwFilter[0]), Math.floor(gwFilter[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+                    this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value);
+                    this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value); 
+                } else {
+                    this.clearZoom();
+                }     
+            } )
 
         d3.select('#brush-wrapper')
-            .call(xBrush)
+            .call(this.brush)
     }
 
     selectGame(gameID){
@@ -270,25 +441,33 @@ class BumpChart {
 
         d3.selectAll('#bump-dots circle')
             .filter((d) => gameID === d.game_id)
-            .classed('selected-game', true);
+            .classed('selected', true);
     }
 
     clearGames(){
         d3.selectAll('#bump-dots circle')
-            .classed('selected-game', false);
+            .classed('selected', false);
     }
 
     selectTeam(teamIDs) {
-		this.clearTeams();
+        this.clearTeams();
+        d3.selectAll('#bump-dots circle').classed('grayed', true);
+        d3.selectAll('#bump-lines line').classed('grayed', true);
         // Select the teams present in the array teamIDs
-        d3.selectAll('#bump-dots circle').filter((d) => !teamIDs.includes(d.team_abbr)).classed('grayed', true);
-        d3.selectAll('#bump-lines line').filter((d) => !teamIDs.includes(d.team_abbr)).classed('grayed', true);
+        d3.selectAll('#bump-dots circle').filter((d) => teamIDs.includes(d.team_abbr)).classed('filtered', true);
+        d3.selectAll('#bump-lines line').filter((d) => teamIDs.includes(d.team_abbr)).classed('filtered', true);
       
         // Called when at a team is selected, and when a team is deselected and there are still other selected teams
 	}
 
 	clearTeams() {
         // Deselect all teams. Called when all teams are deselected, and from selectTeam
-        d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false);
-	}
+        d3.select('#bump-chart').selectAll('.filtered').classed('filtered', false); 
+        d3.selectAll('#bump-dots circle').classed('grayed', false);
+        d3.selectAll('#bump-lines line').classed('grayed', false);
+    }
+    
+    clearGray() {
+        d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false); 
+    }
 }

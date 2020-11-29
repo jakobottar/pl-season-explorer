@@ -94,9 +94,9 @@ class GameTable {
 
     selectGame(gameID) {
 
-        d3.selectAll(".game-rect").classed("selected-game", false);
+        d3.selectAll(".game-rect").classed("selected", false);
         if (gameID !== null) {
-            let rect = d3.selectAll(".game-rect").filter(d => d.game_id === gameID).classed("selected-game", true);
+            let rect = d3.selectAll(".game-rect").filter(d => d.game_id === gameID).classed("selected", true);
             d3.select(rect.node().parentNode).raise(); // Necessary to bring rect and accompanying text to front, so that border shows up correctly
         }
     }

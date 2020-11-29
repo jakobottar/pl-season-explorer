@@ -34,7 +34,6 @@
   float: left;
   height: 500px;
   display: inline-block;
-  cursor: crosshair;
 }
 
 #bump-chart svg {
@@ -47,6 +46,10 @@
   stroke: rgb(168, 168, 168);
 }
 
+#bump-chart circle{
+  cursor: pointer;
+}
+
 #brush-wrapper {
   height: auto;
   width: auto;
@@ -54,6 +57,17 @@
 
 .axis-text {
   font-size: 16px;
+  text-anchor: middle;
+}
+
+.small-axis-text {
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.zoom-axis {
+  /* stroke: #000000; */
+  font-size: 12px;
   text-anchor: middle;
 }
 
@@ -125,6 +139,7 @@ h1 {
 .season-summary-rect {
   stroke-width: 1px;
   rx: 2px;
+  cursor: pointer;
 }
 
 .season-summary-label {
@@ -143,11 +158,13 @@ h1 {
 .game-rect {
   stroke-width: 1px;
   stroke: lightgray;
+  cursor: pointer;
 }
 
 .game-text {
   font-size: 8pt;
   text-align: center;
+  pointer-events: none;
 }
 
 .game-header-text {
@@ -163,11 +180,6 @@ h1 {
 
 .self-match-rect {
   fill: gray;
-}
-
-.selected-game {
-  stroke-width: 3px;
-  stroke: black;
 }
 
 .game-table-axis-label {
@@ -224,8 +236,16 @@ h1 {
   opacity: 0.2;
 }
 
-.selected-team {
+.filtered{
+  opacity: 1;
+}
+
+.selected {
   stroke-width: 3px;
   stroke: #000000;
   opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
 }
