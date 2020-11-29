@@ -69,12 +69,6 @@ class BumpChart {
             console.log(d);
             this.updateGame(d.game_id);
         })
-
-        // document.getElementById('bump-chart').addEventListener('click', _ => { 
-        //     d3.select('#brush-wrapper').call(this.brush.move, null);
-        //     this.clearZoom();
-        // }); 
-
     }
     
     makeTable(){
@@ -250,14 +244,31 @@ class BumpChart {
             .attr('y', 80)
             .text(d => d)
             .classed('small-axis-text', true)
+        
+        xAxis
+            .append('circle')
+            .attr('cx', masterScale(29.5))
+            .attr('cy', 52.5)
+            .attr('r', 4)
+            .style('fill', 'red')
+            .style('stroke', 'darkred')
+
+        xAxis
+            .append('text')
+            .attr('x', masterScale(29.5))
+            .attr('y', 32.5)
+            .attr('class', 'instr-text')
+            .text('Lockdown')
+            .classed('small-axis-text', true)
+            .style('fill', 'red')
 
         xAxis
             .append('text')
             .attr('x', masterScale(1))
             .attr('y', 20)
             .text('Select a region by brushing the bars below')
-            .attr('fill', 'grey')
-            .attr('id', 'instr-text')
+            .style('fill', 'grey')
+            .attr('class', 'instr-text')
         
         this.svg.append('text')
             .text('Gameweek')
@@ -335,7 +346,7 @@ class BumpChart {
             .attr('y', 35)
             .text(d => d)
 
-        d3.select('#instr-text')
+        d3.selectAll('.instr-text')
             .transition()
             .duration(500)
             .style('opacity', 0)
@@ -378,7 +389,7 @@ class BumpChart {
             .delay(500)
             .remove()
 
-        d3.select('#instr-text')
+        d3.selectAll('.instr-text')
             .transition()
             .duration(500)
             .style('opacity', 1)
