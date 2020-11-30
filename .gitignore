@@ -1,1 +1,3 @@
 .vscode
+init-letsencrypt.sh
+data/certbot
