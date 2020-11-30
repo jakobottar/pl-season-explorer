@@ -1,10 +1,11 @@
 /** Class implementing the bump chart. */
 class BumpChart {
 
-    constructor(updateGame, updateTeam) {
+    constructor(updateGame, updateTeam, updateWeeks) {
         this.data;
         this.updateGame = updateGame;
         this.updateTeam = updateTeam;
+        this.updateWeeks = updateWeeks;
 
         this.svg;
         this.size;
@@ -472,16 +473,18 @@ class BumpChart {
                     this.zoomAxes(gwFilter)
 
                     //TODO: Update Places based on selection
+                    this.updateWeeks(gwFilter);
 
                     this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value);
                     this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value); 
                 } else {
                     this.clearZoom();
+                    this.updateWeeks([0, 38])
                 }     
-            } )
+            } );
 
         d3.select('#brush-wrapper')
-            .call(this.brush)
+            .call(this.brush);
     }
 
     selectGame(gameID){
