@@ -186,6 +186,10 @@ h1 {
   font-size: 16px;
 }
 
+.game-not-brushed {
+  display: none;
+}
+
 /* Game detail */
 
 .game-header {

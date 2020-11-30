@@ -42,7 +42,12 @@ function updateTeam(teamID) {
     }
 }
 
-let bumpChart = new BumpChart(updateGame, updateTeam);
+function updateWeeks(gameWeeks) {
+	finalSeasonChart.updateWeeks(gameWeeks);
+	gameTable.updateWeeks(gameWeeks);
+}
+
+let bumpChart = new BumpChart(updateGame, updateTeam, updateWeeks);
 let finalSeasonChart = new SeasonTable(updateTeam);
 let gameTable = new GameTable(updateGame, updateTeam);
 let gameDetail = new GameDetail(updateGame);
@@ -54,7 +59,7 @@ Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).th
     bumpChart.drawChart();
 
     finalSeasonChart.setData(data[0]);
-    finalSeasonChart.drawChart();
+    finalSeasonChart.drawChart(data[0]);
 
     gameTable.setData(data[0]);
     gameTable.drawChart();

@@ -109,4 +109,9 @@ class GameTable {
     clearTeams() {
         d3.select('#game-table').selectAll('.grayed').classed('grayed', false);
     }
+
+    updateWeeks(gameWeeks) {
+        d3.selectAll(".game-group").classed("game-not-brushed", false);
+        d3.selectAll(".game-group").filter(d => d.gameweek < gameWeeks[0] || d.gameweek > gameWeeks[1]).classed("game-not-brushed", true);
+    }
 }

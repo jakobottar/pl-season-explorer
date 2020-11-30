@@ -12,18 +12,19 @@ class SeasonTable {
 	
 	setData(data) { this.data = data; }
 
-	drawChart() {
+	drawChart(data) {
 		let that = this;
+        d3.select("#season-chart").text("");
 
     	let svgGroup = d3.select("#season-chart").append("svg").attr("id","season-chart-svg");
     	let tooltip = d3.select("#season-chart").append("div").attr("class", "tooltip").style("display", "none").style("opacity", 0);
         let backgroundRect = svgGroup.append("rect").classed("season-chart-bgrect", true);
 
-    	let totalPoints = this.calcTotalPoints();
+    	let totalPoints = this.calcTotalPoints(this.data);
 
     	let xScale = d3.scaleLinear().domain([0,d3.max(totalPoints, d => d.points)]).range([0, this.width]);
 
-		let barGroups = svgGroup.selectAll("g").enter().data(totalPoints).join("g");
+		let barGroups = svgGroup.selectAll("g").data(totalPoints).join("g");
 		
         barGroups.attr("transform", (d, i) => "translate(0, " + (this.height * i / (totalPoints.length + 1) + this.margin.top) + ")");
         let teamLabels = barGroups.append("text").text(d => d.team).classed("season-summary-label",true).attr("transform", "translate(0, " + 6 + ")")
@@ -51,12 +52,12 @@ class SeasonTable {
         rects.on("click", (event, d) => that.updateTeam(d.team));
         backgroundRect.on("click", () => that.updateTeam("none"));
 
-        svgGroup.append("text").text("End-of-season points").attr("x", 190).attr("y", this.margin.top - 60).classed("axis-label",true);
+        svgGroup.append("text").text("Points").attr("x", 190).attr("y", this.margin.top - 60).classed("axis-label",true);
     	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 50) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
 	}
 	
 
-    calcTotalPoints() {
+    calcTotalPoints(data) {
 
     	let pointTotals = [];
 
@@ -64,7 +65,7 @@ class SeasonTable {
     		pointTotals.push({team: i.name_abbr, points: 0});
     	}
 
-    	for (let i of this.data) {
+    	for (let i of data) {
     		if (i.home_team_goal_count > i.away_team_goal_count) {
     			let index = pointTotals.findIndex(d => d.team === window.teamData.find(e => e.name_long === i.home_team_name).name_abbr);
     			pointTotals[index].points += 3;
@@ -91,4 +92,13 @@ class SeasonTable {
 	clearTeams() {
  		d3.selectAll('.season-summary-rect').classed('selected-team', false).classed('grayed', false);
 	}
+
+    updateWeeks(gameWeeks) {
+        let selectedGames = this.data.filter(d => d.gameweek >= gameWeeks[0] && d.gameweek <= gameWeeks[1]);
+        let points = this.calcTotalPoints(selectedGames);
+        let xScale = d3.scaleLinear().domain([0,d3.max(points, d => d.points)]).range([0, this.width]);
+
+        d3.selectAll(".season-summary-rect").data(points).transition().duration(500).attr("width", d => xScale(d.points));
+        d3.select("#seasonChartXAxis").call(d3.axisBottom().scale(xScale));
+    }
 }
