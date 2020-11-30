@@ -58,6 +58,28 @@ We were originally going to also include the Champions League and relegation pla
 
 One final minor problem that we ran into is the possibility that the user could brush over a small enough range of games that a team could pick up zero points. While this is mostly fine, it posed a problem for our team selection method, as the bar to click on to select the team would have zero length. To remedy this, we also allowed for clicking on the team names in the points total chart.
 
+In the end, we have settled on the following design:
+
+**INSERT IMAGES HERE**
+
+The justification for our choices of desing is as follows:
+- Bump chart:
+  - Juxtapoxed line charts used, since the data is tabluar and the number of teams is small enough (20) that juxtaposed line charts are appropriaet (20 is on the upper end of the range, but we see it as still acceptable since due to the nature of the bump chart the number of line crossings is minimal and we are using two hues for each team).
+  - X-axis position (position on single scale) chosen to represent game week since it's the independent variable and is the most important attribute
+  - Y-axis position (position on single scale) chosen to represent position/points/GD since they're the dependent variables and are the most important dependent attributes. All choices carry similar but distinct information with noting to be gained from viewing the different variables at the same time, so a menu to switch the displayed y-axis was used.
+  - Two hues (a primary and secondary) chosen to represent team, since hue is the next dominant channel after position, but 20 is too many hues for a single encoding to be able to capture. However, by using both primary and secondary team colors, we are able to encode all 20 teams with distinguishable hues representing the team colors.
+- Points total:
+  - Bar chart used, since there is a single cate
+  - Y-axis position chosen to represent team, since it's the dominant sensory input for categorical variables. A redundant encoding of hue is used as well, to match the hues used in the bump chart in order to allow for easier cross-referencing.
+  - Length of bars (and hence also position on x-axis since they all start from the same x-value) chosen to represent total points, since it's a quantitative attribute and is the most dominant encoding.
+- Game table:
+  - Adjacency matrix network visualization used for this complete graph network because the attributes of the links (i.e. games) are the important parts, not anything to do with the nodes or the "distance between nodes".
+  - Spatial region chosen to encode which teams are playing, since it's the most important attribute of this categorical data
+  - Saturation/hue on a diverging scale chosen to show margin of victory, since it's ordinal data and the position attribute is already taken, and luminance would make it harder to read the text inside.
+- Game detail:
+  - This is a custom visualization that does not correspond to something like a bar chart or a line chart, since the data is not easily fit by one of these common visualization types.
+  - Position is used for the times in the game of goals and red cards, since it's the dominant encoding
+  - Hue is used for the team scoring the goal or receiving the red card, since it's a categorical attribute and hue is the next dominant channel after position, and also for consistency with other views.
 
 ## Implementation
 
