@@ -51,7 +51,6 @@ class BumpChart {
 
         let circles = d3.select('#bump-dots').selectAll('circle');
         circles.on('mouseover', (event, d) => {
-            // TODO: highlight team
             tooltip.text('');
             tooltip.style('display', 'block').transition().duration(200).style('opacity', 0.9);
             tooltip.style('left', (event.pageX + 5 - 10) + 'px').style('top', (event.pageY - 28 - 200) + 'px');
@@ -64,7 +63,6 @@ class BumpChart {
             tooltip.append('span').classed('tooltip-text', true).text('GD: ' + d.gd);
         });
         circles.on('mouseout', () => {
-            // TODO: clear team
             tooltip.transition().duration(500).on('end', () => tooltip.style('display', 'none')).style('opacity', 0);
         });
         circles.on('click', (event, d) => {
@@ -475,7 +473,6 @@ class BumpChart {
 
                     //TODO: Update Places based on selection
 
-                    // this.xScale = d3.scaleLinear().domain([Math.ceil(gwFilter[0]), Math.floor(gwFilter[1])]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
                     this.updatePosition(d3.select('#bump-lines').selectAll('line'), document.getElementById('y-axis-select').value);
                     this.updatePosition(d3.select('#bump-dots').selectAll('circle'), document.getElementById('y-axis-select').value); 
                 } else {
