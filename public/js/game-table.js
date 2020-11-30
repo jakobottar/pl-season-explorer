@@ -42,7 +42,7 @@ class GameTable {
             }
         });
 
-        let texts = cellGroups.append("text").classed("game-text", true).attr("transform", "translate(" + this.width / teams.length / 3 + ", " + this.height / teams.length / 1.5 + ")");
+        let texts = cellGroups.append("text").classed("game-text", true).attr("transform", "translate(" + this.width / teams.length / 2 + ", " + this.height / teams.length / 1.5 + ")");
         texts.text(d => d.home_team_goal_count + "\u2013" + d.away_team_goal_count);
 
         for (let i = 0; i < teams.length; i++) {
@@ -50,16 +50,16 @@ class GameTable {
             let yHeaderGroup = svgGroup.append("g").attr("transform", "translate(0, " + (this.height * i / teams.length + this.margin.top) + ")");
             let xRect = xHeaderGroup.append("rect").attr("x", this.width / teams.length / 10).attr("y", this.margin.top - 25).attr("width", this.width / teams.length / 1.2345).attr("height", 20);
             xRect.attr("class", "game-header-rect " + teams[i].toLowerCase());
-            xHeaderGroup.append("text").attr("x", this.width / teams.length / 3.5).attr("y", this.margin.top - 11).text(teams[i]).classed("game-header-text", true);
+            xHeaderGroup.append("text").attr("x", this.width / teams.length / 2).attr("y", this.margin.top - 11).text(teams[i]).classed("game-header-text", true);
             let yRect = yHeaderGroup.append("rect").attr("x", this.margin.left - 45).attr("y", this.height / teams.length / 10).attr("width", 35).attr("height", this.height / teams.length / 1.2345);
             yRect.attr("class", "game-header-rect " + teams[i].toLowerCase());
-            yHeaderGroup.append("text").attr("x", this.margin.left - 40).attr("y", this.height / teams.length / 1.5).text(teams[i]).classed("game-header-text", true);
+            yHeaderGroup.append("text").attr("x", this.margin.left - 28).attr("y", this.height / teams.length / 1.5).text(teams[i]).classed("game-header-text", true);
             let selfMatchRect = svgGroup.append("rect").classed("self-match-rect", true);
             selfMatchRect.attr("x", this.width * i / teams.length + this.margin.left).attr("y", this.height * i / teams.length + this.margin.top).attr("width", this.width / teams.length).attr("height", this.height / teams.length);
         }
 
-        svgGroup.append("text").attr("x", 485).attr("y", 20).text("Away team").classed("game-table-axis-label", true);
-        svgGroup.append("text").attr("x", 0).attr("y", 200).attr("transform", "rotate(270,60,240)").text("Home team").classed("game-table-axis-label", true);
+        svgGroup.append("text").attr("x", 485).attr("y", 20).text("Away team").classed("axis-label", true);
+        svgGroup.append("text").attr("x", 0).attr("y", 200).attr("transform", "rotate(270,60,240)").text("Home team").classed("axis-label", true);
 
         cellGroups.on("click", (event, d) => that.updateGame(d.game_id));
         cellGroups.on("mouseover", (event, d) => {
@@ -103,6 +103,7 @@ class GameTable {
 
     selectTeam(teamIDs) {
         this.clearTeams();
+        d3.selectAll('.game-group').filter(d => !teamIDs.includes(window.teamData.find(e => e.name_long === d.home_team_name).name_abbr) && !teamIDs.includes(window.teamData.find(e => e.name_long === d.away_team_name).name_abbr)).classed('grayed', true);
         d3.selectAll('.game-group').filter(d => !teamIDs.includes(window.teamData.find(e => e.name_long === d.home_team_name).name_abbr) && !teamIDs.includes(window.teamData.find(e => e.name_long === d.away_team_name).name_abbr)).classed('grayed', true);
     }
 
