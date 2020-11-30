@@ -24,17 +24,17 @@ class SeasonTable {
 
     	let xScale = d3.scaleLinear().domain([0,d3.max(totalPoints, d => d.points)]).range([0, this.width]);
 
-		let barGroups = svgGroup.selectAll("g").data(totalPoints).join("g");
+		let barGroups = svgGroup.selectAll("g").data(totalPoints).join("g").classed("season-summary-groups", true);
 		
         barGroups.attr("transform", (d, i) => "translate(0, " + (this.height * i / (totalPoints.length + 1) + this.margin.top) + ")");
-        let teamLabels = barGroups.append("text").text(d => d.team).classed("season-summary-label",true).attr("transform", "translate(0, " + 6 + ")")
+        let teamLabels = barGroups.append("text").text(d => d.team).classed("season-summary-label",true).attr("transform", "translate(0, " + 9 + ")")
 
 		let rects = barGroups.append("rect").attr("transform", d => "translate(" + this.margin.left + ", 0)");
 		rects.attr("x", 0).attr("y", 0).attr("width", d => xScale(d.points)).attr("height", 12);
         rects.attr("class", d => "season-summary-rect " + d.team.toLowerCase());
 
 		// Mouseover for rects
-		rects.on("mouseover", (event, d) => {
+		barGroups.on("mouseover", (event, d) => {
 			tooltip.text("");
 			tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
 			tooltip.style("left", (event.pageX + 5 - 1000) + "px").style("top", (event.pageY - 28 - 240) + "px");
@@ -44,16 +44,16 @@ class SeasonTable {
 		});
 		
 		// Mouseout for rects
-		rects.on("mouseout", () => {
+		barGroups.on("mouseout", () => {
 			tooltip.transition().duration(500).on("end", () => tooltip.style("display", "none")).style("opacity", 0);
 		});
 		
 		// Click function for team selection
-        rects.on("click", (event, d) => that.updateTeam(d.team));
+        barGroups.on("click", (event, d) => that.updateTeam(d.team));
         backgroundRect.on("click", () => that.updateTeam("none"));
 
-        svgGroup.append("text").text("Points").attr("x", 190).attr("y", this.margin.top - 60).classed("axis-label",true);
-    	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 50) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
+        svgGroup.append("text").text("Points").attr("x", 230).attr("y", this.margin.top - 50).classed("axis-label",true);
+    	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 40) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
 	}
 	
 

@@ -116,12 +116,6 @@ h1 {
   text-align: center;
 }
 
-/* Axis labels */
-.axis-label {
-  font-size: 10pt;
-  text-align: center;
-}
-
 /* Season summary chart */
 
 #season-chart-svg {
@@ -136,15 +130,18 @@ h1 {
   opacity: 0;
 }
 
+.season-summary-groups {
+  cursor: pointer;
+}
+
 .season-summary-rect {
   stroke-width: 1px;
   rx: 2px;
-  cursor: pointer;
 }
 
 .season-summary-label {
   font-size: 8pt;
-  text-align: left;
+  text-anchor: left;
 }
 
 /* Game summary chart */
@@ -163,13 +160,13 @@ h1 {
 
 .game-text {
   font-size: 8pt;
-  text-align: center;
+  text-anchor: middle;
   pointer-events: none;
 }
 
 .game-header-text {
   font-size: 8pt;
-  text-align: center;
+  text-anchor: middle;
 }
 
 .game-header-rect {
@@ -180,10 +177,6 @@ h1 {
 
 .self-match-rect {
   fill: gray;
-}
-
-.game-table-axis-label {
-  font-size: 16px;
 }
 
 .game-not-brushed {
@@ -224,6 +217,7 @@ h1 {
 
 .half-text {
   font-size: 8pt;
+  text-anchor: middle;
 }
 
 .goal {
@@ -252,4 +246,9 @@ h1 {
 
 .hidden {
   opacity: 0;
+}
+
+.axis-label {
+  font-size: 12pt;
+  text-align: center;
 }
