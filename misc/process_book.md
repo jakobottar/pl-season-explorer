@@ -56,6 +56,8 @@ With regards to interactivity, we have mostly maintianed our original plans of b
 
 We were originally going to also include the Champions League and relegation places in the bump chart by adding horizontal lines between 17th and 18th (for relegation), and between 4th and 5th (for Champions League). However, we decided that the bump chart was already too cluttered, and that adding these features would make it harder to decipher the primary purpose of the chart, which is to show how the teams did over the course of an entire season. Readers interested in this info already have it implicitely in the season summary chart immediately to the right even when the brush is activated, as the top four finishers automatically advance to the champions league and the bottom three are relegated.
 
+One final minor problem that we ran into is the possibility that the user could brush over a small enough range of games that a team could pick up zero points. While this is mostly fine, it posed a problem for our team selection method, as the bar to click on to select the team would have zero length. To remedy this, we also allowed for clicking on the team names in the points total chart.
+
 
 ## Implementation
 
