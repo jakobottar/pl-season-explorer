@@ -47,8 +47,21 @@ class BumpChart {
             .attr('transform', 'rotate(-90)')
             .classed('axis-text', true)
 
-            this.drawXAxis();
-            this.drawYAxis('place')
+        let yAxis = d3.select('#bump-y-axis')
+        yAxis.attr('transform', `translate(${this.size.padding.left - 15},0)`)
+        // covering rectangle to hide dots/lines behind y axis
+        yAxis
+            .append('rect')
+            .attr('x', -(this.size.padding.left-15))
+            .attr('y', this.size.padding.top - 7)
+            .attr('width', this.size.padding.left-15)
+            .attr('height', this.size.height - this.size.padding.bottom)
+            .style('fill', 'white')
+
+        this.drawXAxis();
+        this.drawYAxis('place')
+
+        
 
         let circles = d3.select('#bump-dots').selectAll('circle');
         circles.on('mouseover', (event, d) => {
@@ -317,19 +330,10 @@ class BumpChart {
         }
 
         let range = myRange(this.table, key)
+        console.log(range)
         let yScale = d3.scaleLinear().domain(range).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
         
         let yAxis = d3.select('#bump-y-axis')
-        yAxis.attr('transform', `translate(${this.size.padding.left - 15},0)`)
-        // covering rectangle to hide dots/lines behind y axis
-        yAxis
-            .append('rect')
-            .attr('x', -(this.size.padding.left-15))
-            .attr('y', this.size.padding.top - 7)
-            .attr('width', this.size.padding.left-15)
-            .attr('height', this.size.height - this.size.padding.bottom)
-            .style('fill', 'white')
-
         yAxis
             .transition()
             .duration(500)
