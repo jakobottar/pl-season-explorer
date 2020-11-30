@@ -322,6 +322,15 @@ class BumpChart {
         
         let yAxis = d3.select('#bump-y-axis')
         yAxis.attr('transform', `translate(${this.size.padding.left - 15},0)`)
+        // covering rectangle to hide dots/lines behind y axis
+        yAxis
+            .append('rect')
+            .attr('x', -(this.size.padding.left-15))
+            .attr('y', this.size.padding.top - 7)
+            .attr('width', this.size.padding.left-15)
+            .attr('height', this.size.height - this.size.padding.bottom)
+            .style('fill', 'white')
+
         yAxis
             .transition()
             .duration(500)
