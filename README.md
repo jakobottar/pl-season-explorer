@@ -4,7 +4,7 @@ A final project for [CS 6630 - Data Visualization Fall 2020](http://dataviscours
 by [Brian Eisner](mailto:brian.eisner@utah.edu), [Jakob Johnson](mailto:jakob.ottar@pm.me), and [Kevin Wood](mailto:kevin.wood@utah.edu)
 
 ## Project Website and Screencast
-- Website: [Premier League Season Explorer](http://pl-explorer.com/)
+- Website: [Premier League Season Explorer](https://pl-explorer.com/)
 - Screencast: **INSERT SCREENCAST HERE**
 
 ## Background
@@ -27,13 +27,14 @@ There are several components to using our visualization. The loaded page will sh
 
 All code is our own work: we did not import libraries from anywhere.
 
+Core website code is contained in `/public/`
+- about
+  - index.html: about page
 - css
   - styles.css: contains all css styling code apart from team colors.
   - team-colors.css: contains team color stylings.
 - data
-  - dataHandler.py: Python script that converts the csv files to json files.
   - seasonData.csv: contains data on all games during the entire 2019-20 Premier League season. Mostly from [FootyStats](https://footystats.org), with additional information added from the [Premier League website](https://premierleague.com).
-  - seasonData.json: above file converted to JSON format.
   - teamInfo.csv: contains reference data on each team (e.g. long name, abbreviation).
 - img/favicons
   - apple-touch-icon.png: icon for Apple mobile product landing screens.
@@ -47,3 +48,8 @@ All code is our own work: we did not import libraries from anywhere.
   - script.js: contains code for data loading and initializing each view, as well as linking between views.
   - season-table.js: contains all code to create and interact with the points total chart view.
 - index.html: contains the basic HTML skeleton of the page.
+
+`/docs/` contains documentation and assignment reports
+
+`/data/` and `docker-compose.yml` are used by Docker to host the website on DigitalOcean.  
+Jakob followed [a tutorial](https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71) to enable SSL on the Docker/Nginx webserver. We scored an A on [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html?d=pl-explorer.com).
