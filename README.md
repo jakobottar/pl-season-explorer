@@ -32,9 +32,7 @@ All code is our own work: we did not import libraries from anywhere.
   - styles.css: contains all css styling code apart from team colors.
   - team-colors.css: contains team color stylings.
 - data
-  - dataHandler.py: Python script that converts the csv files to json files.
   - seasonData.csv: contains data on all games during the entire 2019-20 Premier League season. Mostly from [FootyStats](https://footystats.org), with additional information added from the [Premier League website](https://premierleague.com).
-  - seasonData.json: above file converted to JSON format.
   - teamInfo.csv: contains reference data on each team (e.g. long name, abbreviation).
 - img/favicons
   - apple-touch-icon.png: icon for Apple mobile product landing screens.
