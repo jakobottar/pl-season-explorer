@@ -81,12 +81,7 @@ class BumpChart {
             
       //COMMENTED THIS OUT TO NOT INTERFERE WITH BRUSH WORK
         let storytellingSelection = d3.select("#storytelling-select").node().value;
-        // console.log("storytellingSelection", storytellingSelection);
         this.highlightStory(storytellingSelection);
-        // console.log(teamSelection);
-        
-        // this.clearTeams
-        // console.log("teamSelection", teamSelection);
 
 
     }
@@ -196,7 +191,7 @@ class BumpChart {
         let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
         let yScale = d3.scaleLinear().domain((key == 'place') ? [1, 20] : [1, 0]).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
 
-        if(elements._groups[0][0].nodeName == 'line'){
+        if (elements._groups[0][0].nodeName == 'line') {
             elements
                 .transition()
                 .duration(200)
@@ -320,20 +315,20 @@ class BumpChart {
             var selectedOption = document.getElementById('storytelling-select').value;
 
             if (selectedOption === "None") {
-                console.log("selectedOption: ", selectedOption);
                 this.clearTeams();
             }
             else {
+                
                 // recover the option that has been chosen
-                this.updateTeam()
-                d3.selectAll('#bump-dots circle').filter(d => function () {
-                    console.log("d", d);
-                }).classed('grayed', false);
+                d3.selectAll('#bump-dots circle').filter(d => d.team_name == selectedOption).classed('grayed', false);
                 d3.selectAll('#bump-lines line').filter(d => d.team_name == selectedOption).classed('grayed', false);
 
                 d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
                 d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
             }
+            var storytellingGroup = ["Tottenham Hotspur", "Pochettino", 12];
+            this.updatePosition(elements, 12)
+
             
         return selectedOption
     })
