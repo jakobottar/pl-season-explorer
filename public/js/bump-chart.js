@@ -10,11 +10,21 @@ class BumpChart {
         this.size;
 
         this.table;
+
+
+        // this.storyButton = 
+            // d3.select("#wrapper").select(".toolbar"),
+            //     "Show Extremes"
+            //  );
+
     }
 
     setData(data) { this.data = data; }
 
+
+
     drawChart() {
+        drawStorytellingDropdown()
         this.table = this.makeTable();
         let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
 
@@ -44,7 +54,9 @@ class BumpChart {
 
 
         let that = this;
+
         let circles = d3.select('#bump-dots').selectAll('circle');
+
         circles.on('mouseover', (event, d) => {
             // TODO: highlight team
             tooltip.text('');
@@ -63,7 +75,20 @@ class BumpChart {
         circles.on('click', (event, d) => {
             console.log(d);
             that.updateGame(d.game_id);
-        })
+        });
+
+
+            
+      //COMMENTED THIS OUT TO NOT INTERFERE WITH BRUSH WORK
+        let storytellingSelection = d3.select("#storytelling-select").node().value;
+        // console.log("storytellingSelection", storytellingSelection);
+        this.highlightStory(storytellingSelection);
+        // console.log(teamSelection);
+        
+        // this.clearTeams
+        // console.log("teamSelection", teamSelection);
+
+
     }
     
     makeTable(){
@@ -255,9 +280,8 @@ class BumpChart {
                 let xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
                 let gwFilter = d.selection.map(x => xScale.invert(x))
                 console.log(gwFilter) // use this to select and stuff, returns array of selection bounds in terms of gameweek
-                
-                d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
-                d3.selectAll('#bump-lines line').filter(d => d.gw-1 < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                    d3.selectAll('#bump-dots circle').filter(d => d.gw < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
+                    d3.selectAll('#bump-lines line').filter(d => d.gw-1 < gwFilter[0] | d.gw > gwFilter[1]).classed('grayed', true);
             })
             .on('end', d => { if(d.selection == null){ that.clearTeams(); } } )
 
@@ -279,7 +303,7 @@ class BumpChart {
     }
 
     selectTeam(teamIDs) {
-		this.clearTeams();
+        this.clearTeams();
         // Select the teams present in the array teamIDs
         d3.selectAll('#bump-dots circle').filter((d) => !teamIDs.includes(d.team_abbr)).classed('grayed', true);
         d3.selectAll('#bump-lines line').filter((d) => !teamIDs.includes(d.team_abbr)).classed('grayed', true);
@@ -290,5 +314,28 @@ class BumpChart {
 	clearTeams() {
         // Deselect all teams. Called when all teams are deselected, and from selectTeam
         d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false);
-	}
+    }
+    highlightStory() {
+        d3.select("#storytelling-select").on("change", d => {
+            var selectedOption = document.getElementById('storytelling-select').value;
+
+            if (selectedOption === "None") {
+                console.log("selectedOption: ", selectedOption);
+                this.clearTeams();
+            }
+            else {
+                // recover the option that has been chosen
+            
+            d3.selectAll('#bump-dots circle').filter(d => function () {
+                console.log("d", d);
+            }).classed('grayed', false);
+            d3.selectAll('#bump-lines line').filter(d => d.team_name == selectedOption).classed('grayed', false);
+
+            d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
+            d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
+            }
+            
+        return selectedOption
+    })
+}
 }
