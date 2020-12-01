@@ -1,4 +1,4 @@
-l# Process book
+# Process book
 
 Premier League Season Explorer
 
@@ -34,14 +34,14 @@ Aside from our objectives in creating a suitable visualization for the data, we 
 
 Use CSVs from FootyStats https://footystats.org/england/premier-league#. This is a website with a huge amount of data that can be downloaded. Although we do need to pay for it, it’s only 20 euros per month and we only need it for one month so we all agreed to chip in ⅓ of the cost for the benefit of the project.
 
-Premier league website https://premierleague.com. This will be useful for any data that for some reason isn’t on the footystats site. As far as we’re aware, however, there is no data dump download option, so we will use this as little as possible to minimize unnecessary work of manual data transcription.
+Premier league website https://premierleague.com. This was useful for data that was not on the footystats site, which in our case turned out to be game week, goal scorers, and red cards. However, there is no data dump download option that we were aware of, so we had to input the data into a JavaScript-readable format manually, which took a significant amount of time.
 
 
 ## Exploratory Data Analysis
 
 Thus far, the season data downloaded from FootyStats has worked well for implementing the bump chart, season summary chart, and game table. The only data we needed to add to the csv file to make this work was game week, which was almost trivial to implement. There was also no column for cumulative points on the season, but it was easy to implement a function in JavaScript to calculate this number of points for the season summary chart. Similarly, there was no column for margin of victory (used for saturation/hue in the game table), but this was easy to calculate on the fly in the visualiztaion. from the home team and away team goals.
 
-One wrinkle we came across midway through the project is that the footystats data does not include anything about individual players (e.g. who cards, subs, goals broken down by player). Thus, we were forced to manually grab player data from the Premier League website game by game. As a result, we will limit our individual game detail view to only include game-changing events (goals and red cards), as any more than this (in particular full lineups and substitutions) would require an inordinate amount of work to input the data.
+One wrinkle we came across midway through the project is that the footystats data does not include anything about individual players (e.g. who cards, subs, goals broken down by player). Thus, we were forced to manually grab player data from the Premier League website game by game. As a result, we limited our individual game detail view to only include game-changing events (goals and red cards), as any more than this (in particular full lineups and substitutions) would require an inordinate amount of work to input the data.
 
 
 ## Design Evolution
