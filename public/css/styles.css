@@ -46,7 +46,7 @@
   stroke: rgb(168, 168, 168);
 }
 
-#bump-chart circle{
+#bump-chart circle {
   cursor: pointer;
 }
 
@@ -100,7 +100,7 @@
   min-height: 10px;
   font: 12px sans-serif;
   padding: 3px;
-  background: #EEEEEE;
+  background: #eeeeee;
   stroke: gray;
   border-radius: 3px;
   pointer-events: none;
@@ -186,8 +186,8 @@ h1 {
 /* Game detail */
 
 .game-header {
-	text-align: center;
-	font-size: 14pt;
+  text-align: center;
+  font-size: 14pt;
   height: 20px;
 }
 
@@ -234,7 +234,7 @@ h1 {
   opacity: 0.2;
 }
 
-.filtered{
+.filtered {
   opacity: 1;
 }
 

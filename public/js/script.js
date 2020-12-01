@@ -53,6 +53,8 @@ let gameTable = new GameTable(updateGame, updateTeam);
 let gameDetail = new GameDetail(updateGame);
 
 Promise.all([d3.csv('./data/seasonData.csv'), d3.csv('./data/teamInfo.csv')]).then(data => {
+    textBox();
+    
     window.teamData = data[1]
 
     bumpChart.setData(data[0]);
