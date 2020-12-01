@@ -65,7 +65,7 @@ class GameTable {
         cellGroups.on("mouseover", (event, d) => {
             tooltip.text("");
             tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
-            tooltip.style("left", (event.pageX + 5 - 10) + "px").style("top", (event.pageY - 28 - 700) + "px");
+            tooltip.style("left", (event.pageX + 5 - 10) + "px").style("top", (event.pageY - 28 - 650) + "px");
             tooltip.append("span").classed("tooltip-text", true).text(d.home_team_name + " " + d.home_team_goal_count + "\u2013" + d.away_team_goal_count + " " + d.away_team_name);
         });
         cellGroups.on("mouseout", () => {

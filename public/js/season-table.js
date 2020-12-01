@@ -37,7 +37,7 @@ class SeasonTable {
 		barGroups.on("mouseover", (event, d) => {
 			tooltip.text("");
 			tooltip.style("display", "block").transition().duration(200).style("opacity", 0.9);
-			tooltip.style("left", (event.pageX + 5 - 1000) + "px").style("top", (event.pageY - 28 - 240) + "px");
+			tooltip.style("left", (event.pageX + 5 - 1000) + "px").style("top", (event.pageY - 28 - 140) + "px");
 			tooltip.append("span").classed("tooltip-text", true).text("Team: " + window.teamData.find(e => e.name_abbr === d.team).name_long);
 			tooltip.append("br")
 			tooltip.append("span").classed("tooltip-text", true).text("Points: " + d.points);
@@ -52,7 +52,7 @@ class SeasonTable {
         barGroups.on("click", (event, d) => that.updateTeam(d.team));
         backgroundRect.on("click", () => that.updateTeam("none"));
 
-        svgGroup.append("text").text("Points").attr("x", 230).attr("y", this.margin.top - 50).classed("axis-label",true);
+        svgGroup.append("text").text("Total points").attr("x", 210).attr("y", this.margin.top - 50).classed("axis-label",true);
     	svgGroup.append("g").attr("id", "seasonChartXAxis").attr("transform", "translate(" + this.margin.left + ", " + (this.margin.top - 40) + ")").classed("axis", true).call(d3.axisBottom().scale(xScale));
 	}
 	
