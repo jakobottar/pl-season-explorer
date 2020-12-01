@@ -64,7 +64,8 @@ class BumpChart {
         this.drawXAxis();
         this.drawYAxis('place')
 
-        
+        // let storySelection = d3.select("#storytelling-select").node().value;
+        this.highlightStory()
 
         let circles = d3.select('#bump-dots').selectAll('circle');
 
@@ -545,8 +546,8 @@ class BumpChart {
                 d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
                 d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
             }
-            var storytellingGroup = ["Tottenham Hotspur", "Pochettino", 12];
-            this.updatePosition(elements, 12)
+            // var storytellingGroup = ["Tottenham Hotspur", "Pochettino", 12];
+            // this.updatePosition(elements, 12)
 
             
         return selectedOption

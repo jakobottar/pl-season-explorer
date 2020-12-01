@@ -6,7 +6,7 @@
 
 .header-wrapper {
   width: 1500px;
-  height: 120px;
+  height: 100px;
 }
 
 #header {
@@ -25,7 +25,7 @@
 #controls {
   position: relative;
   width: 1500px;
-  height: 20px;
+  height: 75px;
 }
 
 #bump-chart {
@@ -251,4 +251,9 @@ h1 {
 .axis-label {
   font-size: 12pt;
   text-align: center;
+}
+
+#storytelling {
+  padding: 10px;
+  color: gray;
 }
