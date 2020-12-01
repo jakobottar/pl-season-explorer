@@ -325,14 +325,14 @@ class BumpChart {
             }
             else {
                 // recover the option that has been chosen
-            
-            d3.selectAll('#bump-dots circle').filter(d => function () {
-                console.log("d", d);
-            }).classed('grayed', false);
-            d3.selectAll('#bump-lines line').filter(d => d.team_name == selectedOption).classed('grayed', false);
+                this.updateTeam()
+                d3.selectAll('#bump-dots circle').filter(d => function () {
+                    console.log("d", d);
+                }).classed('grayed', false);
+                d3.selectAll('#bump-lines line').filter(d => d.team_name == selectedOption).classed('grayed', false);
 
-            d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
-            d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
+                d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
+                d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
             }
             
         return selectedOption
