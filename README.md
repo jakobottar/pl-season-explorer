@@ -47,6 +47,7 @@ Core website code is contained in `/public/`
   - game-table.js: contains all code to create and interact with the game table view.
   - script.js: contains code for data loading and initializing each view, as well as linking between views.
   - season-table.js: contains all code to create and interact with the points total chart view.
+  - storytelling.js: contains the code for the storytelling aspect of the visualization.
 - index.html: contains the basic HTML skeleton of the page.
 
 `/docs/` contains documentation and assignment reports

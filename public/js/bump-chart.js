@@ -19,7 +19,10 @@ class BumpChart {
 
     setData(data) { this.data = data; }
 
+
+
     drawChart() {
+        drawStorytellingDropdown()
         this.table = this.makeTable();
         let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
 
@@ -64,6 +67,7 @@ class BumpChart {
         
 
         let circles = d3.select('#bump-dots').selectAll('circle');
+
         circles.on('mouseover', (event, d) => {
             tooltip.text('');
             tooltip.style('display', 'block').transition().duration(200).style('opacity', 0.9);
@@ -211,7 +215,7 @@ class BumpChart {
             .domain(range)
             .range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
 
-        if(elements._groups[0][0].nodeName == 'line'){
+        if (elements._groups[0][0].nodeName == 'line') {
             elements
                 .transition()
                 .duration(500)
@@ -523,6 +527,29 @@ class BumpChart {
     }
     
     clearGray() {
-        d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false); 
+        d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false);
     }
+    highlightStory() {
+        d3.select("#storytelling-select").on("change", d => {
+            var selectedOption = document.getElementById('storytelling-select').value;
+
+            if (selectedOption === "None") {
+                this.clearTeams();
+            }
+            else {
+                
+                // recover the option that has been chosen
+                d3.selectAll('#bump-dots circle').filter(d => d.team_name == selectedOption).classed('grayed', false);
+                d3.selectAll('#bump-lines line').filter(d => d.team_name == selectedOption).classed('grayed', false);
+
+                d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
+                d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
+            }
+            var storytellingGroup = ["Tottenham Hotspur", "Pochettino", 12];
+            this.updatePosition(elements, 12)
+
+            
+        return selectedOption
+    })
+}
 }
