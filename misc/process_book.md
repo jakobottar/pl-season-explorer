@@ -1,4 +1,4 @@
-# Process book
+l# Process book
 
 Premier League Season Explorer
 
@@ -19,9 +19,9 @@ We all have an interest in soccer, while Jakob and Brian religiously follow the 
 There are many sites that can be used to visualize individual Premier League games (e.g. *The Guardian* and the official Premier League site). There are also sites that can be used to visualize an entire season (again, the official Premier League site can do this). But there are not many sites out there that make it easy to visualize part of a season, or easily switch between game data and season data.
 
 
-## Questions
+## Questions and Goals
 
-Interactively visualize a single English Premier League (EPL) season with a game-by-game breakdown for all teams in the EPL.
+Main goal: Interactively visualize a single English Premier League (EPL) season with a game-by-game breakdown for all teams in the EPL.
 
 Show how each team performed versus other teams, and as a function of time over the entire season. Allow the user to zoom in on individual games and see the significant events during each game, such as who scored or who was shown a red card.
 
@@ -39,7 +39,7 @@ Premier league website https://premierleague.com. This will be useful for any da
 
 ## Exploratory Data Analysis
 
-Thus far, the season data downloaded from FootyStats has worked well for implementing the bump chart, season summary chart, and game table. The only data we needed to add to the csv file to make this work was game week, which was almost trivial to implement. There was also no column for cumulative points on the season, but it was easy to implement a function in JavaScript to calculate this number of points for the season summary chart. The function will later be extended to allow for only games during certain game weeks to count towards the total, and based on the function design this should be trivial as well once we reach that point. Similarly, there was no column for margin of victory (used for saturation/hue in the game table), but this was easy to calculate from the home team and away team goals.
+Thus far, the season data downloaded from FootyStats has worked well for implementing the bump chart, season summary chart, and game table. The only data we needed to add to the csv file to make this work was game week, which was almost trivial to implement. There was also no column for cumulative points on the season, but it was easy to implement a function in JavaScript to calculate this number of points for the season summary chart. Similarly, there was no column for margin of victory (used for saturation/hue in the game table), but this was easy to calculate on the fly in the visualiztaion. from the home team and away team goals.
 
 One wrinkle we came across midway through the project is that the footystats data does not include anything about individual players (e.g. who cards, subs, goals broken down by player). Thus, we were forced to manually grab player data from the Premier League website game by game. As a result, we will limit our individual game detail view to only include game-changing events (goals and red cards), as any more than this (in particular full lineups and substitutions) would require an inordinate amount of work to input the data.
 
