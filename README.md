@@ -26,7 +26,8 @@ There are several components to using our visualization. The loaded page will sh
 ## Code Documentation
 
 All code is our own work: we did not import libraries from anywhere.
-
+- about
+  - index.html: contains the code for the "about" page.
 - css
   - styles.css: contains all css styling code apart from team colors.
   - team-colors.css: contains team color stylings.
