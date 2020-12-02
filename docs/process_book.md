@@ -65,7 +65,7 @@ One final minor problem that we ran into is the possibility that the user could 
 
 JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.
 
-~[View of entire visualization](img/Overview.png)
+![View of entire visualization](img/Overview.png)
 
 In the end, we have settled on the design shown above. We chose to juxtapose all the views rather than have only one visible at a time, as there are aspects where being able to observe multiple views is necessary (e.g. viewing how a team's performance over several weeks by brushing on the bump chart causes their overall place in the points total view to change). The justification for our choices of design is as follows in the below subsections:
 
@@ -114,7 +114,7 @@ For the game detail view, we did not use a generic visualization such as an adja
 
 To more easily see how certain teams did in relatin to each other, we allowed for the highlighting of one or more teams by clicking on the team's bar or name in the points total views. This grays out the results for all other teams in all three always-visible views.
 
-![Team selection](ing/TeamSelection.png)
+![Team selection](img/TeamSelection.png)
 
 - Graying out other teams creates a popout effect for the data for the selected team or teams, to make it easier to see just their results.
 
