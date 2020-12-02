@@ -284,11 +284,11 @@ class BumpChart {
             .classed('small-axis-text', true)
         
         xAxis
-            .append('circle')
-            .attr('cx', masterScale(29.5))
-            .attr('cy', 52.5)
-            .attr('r', 4)
-            .style('fill', 'red')
+            .append('line')
+            .attr('x1', masterScale(29.5))
+            .attr('x2', masterScale(29.5))
+            .attr('y1', 40)
+            .attr('y2', 65)
             .style('stroke', 'darkred')
 
         xAxis
