@@ -1,75 +1,376 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Premier League Explorer | About</title>
-<meta http-equiv='Content-type' content='text/html;charset=UTF-8'>
+<title>process_book.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
 <style>
-	body {
-		font-family: 'Roboto', sans-serif;
-	}
-	h, h1, h2, h3 {
-		max-width: 850px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	p, li {
-		max-width: 800px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-	a {
-		color: #006ebf;
-		text-decoration: none;
-	}
-	a:hover {
-		text-decoration: underline;
-	}
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 
-	img {
-		display: block;
-		max-width: 900px;
-		margin-left: auto;
-		margin-right: auto;
-	}
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
 
-	.yt {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-	}
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
 </style>
 
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
-	<h1 id='process-book'>About This Project</h1>
-
-	<p>Premier League Explorer - a final project for <a href='http://dataviscourse.net/2020/index.html'>6630 - Data Visualization Fall 2020</a> 
-		by <a href='mailto:brian.eisner@utah.edu'>Brian Eisner</a>, <a href='mailto:jakob.ottar@pm.me'>Jakob Johnson</a>, and <a href='mailto:kevin.wood@utah.edu'>Kevin Wood</a></p>
-
-	<p>Find the code on <a href="https://github.com/kwood16/pl-season-explorer">GitHub</a></p>
-
-	<h2 id='screencast'>Screencast</h2>
-
-	<iframe class='yt' width='720' height='405' src='https://www.youtube-nocookie.com/embed/hzPpWInAiOg' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
-
-	<h2 id='overview-and-motivation'>Overview and Motivation</h2>
-	<p>It’s easy to tell who wins the Premier League at the end of the year, but how did they get there? What were the challenging games that could have broken their championship season? What were their best games? </p>
-
-	<p>What about the other teams, who won the alternative tables? If you look at just the Christmas games, the first half of the season, the post-lockdown games, who would have come out on top?</p>
-
-	<p>Finally, 2019/2020 was a big year for manager changes. We’ll show the “eras” of the managers and answer questions about whether it was necessary to sack them in the first place. How did the new guy compare?</p>
-
-	<p>We all have an interest in soccer, while Jakob and Brian religiously follow the Premier League. Thus, we decided to choose this project as playing to our interests. All of us love looking for trends in data, with a particular interest in sports data.</p>
-	
-	<h2 id='instructions-and-use'>Instructions and Use</h2>
-	<p>There are several components to using our visualization. The loaded page will show the entire season, and the bump chart's y-axis will be team position. There are multiple methods of interactivity</p>
-	<ul>
-		<li><p>Changing the bump chart y-axis scale: the bump chart can use team position, total points, percent of maximum possible points, or goal differential. Use the dropdown menu to change the displayed axis.</p></li>
-		<li><p>Team selection: to highlight certain teams in all views, click on the team's bar in the points total view. Multiple teams can be highlighted this way. To deselect a team, click on the bar again; to deselect all teams, click on the whitespace between bars in the points total view.</p></li>
-		<li><p>Game selection: to view a certain game in detail, click on the game in either the bump chart or the game table. This will bring up the game's detail view in the the lower right space. To deselect, either choose another game (selecting that game's detail in the process) or click the same game again.</p></li>
-		<li><p>Partial season selection: to only view results and tables from a portion of the season, brush on the game week bar located below the bump chart. This will update all views to only show results from the selected game weeks.</p></li>
-	</ul>
-
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="process-book">Process book</h1>
+<p>Premier League Season Explorer</p>
+<h2 id="overview-and-motivation">Overview and Motivation</h2>
+<p>It’s easy to tell who wins the Premier League at the end of the year, but how did they get there? What were the challenging games that could have broken their championship season? What were their best games?</p>
+<p>What about the other teams, who won the alternative tables? If you look at just the Christmas games, the first half of the season, the post-lockdown games, who would have come out on top?</p>
+<p>We all have an interest in soccer, while Jakob and Brian religiously follow the Premier League. Thus, we decided to choose this project as playing to our interests. All of us love looking for trends in data, with a particular interest in sports data.</p>
 <h2 id="related-work">Related Work</h2>
 <p>You can use many sites to visualize individual Premier League games (e.g., <em>The Guardian</em> and the official Premier League site). Some websites can be used to visualize an entire season (again, the official Premier League site can do this). But there are not many sites out there that make it easy to visualize part of a season or easily switch between game data and season data.</p>
 <h2 id="questions-and-goals">Questions and Goals</h2>
@@ -93,11 +394,11 @@
 <p>One final minor problem that we ran into is the possibility that the user could brush over a small enough range of games that a team could pick up zero points. While this is mostly fine, it posed a problem for our team selection method, as the bar to click on to select the team would have zero length. To remedy this, we also allowed for clicking on the team names in the points total chart.</p>
 <h2 id="implementation">Implementation</h2>
 <p>JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.</p>
-<img src="img/Overview.png" alt="View of entire visualization">
+<p><img src="img/Overview.png" alt="View of entire visualization"></p>
 <p>In the end, we have settled on the design shown above. We chose to juxtapose all the views rather than have only one visible at a time, as there are aspects where being able to observe multiple views is necessary (e.g. viewing how a team's performance over several weeks by brushing on the bump chart causes their overall place in the points total view to change). The justification for our choices of design is as follows in the below subsections:</p>
 <h3 id="bump-chart">Bump chart</h3>
 <p>The bump chart view uses twenty superimposed line charts, one for each team. The team's position in the league (or other performance metric with interactivity detailed below) as a function of game week is shown.</p>
-<img src="img/BumpChart.png" alt="Bump chart view">
+<p><img src="img/BumpChart.png" alt="Bump chart view"></p>
 <ul>
 <li>Superimposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).</li>
 <li>X-axis position (position on a single scale) chosen to represent gameweek since it's the independent variable and is the most important attribute</li>
@@ -106,7 +407,7 @@
 </ul>
 <h3 id="points-total">Points total</h3>
 <p>For the total points view, we settled on a simple bar chart. Each bar represents the points total throughout the entire season (or selected gameweek range; see interactivity section below) for each team.</p>
-<img width='400px' src="img/TotalPoints.png" alt="Total points view">
+<p><img src="img/TotalPoints.png" alt="Total points view"></p>
 <ul>
 <li>Bar chart used since there is a single category</li>
 <li>Y-axis position chosen to represent team since it's the dominant sensory input for categorical variables. A redundant encoding of hue is used as well to match the hues used in the bump chart and game detail view in order to allow for easier cross-referencing.</li>
@@ -114,7 +415,7 @@
 </ul>
 <h3 id="game-table">Game table</h3>
 <p>For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. The usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale. The below image shows the game table with a single game (Newcastle United 3 - 0 Sheffield United) selected by clicking on it (showing it in the game detail view)</p>
-<img src="img/GameTable.png" alt="Game Table view">
+<p><img src="img/GameTable.png" alt="Game Table view"></p>
 <ul>
 <li>Adjacency matrix network visualization is used for this complete graph network because the attributes of the links (i.e., games) are the important parts, not anything to do with the nodes or the &quot;distance between nodes.”</li>
 <li>Spatial region chosen to encode which teams are playing since it's the most important attribute of this categorical data</li>
@@ -122,7 +423,7 @@
 </ul>
 <h3 id="game-detail">Game detail</h3>
 <p>For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3 - 0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal). To select any game for viewing, click on the dot corresponding to the game in the bump chart, or the game in the game summary view.</p>
-<img width='400px' src="img/GameDetail.png" alt="Game Detail view">
+<p><img src="img/GameDetail.png" alt="Game Detail view"></p>
 <ul>
 <li>This is a custom visualization that does not correspond to something like a bar chart or a line chart since the data is not easily fit by one of these common visualization types.</li>
 <li>Position is used for the times in the game of goals and red cards since it's the dominant encoding</li>
@@ -130,12 +431,12 @@
 </ul>
 <h3 id="view-interaction">View interaction</h3>
 <p>To more easily see how certain teams did in relative to each other, we allowed for the highlighting of one or more teams by clicking on the team's bar or name in the points total views. This grays out the results for all other teams in all three always-visible views.</p>
-<img src="img/TeamSelection.png" alt="Team selection">
+<p><img src="img/TeamSelection.png" alt="Team selection"></p>
 <ul>
 <li>Graying out other teams creates a popout effect for the data for the selected team or teams, to make it easier to see just their results.</li>
 </ul>
 <p>A second interaction feature is selecting a partial season. By zooming in with a brush using the game week selector under the bump chart, all three primary views will update to only show results for those certain game weeks. This feature works simultaneously with team or game selection. The below image shows an example by only including games post-lockdown.</p>
-<img src="img/Brushing.png" alt="Brushing">
+<p><img src="img/Brushing.png" alt="Brushing"></p>
 <ul>
 <li>Removing results from other game weeks allows for observing how the season would have progressed had only games from these weeks counted</li>
 <li>Hiding games in the game table shows which teams played which teams during the selected weeks, allowing for a sort of &quot;strength of schedule&quot; during that time period to be determined</li>

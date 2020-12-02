@@ -37,7 +37,7 @@ We also took data from the [Premier League website](https://premierleague.com), 
  
 ## Exploratory Data Analysis
  
-The season data downloaded from FootyStats alone sufficed for implementing eason summary chart, and game table. There was also no column for cumulative points on the season, but it was easy to implement a JavaScript function to calculate this number of points for the season summary chart. Similarly, there was no column for margin of victory (used for saturation/hue in the game table), but this was easy to calculate on the fly in the visualization from the home team and away team goals. The only data we needed to add to the CSV file to make the bump chart work as well was gameweek, which was almost trivial to implement. We then calculated the placement on the table on a given gameweek using the total number of points up to that point, using goal differential (goals for - goals against) and goals for to break ties in keeping with the official Premier League rules. Should two teams still be tied, we used alphabetical order to break the tie, as it would be difficult to show two teams occupying the same place on the table; this method is how the Premier League website and other sites break such ties.
+The season data downloaded from FootyStats alone sufficed for implementing season summary chart, and game table. There was also no column for cumulative points on the season, but it was easy to implement a JavaScript function to calculate this number of points for the season summary chart. Similarly, there was no column for margin of victory (used for saturation/hue in the game table), but this was easy to calculate on the fly in the visualization from the home team and away team goals. The only data we needed to add to the CSV file to make the bump chart work as well was gameweek, which was almost trivial to implement. We then calculated the placement on the table on a given gameweek using the total number of points up to that point, using goal differential (goals for - goals against) and goals for to break ties in keeping with the official Premier League rules. Should two teams still be tied, we used alphabetical order to break the tie, as it would be difficult to show two teams occupying the same place on the table; this method is how the Premier League website and other sites break such ties.
  
 One wrinkle we came across midway through the project is that the FootyStats data does not include anything about individual players (e.g., who cards, subs, goals broken down by player). Thus, we were forced to manually grab player data from the Premier League website game by game to create the game detail view. As a result, we limited our game detail view to only include game-changing events (goals and red cards), as any more than this (in particular full lineups and substitutions) would require an excessive amount of work to input the data.
  
@@ -69,7 +69,7 @@ In the end, we have settled on the design shown above. We chose to juxtapose all
 
 ### Bump chart
 
-The bump chart view uses twenty superimposed line charts, one for each team. The team's position in the league (or other performance metric with interactivity detailed beloow) as a function of game week is shown.
+The bump chart view uses twenty superimposed line charts, one for each team. The team's position in the league (or other performance metric with interactivity detailed below) as a function of game week is shown.
 
 ![Bump chart view](img/BumpChart.png)
 
@@ -90,7 +90,7 @@ For the total points view, we settled on a simple bar chart. Each bar represents
 
 ### Game table
 
-For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. However, the usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale. The below image sshows the game table with a single game (Newcastle United 3&#x2013;0 Sheffield United) selected by clicking on it (showing it in the game detail view)
+For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. The usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale. The below image shows the game table with a single game (Newcastle United 3 - 0 Sheffield United) selected by clicking on it (showing it in the game detail view)
 
 ![Game Table view](img/GameTable.png)
 
@@ -100,7 +100,7 @@ For the game table view, we settled on the following adjacency matrix, with team
 
 ### Game detail
 
-For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3&#x2013;0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal). To select any game for viewing, click on the dot corresponding to the game in the bump chart, or the game in the game summary view.
+For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3 - 0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal). To select any game for viewing, click on the dot corresponding to the game in the bump chart, or the game in the game summary view.
 
 ![Game Detail view](img/GameDetail.png)
 
@@ -110,7 +110,7 @@ For the game detail view, we did not use a generic visualization such as an adja
 
 ### View interaction
 
-To more easily see how certain teams did in relatin to each other, we allowed for the highlighting of one or more teams by clicking on the team's bar or name in the points total views. This grays out the results for all other teams in all three always-visible views.
+To more easily see how certain teams did in relative to each other, we allowed for the highlighting of one or more teams by clicking on the team's bar or name in the points total views. This grays out the results for all other teams in all three always-visible views.
 
 ![Team selection](img/TeamSelection.png)
 
@@ -120,7 +120,7 @@ A second interaction feature is selecting a partial season. By zooming in with a
 
 ![Brushing](img/Brushing.png)
 
-- Removing resuslts from other game weeks allows for observing how the season would have progressed had only games from these weeks counted
+- Removing results from other game weeks allows for observing how the season would have progressed had only games from these weeks counted
 - Hiding games in the game table shows which teams played which teams during the selected weeks, allowing for a sort of "strength of schedule" during that time period to be determined
 - Updating the points total chart to show only points from the selected time period shows a measure of how well overall teams performed during this time period, without taking any other time periods into account.
 - Zooming in on the bump chart to show the chart only in the selected time period allows for viewing how a team did during the selected time period relative to past performance as well.
@@ -137,6 +137,6 @@ Placeholder
 
 We believe that our visualization helps us answer most of our questions and goals that we had at the start. It is possible to see how teams performed over an entire season, and over any desired section of the season. It is possible to highlight any number of teams to specifically compare their performances, and to zoom in on any individual game to see just how the teams performed in that game. Using the story features, it is possible to see how certain teams performed relative to important events. In addition to answering our content-related questions, we also accomplished our goal of learning how to innovatively and efficiently use JavaScript and D3 to create interactive web-based visualizations, a skill that will benefit us significantly when applying for jobs later in our lives.
 
-That is not to say that our visualization is perfect; there are certainly things that could be improved upon. In particular, being able to select teams (in addition to games) from the bump chart would be nice, but we could not figure out a way to intuitively do so without overloading an action. It would also be nice to be able to sort the points total data by number of points, but we unfortunately did not have time to implement such a feature. Finally, we would have preferred to be able to more eaisly show story elements (e.g. managerial changes) overlain on the visualization while simultaneously allowing for interactivity, but such a setup proved too complex to implement during the time we had available for this project.
+That is not to say that our visualization is perfect; there are certainly things that could be improved upon. In particular, being able to select teams (in addition to games) from the bump chart would be nice, but we could not figure out a way to intuitively do so without overloading an action. It would also be nice to be able to sort the points total data by number of points, but we unfortunately did not have time to implement such a feature. Finally, we would have preferred to be able to more easily show story elements (e.g. managerial changes) overlain on the visualization while simultaneously allowing for interactivity, but such a setup proved too complex to implement during the time we had available for this project.
 
 Overall, we believe our project, while not perfect, can be considered an overall success, and believe that our visualization works well in terms of accomplishing our goals.
