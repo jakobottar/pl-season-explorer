@@ -102,7 +102,7 @@ For the game table view, we settled on the following adjacency matrix, with team
 
 ### Game detail
 
-For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3&#x2013;0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal).
+For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3&#x2013;0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal). To select any game for viewing, click on the dot corresponding to the game in the bump chart, or the game in the game summary view.
 
 ![Game Detail view](img/GameDetail.png)
 
@@ -117,6 +117,15 @@ To more easily see how certain teams did in relatin to each other, we allowed fo
 ![Team selection](img/TeamSelection.png)
 
 - Graying out other teams creates a popout effect for the data for the selected team or teams, to make it easier to see just their results.
+
+A second interaction feature is selecting a partial season. By zooming in with a brush using the game week selector under the bump chart, all three primary views will update to only show results for those certain game weeks. This feature works simultaneously with team or game selection. The below image shows an example by only including games post-lockdown.
+
+![Brushing](img/Brushing.png)
+
+- Removing resuslts from other game weeks allows for observing how the season would have progressed had only games from these weeks counted
+- Hiding games in the game table shows which teams played which teams during the selected weeks, allowing for a sort of "strength of schedule" during that time period to be determined
+- Updating the points total chart to show only points from the selected time period shows a measure of how well overall teams performed during this time period, without taking any other time periods into account.
+- Zooming in on the bump chart to show the chart only in the selected time period allows for viewing how a team did during the selected time period relative to past performance as well.
 
 ### Story
 
