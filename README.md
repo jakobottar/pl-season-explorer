@@ -50,7 +50,7 @@ Core website code is contained in `/public/`
   - storytelling.js: contains the code for the storytelling aspect of the visualization.
 - index.html: contains the basic HTML skeleton of the page.
 
-`/docs/` contains documentation and assignment reports
+`/docs/` contains documentation and assignment reports, such as the process book, images contained within, and the project proposal
 
 `/data/` and `docker-compose.yml` are used by Docker to host the website on DigitalOcean.  
 Jakob followed [a tutorial](https://medium.com/@pentacent/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71) to enable SSL on the Docker/Nginx webserver. We scored an A on [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html?d=pl-explorer.com).
