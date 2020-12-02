@@ -65,13 +65,17 @@ One final minor problem that we ran into is the possibility that the user could 
 
 JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.
 
-In the end, we have settled on a design where the justification for our choices of design is as follows:
+~[View of entire visualization](img/Overview.png)
+
+In the end, we have settled on the design shown above. We chose to juxtapose all the views rather than have only one visible at a time, as there are aspects where being able to observe multiple views is necessary (e.g. viewing how a team's performance over several weeks by brushing on the bump chart causes their overall place in the points total view to change). The justification for our choices of design is as follows in the below subsections:
 
 ### Bump chart
 
-**INSERT IMAGE HERE ONCE CONTROLS PANEL IS FIXED/FINALIZED**
+The bump chart view uses twenty superimposed line charts, one for each team. The team's position in the league (or other performance metric with interactivity detailed beloow) as a function of game week is shown.
 
-- Juxtaposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).
+![Bump chart view](img/BumpChart.png)
+
+- Superimposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).
 - X-axis position (position on a single scale) chosen to represent gameweek since it's the independent variable and is the most important attribute
 - Y-axis position (position on a single scale) chosen to represent position/points/GD since they're the dependent variables and are the most important dependent attributes. All choices carry similar but distinct information with nothing to be gained from viewing the different variables at the same time, so a menu to switch the displayed y-axis was used.
 - Two hues (a primary and secondary) are chosen to represent the team since hue is the next dominant channel after position, but 20 is too many hues for a single encoding to be able to capture. However, by using both primary and secondary team colors, we are able to encode all 20 teams with distinguishable hues representing the team colors.
@@ -108,9 +112,17 @@ For the game detail view, we did not use a generic visualization such as an adja
 
 ### View interaction
 
-Explanatory text
+To more easily see how certain teams did in relatin to each other, we allowed for the highlighting of one or more teams by clicking on the team's bar or name in the points total views. This grays out the results for all other teams in all three always-visible views.
 
-**INSERT IMAGES HERE ONCE STORY IS DONE**
+![Team selection](ing/TeamSelection.png)
+
+- Graying out other teams creates a popout effect for the data for the selected team or teams, to make it easier to see just their results.
+
+### Story
+
+Placeholder
+
+**INSERT IMAGE HERE**
 
 - Bullet-point justification
  
