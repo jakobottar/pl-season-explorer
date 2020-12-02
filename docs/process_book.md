@@ -63,28 +63,42 @@ One final minor problem that we ran into is the possibility that the user could 
  
 ## Implementation
 
+JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.
+
 In the end, we have settled on a design where the justification for our choices of design is as follows:
-- Bump chart:
-  - Juxtaposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).
-  - X-axis position (position on a single scale) chosen to represent gameweek since it's the independent variable and is the most important attribute
-  - Y-axis position (position on a single scale) chosen to represent position/points/GD since they're the dependent variables and are the most important dependent attributes. All choices carry similar but distinct information with nothing to be gained from viewing the different variables at the same time, so a menu to switch the displayed y-axis was used.
-  - Two hues (a primary and secondary) are chosen to represent the team since hue is the next dominant channel after position, but 20 is too many hues for a single encoding to be able to capture. However, by using both primary and secondary team colors, we are able to encode all 20 teams with distinguishable hues representing the team colors.
-- Points total:
-  - Bar chart used since there is a single category
-  - Y-axis position chosen to represent team since it's the dominant sensory input for categorical variables. A redundant encoding of hue is used as well to match the hues used in the bump chart in order to allow for easier cross-referencing.
-  - Length of bars (and hence also position on x-axis since they all start from the same x-value) chosen to represent total points since it's a quantitative attribute and is the most dominant encoding.
-- Game table:
-  - Adjacency matrix network visualization is used for this complete graph network because the attributes of the links (i.e., games) are the important parts, not anything to do with the nodes or the "distance between nodes.”
-  - Spatial region chosen to encode which teams are playing since it's the most important attribute of this categorical data
-  - Saturation/hue on a diverging scale chosen to show the margin of victory since it's ordinal data and the position attribute is already taken, and luminance would make it harder to read the text inside.
-- Game detail:
-  - This is a custom visualization that does not correspond to something like a bar chart or a line chart since the data is not easily fit by one of these common visualization types.
-  - Position is used for the times in the game of goals and red cards since it's the dominant encoding
-  - Hue is used for the team scoring the goal or receiving the red card, since it's a categorical attribute and hue is the next dominant channel after position, and also for consistency with other views.
+
+### Bump chart
+
+**INSERT IMAGE HERE**
+
+- Juxtaposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).
+- X-axis position (position on a single scale) chosen to represent gameweek since it's the independent variable and is the most important attribute
+- Y-axis position (position on a single scale) chosen to represent position/points/GD since they're the dependent variables and are the most important dependent attributes. All choices carry similar but distinct information with nothing to be gained from viewing the different variables at the same time, so a menu to switch the displayed y-axis was used.
+- Two hues (a primary and secondary) are chosen to represent the team since hue is the next dominant channel after position, but 20 is too many hues for a single encoding to be able to capture. However, by using both primary and secondary team colors, we are able to encode all 20 teams with distinguishable hues representing the team colors.
+
+### Points total
 
 ![Total points view](img/TotalPoints.png)
 
-JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.
- 
+- Bar chart used since there is a single category
+- Y-axis position chosen to represent team since it's the dominant sensory input for categorical variables. A redundant encoding of hue is used as well to match the hues used in the bump chart in order to allow for easier cross-referencing.
+- Length of bars (and hence also position on x-axis since they all start from the same x-value) chosen to represent total points since it's a quantitative attribute and is the most dominant encoding.
+
+### Game table:
+
+![Game Table view](img/GameTable.png)
+
+- Adjacency matrix network visualization is used for this complete graph network because the attributes of the links (i.e., games) are the important parts, not anything to do with the nodes or the "distance between nodes.”
+- Spatial region chosen to encode which teams are playing since it's the most important attribute of this categorical data
+- Saturation/hue on a diverging scale chosen to show the margin of victory since it's ordinal data and the position attribute is already taken, and luminance would make it harder to read the text inside.
+
+### Game detail:
+
+![Game Detail view](img/GameDetail.png)
+
+- This is a custom visualization that does not correspond to something like a bar chart or a line chart since the data is not easily fit by one of these common visualization types.
+- Position is used for the times in the game of goals and red cards since it's the dominant encoding
+- Hue is used for the team scoring the goal or receiving the red card, since it's a categorical attribute and hue is the next dominant channel after position, and also for consistency with other views.
+
  
 ## Evaluation
