@@ -31,17 +31,20 @@
     </div>
 
     <div class="wrapper">
-      <div id="controls">
-        
-        <select name="Y-Axis" id="y-axis-select" onchange="bumpChart.updateChart()" autocomplete="off">
-          <option value="place" selected>Place</option>
-          <option value="p_of_max_points">Percent of Max Points</option>
-          <option value="points">Total Points</option>
-          <option value="gd">Goal Differential</option>
-        </select>
+      <div id="controls">     
+
         <div id="storytelling">
           <div id="storytelling-text"> </div>
           <select id="storytelling-select"></select>
+        </div>
+        <div id='y-axis-controls'>
+          <label for="y-axis-select">Choose what to display on the Y-Axis: </label>
+          <select name="Y-Axis" id="y-axis-select" onchange="bumpChart.updateChart()" autocomplete="off">
+            <option value="place" selected>Place</option>
+            <option value="p_of_max_points">Percent of Max Points</option>
+            <option value="points">Total Points</option>
+            <option value="gd">Goal Differential</option>
+          </select>
         </div>
       </div>
       <div id="bump-chart">

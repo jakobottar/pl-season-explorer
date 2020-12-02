@@ -34,6 +34,11 @@ a:hover {
   position: relative;
   width: 1500px;
   height: 75px;
+  padding: 10px;
+}
+
+#y-axis-controls {
+  padding-top: 10px;
 }
 
 #bump-chart {
@@ -262,6 +267,6 @@ h1 {
 }
 
 #storytelling {
-  padding: 10px;
+  /* padding: 10px; */
   color: gray;
 }
