@@ -59,12 +59,11 @@ We were initially going to include the Champions League and relegation places in
 The bump chart animations and x-axis are designed to preserve the full-season context and provide a meaningful x-axis in the zoomed view. 
  
 One final minor problem that we ran into is the possibility that the user could brush over a small enough range of games that a team could pick up zero points. While this is mostly fine, it posed a problem for our team selection method, as the bar to click on to select the team would have zero length. To remedy this, we also allowed for clicking on the team names in the points total chart.
+
  
-In the end, we have settled on the following design:
- 
-**INSERT IMAGES HERE**
- 
-The justification for our choices of design is as follows:
+## Implementation
+
+In the end, we have settled on a design where the justification for our choices of design is as follows:
 - Bump chart:
   - Juxtaposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).
   - X-axis position (position on a single scale) chosen to represent gameweek since it's the independent variable and is the most important attribute
@@ -82,9 +81,9 @@ The justification for our choices of design is as follows:
   - This is a custom visualization that does not correspond to something like a bar chart or a line chart since the data is not easily fit by one of these common visualization types.
   - Position is used for the times in the game of goals and red cards since it's the dominant encoding
   - Hue is used for the team scoring the goal or receiving the red card, since it's a categorical attribute and hue is the next dominant channel after position, and also for consistency with other views.
- 
-## Implementation
- 
+
+![Total points view](img/TotalPoints.png)
+
 JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.
  
  
