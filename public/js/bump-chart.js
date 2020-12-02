@@ -529,12 +529,18 @@ class BumpChart {
         d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false);
     }
     highlightStory() {
-        d3.select("#storytelling-select").on("change", e => {
+        
+        d3.select("#storytelling-select").on("change", d => {
+            
             var selectedOption = document.getElementById('storytelling-select').value;
             if (selectedOption === "None") {
                 this.clearTeams();
+                d3.select('#game-table').selectAll('.grayed').classed('grayed', false);
+        d3.selectAll('.season-summary-rect').classed('selected-team', false).classed('grayed', false);
             }
             else {
+                d3.select('#game-table').selectAll('.grayed').classed('grayed', false);
+        d3.selectAll('.season-summary-rect').classed('selected-team', false).classed('grayed', false);
         let datasets = [
             {
             "team_abbr": "TOT",
@@ -556,7 +562,7 @@ class BumpChart {
             "team_abbr": "ARS",
             "type": "Manager Sacking",
             "text": "Emery",
-            "gw": 15,
+            "gw": 14,
             "fill": "purple",
             "shape": "triangle-up"
         }
@@ -565,23 +571,41 @@ class BumpChart {
             "team_abbr": "ARS",
             "type": "Manager Hiring",
             "text": "Arteta",
-            "gw": 15,
+            "gw": 18,
             "fill": "purple",
             "shape": "triangle-up"
             }
         ]
-        // this.svg = d3.select('#brush-wrapper');
-                var circles = d3.selectAll('svg').append('svg')
-              .append('g').attr('class', 'circles').data( datasets );
-        circles.enter()
-            .append("svg:circle")
+                
+        let vShift = this.size.height - this.size.padding.bottom + 15;
+        let masterScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
+        let xAxis = d3.select('#bump-x-axis');
+        xAxis.attr('transform', `translate(0,${vShift})`);
+        let xAxisSymbolGroup = xAxis.append("g").attr("class", "x-label-group");
+        xAxisSymbolGroup.selectAll("line")
+            .data( datasets )
+            .enter()
+            .append('line')
+            .style("display", function (d) { return (d.team_abbr == selectedOption) ? null : "none" })
+            .attr('x1', d => masterScale(d.gw))
+            .attr('x2', d => masterScale(d.gw))
+            .attr('y1', 40)
+            .attr('y2', 65)
+            .attr('class', 'labels-symbols')
+            .style('stroke', 'purple');
+                
+        xAxisSymbolGroup
+            .enter()
+            .append('text')
+            .attr('x', d => masterScale(d.gw))
+            .attr('y', 32.5)
+            .attr('class', 'x-label-text')
             .text(d => (d.text))
-            .attr("r", 400)
-            .style("opacity", 1)
-            .style("fill", d => (d.fill))
-            .attr("cx", d => 10)
-            .attr("cy", 12);
-                // recover the option that has been chosen
+            .classed('small-x-axis-text', true)
+            .style('fill', d => (d.fill));
+                
+        xAxisSymbolGroup.exit().remove()
+                
         this.updateTeam(selectedOption);
 
         d3.selectAll('#bump-dots circle').filter(d => d.team_abbr != selectedOption).classed('grayed', true);
