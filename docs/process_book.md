@@ -69,7 +69,7 @@ In the end, we have settled on a design where the justification for our choices 
 
 ### Bump chart
 
-**INSERT IMAGE HERE**
+**INSERT IMAGE HERE ONCE CONTROLS PANEL IS FIXED/FINALIZED**
 
 - Juxtaposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).
 - X-axis position (position on a single scale) chosen to represent gameweek since it's the independent variable and is the most important attribute
@@ -78,13 +78,17 @@ In the end, we have settled on a design where the justification for our choices 
 
 ### Points total
 
+For the total points view, we settled on a simple bar chart. Each bar represents the points total throughout the entire season (or selected gameweek range; see interactivity section below) for each team.
+
 ![Total points view](img/TotalPoints.png)
 
 - Bar chart used since there is a single category
-- Y-axis position chosen to represent team since it's the dominant sensory input for categorical variables. A redundant encoding of hue is used as well to match the hues used in the bump chart in order to allow for easier cross-referencing.
+- Y-axis position chosen to represent team since it's the dominant sensory input for categorical variables. A redundant encoding of hue is used as well to match the hues used in the bump chart and game detail view in order to allow for easier cross-referencing.
 - Length of bars (and hence also position on x-axis since they all start from the same x-value) chosen to represent total points since it's a quantitative attribute and is the most dominant encoding.
 
-### Game table:
+### Game table
+
+For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. However, the usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale.
 
 ![Game Table view](img/GameTable.png)
 
@@ -92,13 +96,22 @@ In the end, we have settled on a design where the justification for our choices 
 - Spatial region chosen to encode which teams are playing since it's the most important attribute of this categorical data
 - Saturation/hue on a diverging scale chosen to show the margin of victory since it's ordinal data and the position attribute is already taken, and luminance would make it harder to read the text inside.
 
-### Game detail:
+### Game detail
+
+For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card.
 
 ![Game Detail view](img/GameDetail.png)
 
 - This is a custom visualization that does not correspond to something like a bar chart or a line chart since the data is not easily fit by one of these common visualization types.
 - Position is used for the times in the game of goals and red cards since it's the dominant encoding
-- Hue is used for the team scoring the goal or receiving the red card, since it's a categorical attribute and hue is the next dominant channel after position, and also for consistency with other views.
+- Hue is used to show scoring the goal or receiving the red card, since it's a categorical attribute and hue is the next dominant channel after position, and also for consistency with other views. The hues are the same as those used in the bump chart and total points.
 
+### View interaction
+
+Explanatory text
+
+**INSERT IMAGES HERE ONCE STORY IS DONE**
+
+- Bullet-point justification
  
 ## Evaluation
