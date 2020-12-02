@@ -88,7 +88,7 @@ For the total points view, we settled on a simple bar chart. Each bar represents
 
 ### Game table
 
-For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. However, the usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale. The below image sshows the game table with a single game (Newcastle 0&#x2013;1 Sheffield United) selected by clicking on it (showing it in the game detail view)
+For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. However, the usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale. The below image sshows the game table with a single game (Newcastle United 3&#x2013;0 Sheffield United) selected by clicking on it (showing it in the game detail view)
 
 ![Game Table view](img/GameTable.png)
 
@@ -98,7 +98,7 @@ For the game table view, we settled on the following adjacency matrix, with team
 
 ### Game detail
 
-For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle 0&#x2013;1 Sheffield United (the same game shown as selected in the above game table view).
+For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3&#x2013;0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal).
 
 ![Game Detail view](img/GameDetail.png)
 
