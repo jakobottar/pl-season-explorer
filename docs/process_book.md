@@ -115,3 +115,5 @@ Explanatory text
 - Bullet-point justification
  
 ## Evaluation
+
+What did you learn about the data by using your visualizations? How did you answer your questions? How well does your visualization work, and how could you further improve it?
