@@ -28,7 +28,8 @@ class BumpChart {
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
         this.size.padding = {'top': 20, 'bottom': 100, 'left': 60, 'right': 20};
         this.svg = d3.select('#bump-chart').append('svg');
-        
+
+        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
         
         this.svg.append('g').attr('id', 'bump-lines')
         this.svg.append('g').attr('id', 'bump-dots')
@@ -208,7 +209,6 @@ class BumpChart {
         }
 
         let range = myRange(this.table, key)
-        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
         let yScale = d3.scaleLinear()
             .domain(range)
             .range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
@@ -476,6 +476,8 @@ class BumpChart {
                 if(d.selection){ 
                     let gwFilter = d.selection.map(x => masterScale.invert(x))
                     this.zoomAxes(gwFilter)
+
+                    console.log(gwFilter)
 
                     //TODO: Update Places based on selection
                     this.updateWeeks(gwFilter);
