@@ -116,4 +116,8 @@ Explanatory text
  
 ## Evaluation
 
-What did you learn about the data by using your visualizations? How did you answer your questions? How well does your visualization work, and how could you further improve it?
+We believe that our visualization helps us answer most of our questions and goals that we had at the start. It is possible to see how teams performed over an entire season, and over any desired section of the season. It is possible to highlight any number of teams to specifically compare their performances, and to zoom in on any individual game to see just how the teams performed in that game. Using the story features, it is possible to see how certain teams performed relative to important events. In addition to answering our content-related questions, we also accomplished our goal of learning how to innovatively and efficiently use JavaScript and D3 to create interactive web-based visualizations, a skill that will benefit us significantly when applying for jobs later in our lives.
+
+That is not to say that our visualization is perfect; there are certainly things that could be improved upon. In particular, being able to select teams (in addition to games) from the bump chart would be nice, but we could not figure out a way to intuitively do so without overloading an action. It would also be nice to be able to sort the points total data by number of points, but we unfortunately did not have time to implement such a feature. Finally, we would have preferred to be able to more eaisly show story elements (e.g. managerial changes) overlain on the visualization while simultaneously allowing for interactivity, but such a setup proved too complex to implement during the time we had available for this project.
+
+Overall, we believe our project, while not perfect, can be considered an overall success, and believe that our visualization works well in terms of accomplishing our goals.
