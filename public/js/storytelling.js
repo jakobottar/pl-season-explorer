@@ -1,7 +1,7 @@
 function textBox(){
     let headBlurb = `At the beginning of the season,`
     let textBlurb = ` 
-    each team comes with different levels of expectations. See how this team's season unfolded based on some key events. 
+    each team comes with different levels of expectations. See how a particular team's season unfolded based on some key events. 
     `
     let textDiv = d3.select('#storytelling-text')
     .append('div');
@@ -17,7 +17,7 @@ function textBox(){
 }
 
 function drawStorytellingDropdown() {
-    var storytellingGroup = ["None", "Tottenham Hotspur", "Arsenal"]
+    var storytellingGroup = ["None", "TOT", "ARS"]
     // add the options to the button
     d3.select("#storytelling-select")
         .selectAll('myOptions')

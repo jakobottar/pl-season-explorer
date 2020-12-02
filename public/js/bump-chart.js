@@ -19,9 +19,8 @@ class BumpChart {
 
     setData(data) { this.data = data; }
 
-
-
     drawChart() {
+        
         drawStorytellingDropdown()
         this.table = this.makeTable();
         let tooltip = d3.select('#bump-chart').append('div').attr('class', 'tooltip').style('display', 'none').style('opacity', 0);
@@ -29,9 +28,8 @@ class BumpChart {
         this.size = d3.select('#bump-chart').node().getBoundingClientRect();
         this.size.padding = {'top': 20, 'bottom': 100, 'left': 60, 'right': 20};
         this.svg = d3.select('#bump-chart').append('svg');
-
-        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right]);
-
+        
+        
         this.svg.append('g').attr('id', 'bump-lines')
         this.svg.append('g').attr('id', 'bump-dots')
         this.svg.append('g').attr('id', 'bump-x-axis')
@@ -62,10 +60,9 @@ class BumpChart {
             .style('fill', 'white')
 
         this.drawXAxis();
-        this.drawYAxis('place')
+        this.drawYAxis('place');
 
-        // let storySelection = d3.select("#storytelling-select").node().value;
-        this.highlightStory()
+        this.highlightStory();
 
         let circles = d3.select('#bump-dots').selectAll('circle');
 
@@ -211,7 +208,7 @@ class BumpChart {
         }
 
         let range = myRange(this.table, key)
-
+        this.xScale = d3.scaleLinear().domain([1, 38]).range([this.size.padding.left, this.size.width - this.size.padding.right])
         let yScale = d3.scaleLinear()
             .domain(range)
             .range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
@@ -335,7 +332,6 @@ class BumpChart {
         }
 
         let range = myRange(this.table, key)
-        console.log(range)
         let yScale = d3.scaleLinear().domain(range).range([this.size.padding.top, this.size.height - this.size.padding.bottom]);
         
         let yAxis = d3.select('#bump-y-axis')
@@ -531,23 +527,65 @@ class BumpChart {
         d3.select('#bump-chart').selectAll('.grayed').classed('grayed', false);
     }
     highlightStory() {
-        d3.select("#storytelling-select").on("change", d => {
+        d3.select("#storytelling-select").on("change", e => {
             var selectedOption = document.getElementById('storytelling-select').value;
-
             if (selectedOption === "None") {
                 this.clearTeams();
             }
             else {
-                
-                // recover the option that has been chosen
-                d3.selectAll('#bump-dots circle').filter(d => d.team_name == selectedOption).classed('grayed', false);
-                d3.selectAll('#bump-lines line').filter(d => d.team_name == selectedOption).classed('grayed', false);
-
-                d3.selectAll('#bump-dots circle').filter(d => d.team_name != selectedOption).classed('grayed', true);
-                d3.selectAll('#bump-lines line').filter(d => d.team_name != selectedOption).classed('grayed', true);
+        let datasets = [
+            {
+            "team_abbr": "TOT",
+            "type": "Manager Sacking",
+            "text": "Pochettino",
+                "gw": 12,
+                "fill": "green",
+                "symbol": "cross",
+        },
+        {
+            "team_abbr": "TOT",
+            "type": "Manager Hiring",
+            "text": "Mourinho",
+            "gw": 12,
+            "fill": "purple",
+            "shape": "triangle-up"
+        },
+        {
+            "team_abbr": "ARS",
+            "type": "Manager Sacking",
+            "text": "Emery",
+            "gw": 15,
+            "fill": "purple",
+            "shape": "triangle-up"
+        }
+        ,
+        {
+            "team_abbr": "ARS",
+            "type": "Manager Hiring",
+            "text": "Arteta",
+            "gw": 15,
+            "fill": "purple",
+            "shape": "triangle-up"
             }
-            // var storytellingGroup = ["Tottenham Hotspur", "Pochettino", 12];
-            // this.updatePosition(elements, 12)
+        ]
+        // this.svg = d3.select('#brush-wrapper');
+                var circles = d3.selectAll('svg').append('svg')
+              .append('g').attr('class', 'circles').data( datasets );
+        circles.enter()
+            .append("svg:circle")
+            .text(d => (d.text))
+            .attr("r", 400)
+            .style("opacity", 1)
+            .style("fill", d => (d.fill))
+            .attr("cx", d => 10)
+            .attr("cy", 12);
+                // recover the option that has been chosen
+        this.updateTeam(selectedOption);
+
+        d3.selectAll('#bump-dots circle').filter(d => d.team_abbr != selectedOption).classed('grayed', true);
+        d3.selectAll('#bump-lines line').filter(d => d.team_abbr != selectedOption).classed('grayed', true);
+        }
+
 
             
         return selectedOption
