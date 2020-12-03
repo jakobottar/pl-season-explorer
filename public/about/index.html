@@ -99,11 +99,11 @@
 <p>One final minor problem that we ran into is the possibility that the user could brush over a small enough range of games that a team could pick up zero points. While this is mostly fine, it posed a problem for our team selection method, as the bar to click on to select the team would have zero length. To remedy this, we also allowed for clicking on the team names in the points total chart.</p>
 <h2 id="implementation">Implementation</h2>
 <p>JavaScript and D3 have suited our needs well. We did not run into any major roadblocks or other significant problems during the process. Coding-wise, we kept our main script.js file reserved only for code that either load in the data to be visualized or is responsible for linking between the different views. We placed all other JavaScript code in the individual JavaScript files for each view.</p>
-<p><img src="img/Overview.png" alt="View of entire visualization"></p>
+<img src="img/Overview.png" alt="View of entire visualization">
 <p>In the end, we have settled on the design shown above. We chose to juxtapose all the views rather than have only one visible at a time, as there are aspects where being able to observe multiple views is necessary (e.g. viewing how a team&#39;s performance over several weeks by brushing on the bump chart causes their overall place in the points total view to change). The justification for our choices of design is as follows in the below subsections:</p>
 <h3 id="bump-chart">Bump chart</h3>
 <p>The bump chart view uses twenty superimposed line charts, one for each team. The team&#39;s position in the league (or other performance metric with interactivity detailed below) as a function of game week is shown.</p>
-<p><img src="img/BumpChart.png" alt="Bump chart view"></p>
+<img src="img/BumpChart.png" alt="Bump chart view">
 <ul>
 <li>Superimposed line charts used, since the data is tabular and the number of teams is small enough (20) that juxtaposed line charts are appropriate (20 is on the upper end of the range, but we see it as still acceptable since inherently bump chart the number of line crossings is minimal and we are using two hues for each team).</li>
 <li>X-axis position (position on a single scale) chosen to represent gameweek since it&#39;s the independent variable and is the most important attribute</li>
@@ -112,7 +112,7 @@
 </ul>
 <h3 id="points-total">Points total</h3>
 <p>For the total points view, we settled on a simple bar chart. Each bar represents the points total throughout the entire season (or selected gameweek range; see interactivity section below) for each team.</p>
-<p><img src="img/TotalPoints.png" alt="Total points view"></p>
+<img src="img/TotalPoints.png" alt="Total points view" width="400">
 <ul>
 <li>Bar chart used since there is a single category</li>
 <li>Y-axis position chosen to represent team since it&#39;s the dominant sensory input for categorical variables. A redundant encoding of hue is used as well to match the hues used in the bump chart and game detail view in order to allow for easier cross-referencing.</li>
@@ -120,7 +120,7 @@
 </ul>
 <h3 id="game-table">Game table</h3>
 <p>For the game table view, we settled on the following adjacency matrix, with teams as nodes and games as links. The matrix itself represents a complete graph with directed links in each direction, since every team plays every other team both home and away. The usefulness of the adjacency matrix encoding comes from being able to show the margin of victory for all games easily by encoding this value in the hue/saturation of the links using a diverging color scale. The below image shows the game table with a single game (Newcastle United 3 - 0 Sheffield United) selected by clicking on it (showing it in the game detail view)</p>
-<p><img src="img/GameTable.png" alt="Game Table view"></p>
+<img src="img/GameTable.png" alt="Game Table view">
 <ul>
 <li>Adjacency matrix network visualization is used for this complete graph network because the attributes of the links (i.e., games) are the important parts, not anything to do with the nodes or the &quot;distance between nodes.”</li>
 <li>Spatial region chosen to encode which teams are playing since it&#39;s the most important attribute of this categorical data</li>
@@ -128,7 +128,7 @@
 </ul>
 <h3 id="game-detail">Game detail</h3>
 <p>For the game detail view, we did not use a generic visualization such as an adjacency matrix or a bar graph. Such a single representation would not be a good fit for our data, which, while having a clear structure, varies considerably from game to game. Instead we settled on a custom encoding, by which each half of a game is represented by an axis, and goals and red cards for each team are positioned on that axis to see when each team scored or received a red card. The following game detail view is for Newcastle United 3 - 0 Sheffield United (the same game shown as selected in the above game table view). Red cards are shown by rectangles (resembling the shape of a card), while goals are shown by circles (resembling the shape of a soccer ball). Hovering over either shows which player scored or received the card, in which exact minute, and in which team they played for (the latter of which is also encoded by the color of the card/goal). To select any game for viewing, click on the dot corresponding to the game in the bump chart, or the game in the game summary view.</p>
-<p><img src="img/GameDetail.png" alt="Game Detail view"></p>
+<img src="img/GameDetail.png" alt="Game Detail view" width="400">
 <ul>
 <li>This is a custom visualization that does not correspond to something like a bar chart or a line chart since the data is not easily fit by one of these common visualization types.</li>
 <li>Position is used for the times in the game of goals and red cards since it&#39;s the dominant encoding</li>
@@ -136,12 +136,12 @@
 </ul>
 <h3 id="view-interaction">View interaction</h3>
 <p>To more easily see how certain teams did in relative to each other, we allowed for the highlighting of one or more teams by clicking on the team&#39;s bar or name in the points total views. This grays out the results for all other teams in all three always-visible views.</p>
-<p><img src="img/TeamSelection.png" alt="Team selection"></p>
+<img src="img/TeamSelection.png" alt="Team selection">
 <ul>
 <li>Graying out other teams creates a popout effect for the data for the selected team or teams, to make it easier to see just their results.</li>
 </ul>
 <p>A second interaction feature is selecting a partial season. By zooming in with a brush using the game week selector under the bump chart, all three primary views will update to only show results for those certain game weeks. This feature works simultaneously with team or game selection. The below image shows an example by only including games post-lockdown.</p>
-<p><img src="img/Brushing.png" alt="Brushing"></p>
+<img src="img/Brushing.png" alt="Brushing">
 <ul>
 <li>Removing results from other game weeks allows for observing how the season would have progressed had only games from these weeks counted</li>
 <li>Hiding games in the game table shows which teams played which teams during the selected weeks, allowing for a sort of &quot;strength of schedule&quot; during that time period to be determined</li>
@@ -150,7 +150,7 @@
 </ul>
 <h3 id="story">Story</h3>
 <p>We wanted to highlight different teams journeys over the course of the season, including events that didn&#39;t quite show up on the stat line. This proved to be challenging, with some unfinished work that could be compelling but simple for future work. We added functionality to zero in on a specific team. By selecting the team in the dropdown, you can see the up and down journey, as well as any firings/hirings/signings that correspond with a particular game week. Future work will center on changing the text to symbols while adding tooltips for more intuitive interactivity for the user to see in real time without unnecessary scrolling or overwhelming text. This simple storytelling feature guides the user to look at particular events as potential influences for a team&#39;s up-and-down season, or if it was maybe just a fluke.</p>
-<p><img src="img/Story.png" alt="Story"></p>
+<img src="img/Story.png" alt="Story">
 <ul>
 <li>Giving simple indicators of key events in the season gives a bird&#39;s eye view of the simple contributors to team success and failure from week-to-week.</li>
 <li>Minimize cognitive burden for users by focusing on different symbols/text indicators that would clearly indicate other events aside from normal week-to-week activities. (e.g. mid-season manager firing, hiring).</li>
