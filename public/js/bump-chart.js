@@ -536,7 +536,9 @@ class BumpChart {
             if (selectedOption === "None") {
                 this.clearTeams();
                 d3.select('#game-table').selectAll('.grayed').classed('grayed', false);
-        d3.selectAll('.season-summary-rect').classed('selected-team', false).classed('grayed', false);
+                d3.selectAll('.season-summary-rect').classed('selected-team', false).classed('grayed', false);
+                d3.selectAll('.small-x-axis-line').filter(d => d.team_abbr != selectedOption).classed('hidden-grayed', true)
+                d3.selectAll('.small-x-axis-text').filter(d => d.team_abbr != selectedOption).classed('hidden-grayed', true)
             }
             else {
                 d3.select('#game-table').selectAll('.grayed').classed('grayed', false);
@@ -544,15 +546,15 @@ class BumpChart {
         let datasets = [
             {
             "team_abbr": "TOT",
-            "type": "Manager Sacking",
+            "type": "Fire",
             "text": "Pochettino",
-                "gw": 12,
+                "gw": 11,
                 "fill": "green",
                 "symbol": "cross",
         },
         {
             "team_abbr": "TOT",
-            "type": "Manager Hiring",
+            "type": "Hire",
             "text": "Mourinho",
             "gw": 12,
             "fill": "purple",
@@ -560,16 +562,16 @@ class BumpChart {
         },
         {
             "team_abbr": "ARS",
-            "type": "Manager Sacking",
+            "type": "Fire",
             "text": "Emery",
             "gw": 14,
-            "fill": "purple",
+            "fill": "green",
             "shape": "triangle-up"
         }
         ,
         {
             "team_abbr": "ARS",
-            "type": "Manager Hiring",
+            "type": "Hire",
             "text": "Arteta",
             "gw": 18,
             "fill": "purple",
@@ -584,27 +586,30 @@ class BumpChart {
         let xAxisSymbolGroup = xAxis.append("g").attr("class", "x-label-group");
         xAxisSymbolGroup.selectAll("line")
             .data( datasets )
-            .enter()
-            .append('line')
+            .join("line")
             .style("display", function (d) { return (d.team_abbr == selectedOption) ? null : "none" })
             .attr('x1', d => masterScale(d.gw))
             .attr('x2', d => masterScale(d.gw))
             .attr('y1', 40)
             .attr('y2', 65)
+            .classed('small-x-axis-line', true)
             .attr('class', 'labels-symbols')
-            .style('stroke', 'purple');
+            .style('stroke', d => (d.fill));
                 
-        xAxisSymbolGroup
-            .enter()
-            .append('text')
+        xAxisSymbolGroup.selectAll("text")
+            .data(datasets)
+            .join("text")
             .attr('x', d => masterScale(d.gw))
             .attr('y', 32.5)
             .attr('class', 'x-label-text')
-            .text(d => (d.text))
+            .text(d => d.type)
             .classed('small-x-axis-text', true)
-            .style('fill', d => (d.fill));
+            .style('fill', d => (d.fill))
+            .style("display", function (d) { return (d.team_abbr == selectedOption) ? null : "none" });
                 
-        xAxisSymbolGroup.exit().remove()
+                d3.selectAll('.small-x-axis-text').filter(d => d.team_abbr != selectedOption).classed('hidden-grayed', true)
+                d3.selectAll('.small-x-axis-line').filter(d => d.team_abbr != selectedOption).classed('hidden-grayed', true)
+                
                 
         this.updateTeam(selectedOption);
 
