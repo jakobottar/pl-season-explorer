@@ -6,6 +6,7 @@ by [Brian Eisner](mailto:brian.eisner@utah.edu), [Jakob Johnson](mailto:jakob.ot
 ## Project Website and Screencast
 - Website: [Premier League Season Explorer](https://pl-explorer.com/)
 - Screencast: **INSERT SCREENCAST HERE**
+- Process book: [Here](https://github.com/kwood16/pl-season-explorer/blob/main/docs/process_book.md)
 
 ## Background
 
