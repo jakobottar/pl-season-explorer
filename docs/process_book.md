@@ -127,7 +127,7 @@ A second interaction feature is selecting a partial season. By zooming in with a
 
 ### Story
 
-Placeholder
+We wanted to highlight different teams jounrneys over the course of the season, especially events that wouldn't be captured otherwise, but in one single graphic. This proved to be challenging, with some unfinished work that could be compelling but simple for future work. We added functionality to zero in on a specific team that is limited to two particular teams at the moment. By selecting the team in the dropdown, you can see the up and down journey, as well as any firings/hirings/signings that correspond with a particular game week. Future work would center on changing the text to symbols while adding tooltips for more intuitive interactivity for the user to see in real time without unnecessary scrolling or overwhelming text. This simple storytelling feature guides the user to look at particular events as potential influences for a team's up-and-down season, or if it was maybe just a fluke.
 
 **INSERT IMAGE HERE**
 
