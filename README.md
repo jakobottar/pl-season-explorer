@@ -5,7 +5,7 @@ by [Brian Eisner](mailto:brian.eisner@utah.edu), [Jakob Johnson](mailto:jakob.ot
 
 ## Project Website and Screencast
 - Website: [Premier League Season Explorer](https://pl-explorer.com/)
-- Screencast: **INSERT SCREENCAST HERE**
+- Screencast: [https://youtu.be/YHJR5lMACG0](https://youtu.be/YHJR5lMACG0)
 
 ## Background
 
