@@ -127,11 +127,14 @@ A second interaction feature is selecting a partial season. By zooming in with a
 
 ### Story
 
-Placeholder
+We wanted to highlight different teams journeys over the course of the season, including events that didn't quite show up on the stat line. This proved to be challenging, with some unfinished work that could be compelling but simple for future work. We added functionality to zero in on a specific team. By selecting the team in the dropdown, you can see the up and down journey, as well as any firings/hirings/signings that correspond with a particular game week. Future work will center on changing the text to symbols while adding tooltips for more intuitive interactivity for the user to see in real time without unnecessary scrolling or overwhelming text. This simple storytelling feature guides the user to look at particular events as potential influences for a team's up-and-down season, or if it was maybe just a fluke.
 
-**INSERT IMAGE HERE**
+![Story](img/story_interactive.png)
 
-- Bullet-point justification
+- Giving simple indicators of key events in the season gives a bird's eye view of the simple contributors to team success and failure from week-to-week.
+- Minimize cognitive burden for users by focusing on different symbols/text indicators that would clearly indicate other events aside from normal week-to-week activities. (e.g. mid-season manager firing, hiring).
+- Storytelling feature makes it interactive while letting the user determine it's scope of interest while minimizing outside distraction for a single team.
+- Interactivity creates a better idea of whole season while still being able to key in on while seeing the game summary and point total.
  
 ## Evaluation
 
